@@ -1,0 +1,11 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# Backup archive (large, redundant with git history)
+solarfi070526.zip
+
+# Temp helper scripts used during AI-assisted edits (not site assets)
+_apply_calc_upgrade.py
+_fix_subsidy.py
+_hero_bg_upgrade.py
