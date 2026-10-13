@@ -256,6 +256,17 @@
 
   <!-- HERO -->
   <section class="hero" id="home">
+    <div class="hero-art" aria-hidden="true">
+      <div class="hero-sun"></div>
+      <div class="sp sp-1"></div>
+      <div class="sp sp-2"></div>
+      <div class="sp sp-3"></div>
+      <div class="sp sp-4"></div>
+      <div class="sp sp-5"></div>
+      <span class="spark s1"></span><span class="spark s2"></span><span class="spark s3"></span>
+      <span class="spark s4"></span><span class="spark s5"></span><span class="spark s6"></span>
+      <span class="spark s7"></span><span class="spark s8"></span>
+    </div>
     <div class="hero-inner">
       <div class="hero-content">
         <div class="hero-badge">
@@ -288,22 +299,8 @@
           </div>
         </div>
       </div>
-      <!-- HERO CONTACT FORM -->
-      <div class="hero-contact-card" id="heroContactForm">
-        <div class="hcf-header">
-          <div class="hcf-icon">⚡</div>
-          <div>
-            <div class="hcf-title">Calculate Your Savings & Get a Free Quote</div>
-            <div class="hcf-sub">Response within 30 minutes</div>
-          </div>
-        </div>
-        <div class="engage-hub-form-embed" id="eh_form_5607347205177344" data-id="5607347205177344"></div>
-        <div class="hcf-trust">
-          <span>🔒 100% Free</span>
-          <span>⚡ Quick Response</span>
-          <span>🏆 MNRE Approved</span>
-        </div>
-      </div>
+      <!-- HERO CALCULATOR (cloned from #calcCard by script below) -->
+      <div class="hero-contact-card" id="heroContactForm"></div>
     </div>
   </section>
 
@@ -498,7 +495,7 @@
           <div class="calc-card" id="calcCard">
             <div class="calc-card-head">
               <h3>⚡ Solar Savings Calculator</h3>
-              <div class="calc-state-label" id="calcStateLabel"></div>
+              <div class="calc-state-label" data-r="calcStateLabel"></div>
             </div>
 
             <div class="form-row">
@@ -511,14 +508,14 @@
             </div>
 
             <div class="form-row">
-              <label>Monthly Electricity Bill <span class="calc-live-val" id="billVal">₹3,000</span></label>
-              <input type="range" id="bill" min="500" max="15000" step="100" value="3000" class="calc-slider" oninput="calculate()">
+              <label>Monthly Electricity Bill <span class="calc-live-val" data-r="billVal">₹3,000</span></label>
+              <input type="range" data-r="bill" min="500" max="15000" step="100" value="3000" class="calc-slider" oninput="calcAll()">
               <div class="calc-range-labels"><span>₹500</span><span>₹15,000</span></div>
             </div>
 
             <div class="form-row">
               <label>Select Your State</label>
-              <select id="state" onchange="calculate()">
+              <select data-r="state" onchange="calcAll()">
                 <option value="Andhra Pradesh" selected>Andhra Pradesh</option>
                 <option value="Arunachal Pradesh">Arunachal Pradesh</option>
                 <option value="Assam">Assam</option>
@@ -554,35 +551,35 @@
             </div>
 
             <!-- Live results -->
-            <div class="calc-result-live" id="calcResult">
+            <div class="calc-result-live">
               <div class="cr-live-grid">
                 <div class="cr-live-cell cr-highlight">
                   <div class="cr-live-lbl">You'll Save</div>
-                  <div class="cr-live-val" id="monthlySaving">—</div>
+                  <div class="cr-live-val" data-r="monthlySaving">—</div>
                   <div class="cr-live-sub">per month</div>
                 </div>
                 <div class="cr-live-cell">
                   <div class="cr-live-lbl">System Size</div>
-                  <div class="cr-live-val" id="systemSize">—</div>
+                  <div class="cr-live-val" data-r="systemSize">—</div>
                   <div class="cr-live-sub">recommended</div>
                 </div>
                 <div class="cr-live-cell">
                   <div class="cr-live-lbl">After Subsidy</div>
-                  <div class="cr-live-val" id="afterSubsidy">—</div>
+                  <div class="cr-live-val" data-r="afterSubsidy">—</div>
                   <div class="cr-live-sub">net investment</div>
                 </div>
                 <div class="cr-live-cell">
                   <div class="cr-live-lbl">Payback In</div>
-                  <div class="cr-live-val" id="roi">—</div>
+                  <div class="cr-live-val" data-r="roi">—</div>
                   <div class="cr-live-sub">then it keeps saving</div>
                 </div>
               </div>
 
-              <div class="calc-subsidy-note" id="subsidyNote">
-                Includes <strong id="subsidyAmt">₹78,000</strong> PM Surya Ghar central subsidy
+              <div class="calc-subsidy-note" data-r="subsidyNote">
+                Includes <strong data-r="subsidyAmt">₹78,000</strong> PM Surya Ghar central subsidy
               </div>
 
-              <div class="calc-extra" id="calcExtra"></div>
+              <div class="calc-extra" data-r="calcExtra"></div>
 
               <a href="contact-us.html" class="calc-btn" style="display:block;text-align:center;text-decoration:none;">Get My Exact Quote →</a>
               <div class="calc-disclaimer">Free site visit · No obligation · Response within 24 hrs. Estimates only — final tariff, subsidy and net-metering terms are set by your DISCOM.</div>
@@ -885,31 +882,23 @@
       return '₹' + Math.round(n).toLocaleString('en-IN');
     }
 
-    // Savings calculator (live — recalculates instantly on any input)
-    function getActivePropType() {
-      const active = document.querySelector('.calc-toggle-btn.active');
-      return active ? active.dataset.val : 'Residential';
-    }
-
-    // PM Surya Ghar central subsidy: flat Rs 78,000 (the scheme's cap for 3kW+ residential systems,
-    // which covers the vast majority of Solarfi's customer base). Residential rooftop only.
+    // Savings calculator (live). Works on every .calc-card on the page (hero + calculator section).
+    // PM Surya Ghar central subsidy: flat Rs 78,000 (cap for 3kW+ residential systems). Residential only.
     function calcSubsidy(systemKW, propType) {
-      if (propType !== 'Residential') return 0;
-      return 78000;
+      return propType === 'Residential' ? 78000 : 0;
     }
 
-    function calculate() {
-      const bill = parseFloat(document.getElementById('bill').value) || 3000;
-      const stateName = document.getElementById('state').value;
-      const propType = getActivePropType();
+    function runCalc(root) {
+      const q = k => root.querySelector('[data-r="' + k + '"]');
+      const activeBtn = root.querySelector('.calc-toggle-btn.active');
+      const propType = activeBtn ? activeBtn.dataset.val : 'Residential';
+      const bill = parseFloat(q('bill').value) || 3000;
+      const stateName = q('state').value;
       const sd = SOLAR_STATE[stateName] || { tariff: 6.0, sun: 5.0, label: '' };
 
-      document.getElementById('billVal').textContent = fmtINR(bill);
+      q('billVal').textContent = fmtINR(bill);
 
-      // Property multiplier
       const pf = propType === 'Commercial' ? 1.4 : propType === 'Industrial' ? 1.8 : 1.0;
-
-      // Calculations
       const offsetPct = 0.80;
       const saveMonth = bill * offsetPct * pf;
       const saveYear = saveMonth * 12;
@@ -922,37 +911,55 @@
       const payback = (afterSubsidyCost / saveYear).toFixed(1);
       const co2 = (unitsMonth * 0.82 * 12 * offsetPct).toFixed(0);
 
-      // Populate live result tiles
-      document.getElementById('monthlySaving').textContent = fmtINR(saveMonth);
-      document.getElementById('systemSize').textContent = systemKW.toFixed(1) + ' kW';
-      document.getElementById('afterSubsidy').textContent = fmtINR(afterSubsidyCost);
-      document.getElementById('roi').textContent = payback + ' yrs';
-      document.getElementById('calcExtra').textContent =
-        'Over 25 years: ' + fmtINR(save25) + ' saved · ' + (co2 / 1000).toFixed(1) + ' t CO₂ offset/yr';
+      q('monthlySaving').textContent = fmtINR(saveMonth);
+      q('systemSize').textContent = systemKW.toFixed(1) + ' kW';
+      q('afterSubsidy').textContent = fmtINR(afterSubsidyCost);
+      q('roi').textContent = payback + ' yrs';
+      q('calcExtra').textContent =
+        'Over 25 years: ' + fmtINR(save25) + ' saved \u00b7 ' + (co2 / 1000).toFixed(1) + ' t CO\u2082 offset/yr';
 
-      // Subsidy note — residential only
-      const subsidyNote = document.getElementById('subsidyNote');
+      const note = q('subsidyNote');
       if (subsidy > 0) {
-        subsidyNote.style.display = 'flex';
-        document.getElementById('subsidyAmt').textContent = fmtINR(subsidy);
+        note.style.display = 'flex';
+        q('subsidyAmt').textContent = fmtINR(subsidy);
       } else {
-        subsidyNote.style.display = 'none';
+        note.style.display = 'none';
       }
-
-      document.getElementById('calcStateLabel').textContent = stateName + '  ·  ' + sd.label + '  ·  ₹' + sd.tariff.toFixed(2) + '/unit';
+      q('calcStateLabel').textContent = stateName + '  \u00b7  ' + sd.label + '  \u00b7  \u20b9' + sd.tariff.toFixed(2) + '/unit';
     }
 
-    // Toggle buttons (Home / Business / Industrial)
-    document.querySelectorAll('.calc-toggle-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.calc-toggle-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        calculate();
-      });
+    function calcAll() {
+      document.querySelectorAll('.calc-card').forEach(runCalc);
+    }
+    function calculate() { calcAll(); }   // backwards-compatible alias
+
+    // Home / Business / Industrial toggle (event delegation so cloned cards work too)
+    document.addEventListener('click', e => {
+      const btn = e.target.closest('.calc-toggle-btn');
+      if (!btn) return;
+      btn.parentElement.querySelectorAll('.calc-toggle-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      runCalc(btn.closest('.calc-card'));
     });
 
-    // Run once on load so the card is never empty
-    calculate();
+    // Hero: mount a copy of the calculator card in the hero panel
+    (function mountHeroCalc() {
+      const src = document.getElementById('calcCard');
+      const mount = document.getElementById('heroContactForm');
+      if (!src || !mount) return;
+      const clone = src.cloneNode(true);
+      clone.removeAttribute('id');
+      clone.classList.add('calc-card-hero');
+      mount.innerHTML = '';
+      mount.appendChild(clone);
+      const trust = document.createElement('div');
+      trust.className = 'hcf-trust';
+      trust.innerHTML = '<span>\ud83d\udd12 100% Free</span><span>\u26a1 Instant Estimate</span><span>\ud83c\udfc6 MNRE Approved</span>';
+      mount.appendChild(trust);
+    })();
+
+    // Run once on load so the cards are never empty
+    calcAll();
 
     // Smooth scroll
     document.querySelectorAll('a[href^="#"]').forEach(a => {

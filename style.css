@@ -1681,3 +1681,70 @@ footer {
   .cr-live-grid { gap: 10px; }
   .cr-live-val { font-size: 1.25rem; }
 }
+
+
+/* ===== Hero: calculator panel + animated solar graphics (Oct 2026) ===== */
+.hero-inner { position: relative; z-index: 2; }
+.hero-contact-card { padding: 26px 26px 18px; }
+.calc-card-hero { background: transparent; box-shadow: none; border: 0; padding: 0; margin: 0; max-width: none; }
+.calc-card-hero .calc-result-live { margin-top: 18px; padding: 18px; }
+.calc-card-hero .cr-live-val { font-size: 1.3rem; }
+.calc-card-hero .form-row { margin-bottom: 14px; }
+
+.hero-art { position: absolute; inset: 0; z-index: 1; overflow: hidden; pointer-events: none; }
+
+.hero-sun {
+  position: absolute; top: -180px; left: -160px; width: 520px; height: 520px; border-radius: 50%;
+  background:
+    radial-gradient(circle, rgba(255,214,102,.55) 0 18%, rgba(255,184,0,.18) 19% 38%, transparent 62%),
+    repeating-conic-gradient(rgba(255,214,102,.22) 0 5deg, transparent 5deg 15deg);
+  -webkit-mask-image: radial-gradient(circle, #000 25%, transparent 68%);
+  mask-image: radial-gradient(circle, #000 25%, transparent 68%);
+  animation: heroSunSpin 70s linear infinite;
+}
+@keyframes heroSunSpin { to { transform: rotate(360deg); } }
+
+.sp {
+  position: absolute; width: 260px; height: 160px; border-radius: 6px; overflow: hidden;
+  border: 2px solid rgba(255,255,255,.38);
+  background:
+    repeating-linear-gradient(90deg, transparent 0 42px, rgba(255,255,255,.30) 42px 44px),
+    repeating-linear-gradient(0deg, transparent 0 38px, rgba(255,255,255,.30) 38px 40px),
+    linear-gradient(135deg, rgba(12,48,92,.62), rgba(34,110,160,.38));
+  box-shadow: 0 18px 40px rgba(0,0,0,.25);
+  transform: perspective(800px) rotateX(58deg) rotateZ(var(--rz, -22deg));
+  animation: spBob var(--dur, 9s) ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+}
+.sp::after {
+  content: ''; position: absolute; top: -60%; bottom: -60%; left: -60%; width: 38%;
+  background: linear-gradient(100deg, transparent, rgba(255,255,255,.55), transparent);
+  transform: skewX(-20deg);
+  animation: spSheen var(--sheen, 6s) ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+}
+@keyframes spBob { 0%,100% { translate: 0 0; } 50% { translate: 18px -22px; } }
+@keyframes spSheen { 0% { left: -60%; } 55%,100% { left: 130%; } }
+
+.sp-1 { left: -50px;  bottom: 8%;  width: 340px; height: 210px; --rz: -24deg; --dur: 11s; opacity: .85; }
+.sp-2 { left: 26%;    bottom: -4%; width: 300px; height: 180px; --rz: -18deg; --dur: 9s; --delay: -3s; --sheen: 7s; opacity: .75; }
+.sp-3 { left: 6%;     top: 8%;     width: 200px; height: 124px; --rz: -30deg; --dur: 13s; --delay: -6s; opacity: .55; }
+.sp-4 { right: 30%;   top: 4%;     width: 230px; height: 140px; --rz: -16deg; --dur: 10s; --delay: -2s; --sheen: 8s; opacity: .5; }
+.sp-5 { right: -60px; bottom: 6%;  width: 320px; height: 200px; --rz: -26deg; --dur: 12s; --delay: -5s; opacity: .7; }
+
+.spark {
+  position: absolute; bottom: -12px; width: 6px; height: 6px; border-radius: 50%;
+  background: #fde68a; box-shadow: 0 0 12px 4px rgba(253,230,138,.7);
+  opacity: 0; animation: sparkRise 9s linear infinite;
+}
+@keyframes sparkRise { 0% { transform: translateY(0) scale(.6); opacity: 0; } 12% { opacity: .9; } 100% { transform: translateY(-640px) scale(1.1); opacity: 0; } }
+.spark.s1 { left: 6%;  animation-delay: 0s; }   .spark.s2 { left: 17%; animation-delay: -2.2s; animation-duration: 11s; }
+.spark.s3 { left: 29%; animation-delay: -5s; }  .spark.s4 { left: 41%; animation-delay: -7s; animation-duration: 10s; }
+.spark.s5 { left: 53%; animation-delay: -1s; }  .spark.s6 { left: 66%; animation-delay: -4s; animation-duration: 12s; }
+.spark.s7 { left: 78%; animation-delay: -6s; }  .spark.s8 { left: 90%; animation-delay: -3s; animation-duration: 10s; }
+
+@media (max-width: 900px) { .sp-3, .sp-4 { display: none; } .sp { opacity: .45; } }
+@media (prefers-reduced-motion: reduce) {
+  .hero-sun, .sp, .sp::after, .spark { animation: none; }
+  .spark { display: none; }
+}
