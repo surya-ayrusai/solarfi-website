@@ -1042,71 +1042,145 @@ nav {
   color: var(--gray)
 }
 
-/* IMPACT SECTION */
+/* IMPACT SECTION — glass ribbons */
 .impact-section {
-  background: #145f2a;
-  padding: 100px 24px;
+  background: linear-gradient(135deg, #0d4a20 0%, #145f2a 45%, #1a7a38 100%);
+  padding: 96px 24px;
   color: #fff;
   position: relative;
-  overflow: hidden
+  overflow: hidden;
+  isolation: isolate
 }
 
-.impact-section::before {
-  content: '';
+.impact-bg { position: absolute; inset: 0; z-index: -1; pointer-events: none }
+
+.impact-orb { position: absolute; border-radius: 50%; filter: blur(60px); will-change: transform }
+.impact-orb.o1 { width: 420px; height: 420px; right: -80px; top: -140px; background: radial-gradient(circle, rgba(251, 191, 36, .45), transparent 70%); animation: orbA 16s ease-in-out infinite alternate }
+.impact-orb.o2 { width: 460px; height: 460px; left: -140px; bottom: -200px; background: radial-gradient(circle, rgba(74, 222, 128, .38), transparent 70%); animation: orbB 19s ease-in-out infinite alternate }
+
+@keyframes orbA { to { transform: translate(-70px, 50px) scale(1.12) } }
+@keyframes orbB { to { transform: translate(90px, -40px) scale(1.1) } }
+
+.impact-ribbons {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: radial-gradient(circle at 70% 30%, rgba(255, 255, 255, 0.05) 0%, transparent 60%);
-  pointer-events: none
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  pointer-events: none;
+  mix-blend-mode: screen
 }
+
+.impact-ribbons .rb { transform-box: fill-box; transform-origin: center }
+.impact-ribbons .rb-1 { animation: rbDrift 26s ease-in-out infinite alternate }
+.impact-ribbons .rb-2 { animation: rbDrift 32s ease-in-out infinite alternate-reverse }
+.impact-ribbons .rb-3 { animation: rbDrift 29s ease-in-out infinite alternate }
+.impact-ribbons .rb-4 { animation: rbDrift 22s ease-in-out infinite alternate-reverse }
+
+@keyframes rbDrift { from { transform: translateX(-3%) rotate(-.6deg) } to { transform: translateX(3%) rotate(.6deg) } }
 
 .impact-grid {
   max-width: 1200px;
   margin: 0 auto;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 48px;
+  gap: 24px;
   position: relative;
   z-index: 1
 }
 
 .impact-item {
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  text-align: center
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+  padding: 34px 20px 30px;
+  border-radius: 22px;
+  background: linear-gradient(160deg, rgba(255, 255, 255, .16), rgba(255, 255, 255, .05));
+  border: 1px solid rgba(255, 255, 255, .22);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  backdrop-filter: blur(14px) saturate(140%);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, .18), inset 0 1px 0 rgba(255, 255, 255, .35);
+  overflow: hidden;
+  transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease
 }
 
+.impact-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -60%;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, .22), transparent);
+  transform: skewX(-18deg);
+  animation: glassSheen 7s ease-in-out infinite
+}
+
+.impact-item:nth-child(2)::before { animation-delay: 1.2s }
+.impact-item:nth-child(3)::before { animation-delay: 2.4s }
+.impact-item:nth-child(4)::before { animation-delay: 3.6s }
+
+@keyframes glassSheen { 0%, 62% { left: -60% } 100% { left: 130% } }
+
+.impact-item:hover { transform: translateY(-6px); border-color: rgba(251, 191, 36, .55); box-shadow: 0 24px 50px rgba(0, 0, 0, .25), inset 0 1px 0 rgba(255, 255, 255, .45) }
+
+.impact-ico {
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fde68a;
+  background: rgba(251, 191, 36, .14);
+  border: 1px solid rgba(253, 230, 138, .35);
+  margin-bottom: 4px
+}
+
+.impact-ico svg { width: 26px; height: 26px }
+
 .impact-val {
-  font-size: clamp(2.8rem, 3.5vw, 4.2rem);
+  font-size: clamp(2.6rem, 3.6vw, 3.8rem);
   font-weight: 800;
-  color: #fbbf24;
   line-height: 1;
-  letter-spacing: -2px
+  letter-spacing: -1.5px;
+  font-variant-numeric: tabular-nums;
+  background: linear-gradient(180deg, #fff3b0 0%, #fbbf24 60%, #f59e0b 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  text-shadow: none;
+  filter: drop-shadow(0 4px 14px rgba(251, 191, 36, .25))
 }
 
 .impact-lbl {
-  font-size: 1rem;
+  font-size: .85rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 1.5px;
-  color: rgba(255, 255, 255, .8)
+  letter-spacing: 1.6px;
+  color: rgba(255, 255, 255, .88)
 }
 
-@media(max-width:900px) {
-  .impact-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 60px
-  }
+@media (max-width: 1000px) {
+  .impact-grid { grid-template-columns: repeat(2, 1fr); gap: 18px }
 }
 
-@media(max-width:560px) {
-  .impact-grid {
-    grid-template-columns: 1fr;
-    gap: 48px
-  }
+@media (max-width: 560px) {
+  .impact-section { padding: 64px 16px }
+  .impact-grid { grid-template-columns: 1fr 1fr; gap: 12px }
+  .impact-item { padding: 24px 12px 22px; border-radius: 18px }
+  .impact-ico { width: 44px; height: 44px; border-radius: 13px }
+  .impact-ico svg { width: 22px; height: 22px }
+  .impact-lbl { font-size: .68rem; letter-spacing: 1px }
+  .impact-val { font-size: 2.2rem }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .impact-orb, .impact-ribbons .rb, .impact-item::before { animation: none }
 }
 
 /* FAQ */
