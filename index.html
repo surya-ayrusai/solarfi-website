@@ -662,6 +662,10 @@
 <linearGradient id="zRing" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".8"/><stop offset=".5" stop-color="#9be8b3" stop-opacity=".25"/><stop offset="1" stop-color="#fff" stop-opacity=".5"/></linearGradient>
 <linearGradient id="zSlab" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".5"/><stop offset="1" stop-color="#8fe0a8" stop-opacity=".10"/></linearGradient>
 <linearGradient id="zStreak" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".9"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+<linearGradient id="zPanel" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".5"/><stop offset=".55" stop-color="#9be8b3" stop-opacity=".22"/><stop offset="1" stop-color="#062b13" stop-opacity=".32"/></linearGradient>
+<linearGradient id="zEdge" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".45"/><stop offset="1" stop-color="#1a8c3e" stop-opacity=".3"/></linearGradient>
+<linearGradient id="zAmber" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fffbe6" stop-opacity=".98"/><stop offset=".5" stop-color="#fde68a" stop-opacity=".85"/><stop offset="1" stop-color="#fbbf24" stop-opacity=".75"/></linearGradient>
+<radialGradient id="zSunGlass" cx=".35" cy=".3" r=".9"><stop offset="0" stop-color="#fff" stop-opacity=".95"/><stop offset=".45" stop-color="#fde68a" stop-opacity=".9"/><stop offset="1" stop-color="#fbbf24" stop-opacity=".75"/></radialGradient>
 <filter id="zBlur" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="3.5"/></filter>
 <filter id="zBlur2" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="9"/></filter>
 </defs>
@@ -690,33 +694,17 @@
 <ellipse cx="44" cy="478" rx="26" ry="12" fill="#fff" opacity=".5" transform="rotate(-24 44 478)" filter="url(#zBlur)"/>
 </g>
 
-<!-- glass cube between columns -->
-<g class="zs fl3" transform="translate(745 118)">
-<g stroke="#fff" stroke-opacity=".75" stroke-width="1.4" stroke-linejoin="round">
-<path d="M0,-52 L45,-26 L0,0 L-45,-26 Z" fill="url(#zFaceTop)"/>
-<path d="M-45,-26 L0,0 L0,52 L-45,26 Z" fill="url(#zFaceL)"/>
-<path d="M45,-26 L0,0 L0,52 L45,26 Z" fill="url(#zFaceR)"/>
-</g>
-<path d="M-38,-26 L-6,-8" stroke="#fff" stroke-opacity=".7" stroke-width="3" stroke-linecap="round"/>
-</g>
+<!-- glass solar panel between columns -->
+<g class="zs fl3" transform="translate(745 150) rotate(-4)"><polygon points="-32.0,54.0 96.0,28.0 96.0,39.0 -32.0,65.0" fill="url(#zEdge)" stroke="#fff" stroke-opacity=".5" stroke-width="1" stroke-linejoin="round"/><polygon points="-70.0,-40.0 62.0,-62.0 96.0,28.0 -32.0,54.0" fill="url(#zPanel)" stroke="#fff" stroke-opacity=".85" stroke-width="1.5" stroke-linejoin="round"/><path d="M-43.6,-44.4 L-6.4,48.8 M-17.2,-48.8 L19.2,43.6 M9.2,-53.2 L44.8,38.4 M35.6,-57.6 L70.4,33.2 M-64.6,-26.6 L66.9,-49.1 M-59.1,-13.1 L71.7,-36.3 M-53.7,0.3 L76.6,-23.4 M-48.3,13.7 L81.4,-10.6 M-42.9,27.1 L86.3,2.3 M-37.4,40.6 L91.1,15.1 " stroke="#fff" stroke-opacity=".5" stroke-width="1" fill="none"/><polygon points="-54.2,-42.6 -14.6,-49.2 21.8,43.1 -16.6,50.9" fill="#fff" opacity=".16"/><path d="M-6,70 L-6,100 M-22,100 L12,100" stroke="#fff" stroke-opacity=".6" stroke-width="3" stroke-linecap="round" fill="none"/></g>
 
-<!-- glass ring -->
-<g class="zs fl4" transform="translate(790 500) rotate(-18)">
-<ellipse rx="86" ry="30" fill="none" stroke="url(#zRing)" stroke-width="16"/>
-<ellipse rx="86" ry="30" fill="none" stroke="#fff" stroke-opacity=".6" stroke-width="1.2" transform="translate(0 -7)"/>
-<ellipse rx="86" ry="30" fill="none" stroke="#062b13" stroke-opacity=".18" stroke-width="1.2" transform="translate(0 7)"/>
-</g>
+<!-- glass sun -->
+<g class="zs fl4" transform="translate(800 500)"><line x1="44.0" y1="0.0" x2="58.0" y2="0.0" stroke="#fff" stroke-opacity=".75" stroke-width="3" stroke-linecap="round"/><line x1="40.7" y1="16.8" x2="48.0" y2="19.9" stroke="#fff" stroke-opacity=".75" stroke-width="3" stroke-linecap="round"/><line x1="31.1" y1="31.1" x2="41.0" y2="41.0" stroke="#fff" stroke-opacity=".75" stroke-width="3" stroke-linecap="round"/><line x1="16.8" y1="40.7" x2="19.9" y2="48.0" stroke="#fff" stroke-opacity=".75" stroke-width="3" stroke-linecap="round"/><line x1="0.0" y1="44.0" x2="0.0" y2="58.0" stroke="#fff" stroke-opacity=".75" stroke-width="3" stroke-linecap="round"/><line x1="-16.8" y1="40.7" x2="-19.9" y2="48.0" stroke="#fff" stroke-opacity=".75" stroke-width="3" stroke-linecap="round"/><line x1="-31.1" y1="31.1" x2="-41.0" y2="41.0" stroke="#fff" stroke-opacity=".75" stroke-width="3" stroke-linecap="round"/><line x1="-40.7" y1="16.8" x2="-48.0" y2="19.9" stroke="#fff" stroke-opacity=".75" stroke-width="3" stroke-linecap="round"/><line x1="-44.0" y1="0.0" x2="-58.0" y2="0.0" stroke="#fff" stroke-opacity=".75" stroke-width="3" stroke-linecap="round"/><line x1="-40.7" y1="-16.8" x2="-48.0" y2="-19.9" stroke="#fff" stroke-opacity=".75" stroke-width="3" stroke-linecap="round"/><line x1="-31.1" y1="-31.1" x2="-41.0" y2="-41.0" stroke="#fff" stroke-opacity=".75" stroke-width="3" stroke-linecap="round"/><line x1="-16.8" y1="-40.7" x2="-19.9" y2="-48.0" stroke="#fff" stroke-opacity=".75" stroke-width="3" stroke-linecap="round"/><line x1="-0.0" y1="-44.0" x2="-0.0" y2="-58.0" stroke="#fff" stroke-opacity=".75" stroke-width="3" stroke-linecap="round"/><line x1="16.8" y1="-40.7" x2="19.9" y2="-48.0" stroke="#fff" stroke-opacity=".75" stroke-width="3" stroke-linecap="round"/><line x1="31.1" y1="-31.1" x2="41.0" y2="-41.0" stroke="#fff" stroke-opacity=".75" stroke-width="3" stroke-linecap="round"/><line x1="40.7" y1="-16.8" x2="48.0" y2="-19.9" stroke="#fff" stroke-opacity=".75" stroke-width="3" stroke-linecap="round"/><circle r="33" fill="url(#zSunGlass)"/><circle r="33" fill="none" stroke="#fff" stroke-opacity=".8" stroke-width="1.5"/><ellipse cx="-11" cy="-14" rx="12" ry="6" fill="#fff" opacity=".55" transform="rotate(-30 -11 -14)"/></g>
 
-<!-- layered glass slab behind image -->
-<g class="zs fl5" transform="translate(1180 560)">
-<path d="M-10,-6 L250,-6 L210,70 L-50,70 Z" fill="url(#zSlab)" stroke="#fff" stroke-opacity=".7" stroke-width="1.4" stroke-linejoin="round"/>
-<path d="M-50,70 L210,70 L210,82 L-50,82 Z" fill="#fff" opacity=".18"/>
-</g>
+<!-- glass rooftop panel array, bottom right -->
+<g class="zs fl5" transform="translate(1010 500)"><g transform="translate(0 0)"><polygon points="22.0,58.0 110.0,38.0 110.0,46.0 22.0,66.0" fill="url(#zEdge)" stroke="#fff" stroke-opacity=".5" stroke-width="1" stroke-linejoin="round"/><polygon points="0.0,0.0 88.0,-18.0 110.0,38.0 22.0,58.0" fill="url(#zPanel)" stroke="#fff" stroke-opacity=".85" stroke-width="1.5" stroke-linejoin="round"/><path d="M22.0,-4.5 L44.0,53.0 M44.0,-9.0 L66.0,48.0 M66.0,-13.5 L88.0,43.0 M4.4,11.6 L92.4,-6.8 M8.8,23.2 L96.8,4.4 M13.2,34.8 L101.2,15.6 M17.6,46.4 L105.6,26.8 " stroke="#fff" stroke-opacity=".5" stroke-width="1" fill="none"/><polygon points="10.6,-2.2 37.0,-7.6 59.0,49.6 32.6,55.6" fill="#fff" opacity=".16"/></g><g transform="translate(104 -14)"><polygon points="22.0,58.0 110.0,38.0 110.0,46.0 22.0,66.0" fill="url(#zEdge)" stroke="#fff" stroke-opacity=".5" stroke-width="1" stroke-linejoin="round"/><polygon points="0.0,0.0 88.0,-18.0 110.0,38.0 22.0,58.0" fill="url(#zPanel)" stroke="#fff" stroke-opacity=".85" stroke-width="1.5" stroke-linejoin="round"/><path d="M22.0,-4.5 L44.0,53.0 M44.0,-9.0 L66.0,48.0 M66.0,-13.5 L88.0,43.0 M4.4,11.6 L92.4,-6.8 M8.8,23.2 L96.8,4.4 M13.2,34.8 L101.2,15.6 M17.6,46.4 L105.6,26.8 " stroke="#fff" stroke-opacity=".5" stroke-width="1" fill="none"/><polygon points="10.6,-2.2 37.0,-7.6 59.0,49.6 32.6,55.6" fill="#fff" opacity=".16"/></g><g transform="translate(208 -28)"><polygon points="22.0,58.0 110.0,38.0 110.0,46.0 22.0,66.0" fill="url(#zEdge)" stroke="#fff" stroke-opacity=".5" stroke-width="1" stroke-linejoin="round"/><polygon points="0.0,0.0 88.0,-18.0 110.0,38.0 22.0,58.0" fill="url(#zPanel)" stroke="#fff" stroke-opacity=".85" stroke-width="1.5" stroke-linejoin="round"/><path d="M22.0,-4.5 L44.0,53.0 M44.0,-9.0 L66.0,48.0 M66.0,-13.5 L88.0,43.0 M4.4,11.6 L92.4,-6.8 M8.8,23.2 L96.8,4.4 M13.2,34.8 L101.2,15.6 M17.6,46.4 L105.6,26.8 " stroke="#fff" stroke-opacity=".5" stroke-width="1" fill="none"/><polygon points="10.6,-2.2 37.0,-7.6 59.0,49.6 32.6,55.6" fill="#fff" opacity=".16"/></g></g>
 
-<!-- glass slash -->
-<g class="zs fl2">
-<path d="M920,30 L990,30 L930,150 L860,150 Z" fill="url(#zSlab)" stroke="#fff" stroke-opacity=".7" stroke-width="1.2" stroke-linejoin="round"/>
-</g>
+<!-- glass lightning bolt -->
+<g class="zs fl2" transform="translate(935 28) rotate(8)"><path d="M22,-4 L-16,50 L4,50 L-10,100 L36,38 L13,38 Z" fill="url(#zAmber)" stroke="#fff" stroke-opacity=".9" stroke-width="1.5" stroke-linejoin="round"/><path d="M18,6 L-4,38" stroke="#fff" stroke-opacity=".65" stroke-width="3" stroke-linecap="round"/></g>
 <circle class="zs fl3" cx="610" cy="560" r="14" fill="url(#zSph)" opacity=".9"/>
 <circle class="zs fl1" cx="1000" cy="300" r="7" fill="#fff" opacity=".5"/>
 <circle class="zs fl4" cx="470" cy="40" r="9" fill="#fff" opacity=".35"/>
