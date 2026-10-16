@@ -974,38 +974,55 @@ nav {
 }
 
 .worry {
+  position: relative;
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-size: .92rem;
-  font-weight: 500;
-  padding: 10px 14px;
-  border-radius: 14px;
-  background: linear-gradient(150deg, rgba(255, 255, 255, .20), rgba(255, 255, 255, .07));
-  border: 1px solid rgba(255, 255, 255, .28);
-  -webkit-backdrop-filter: blur(12px) saturate(140%);
-  backdrop-filter: blur(12px) saturate(140%);
-  box-shadow: 0 8px 20px -10px rgba(6, 43, 19, .5), inset 0 1px 0 rgba(255, 255, 255, .35);
-  transition: transform .25s ease, background .25s ease
+  gap: 12px;
+  padding: 11px 14px 11px 11px;
+  border-radius: 16px;
+  font-size: .94rem;
+  font-weight: 600;
+  letter-spacing: .1px;
+  background: rgba(255, 255, 255, .09);
+  border: 1px solid rgba(255, 255, 255, .17);
+  -webkit-backdrop-filter: blur(10px) saturate(130%);
+  backdrop-filter: blur(10px) saturate(130%);
+  transition: transform .25s ease, background .25s ease, border-color .25s ease
 }
 
-.worry:hover { transform: translateY(-2px); background: linear-gradient(150deg, rgba(255, 255, 255, .28), rgba(255, 255, 255, .1)) }
-
-.worry::before {
-  content: '✓';
-  background: linear-gradient(180deg, #fde68a, #f59e0b);
-  color: #3b2300;
+.worry::after {
+  content: '';
+  margin-left: auto;
+  flex: none;
+  width: 18px;
+  height: 18px;
   border-radius: 50%;
-  width: 22px;
-  height: 22px;
+  background: rgba(253, 230, 138, .95) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233b2300' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 12.5 4 4L18 8'/%3E%3C/svg%3E") center / 11px no-repeat
+}
+
+.w-ico {
+  flex: none;
+  width: 38px;
+  height: 38px;
+  border-radius: 11px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 800;
-  font-size: .78rem;
-  flex-shrink: 0;
-  box-shadow: 0 2px 8px rgba(245, 158, 11, .5)
+  color: #fde68a;
+  background: linear-gradient(150deg, rgba(255, 255, 255, .26), rgba(255, 255, 255, .08));
+  border: 1px solid rgba(255, 255, 255, .22);
+  transition: background .25s ease, color .25s ease
 }
+
+.w-ico svg { width: 20px; height: 20px }
+
+.worry:hover {
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, .15);
+  border-color: rgba(253, 230, 138, .65)
+}
+
+.worry:hover .w-ico { background: linear-gradient(150deg, #fde68a, #f59e0b); color: #3b2300 }
 
 .zero-img {
   position: relative;
@@ -1020,14 +1037,38 @@ nav {
 
 .zero-img img {
   border-radius: 20px;
-  height: 340px;
+  height: 360px;
   object-fit: cover;
+  object-position: 50% 18%;
   width: 100%;
   display: block
 }
 
+.zi-chip {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 14px;
+  border-radius: 14px;
+  font-size: .82rem;
+  font-weight: 600;
+  color: #0f2e1b;
+  background: rgba(255, 255, 255, .82);
+  border: 1px solid rgba(255, 255, 255, .9);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 14px 30px -10px rgba(6, 43, 19, .5);
+  animation: zFloat 9s ease-in-out infinite alternate
+}
+
+.zi-chip b { font-size: 1.05rem; font-weight: 800; color: #1a8c3e }
+.zi-a { top: -14px; left: -16px }
+.zi-b { bottom: -14px; right: -12px; animation-direction: alternate-reverse }
+.zi-b svg { width: 16px; height: 16px; padding: 3px; box-sizing: content-box; border-radius: 50%; background: #1a8c3e; color: #fff }
+
 @media (prefers-reduced-motion: reduce) {
-  .zero-scene *, .worry { animation: none !important; transition: none !important }
+  .zero-scene *, .worry, .zi-chip { animation: none !important; transition: none !important }
 }
 
 @media (max-width: 760px) {
