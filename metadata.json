@@ -1,0 +1,6 @@
+{
+  "name": "Solarfi - Rooftop Solar EPC Installer",
+  "description": "Pulivendula & Andhra Pradesh premier rooftop solar EPC installer. Residential & commercial solar, PM Surya Ghar subsidy, DISCOM approvals, net metering, and AMC.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

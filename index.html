@@ -4,258 +4,138 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Solarfi – Solar & Renewable Energy</title>
+  <title>Solarfi – Rooftop Solar EPC Installer in Pulivendula & Andhra Pradesh</title>
   <meta name="description"
-    content="Solarfi offers reliable, affordable rooftop solar solutions across India. Get ₹78,000 subsidy, 25-year warranty, and zero-hassle installation." />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
-    rel="stylesheet" />
-  <link rel="icon" type="image/png" href="images/favicon.png">
-  <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="inner.css" />
-  <style>
-    #chatbot-widget .lang-select {
-      background: white !important;
-      color: #000 !important;
-      width: 25% !important;
-      appearance: auto !important;
-      height: auto !important;
-    }
+    content="Solarfi is Andhra Pradesh's premier rooftop solar EPC installer based in Pulivendula. Get ₹78,000 PM Surya Ghar subsidy, DISCOM approvals, net metering, 30-year panel warranty, and 24/7 app monitoring." />
+  <link rel="canonical" href="https://solarfi.in/" />
 
-    .header-info:nth-child(even):before {
-      background: none !important;
-    }
+  <!-- OpenGraph Social Cards -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Solarfi – Rooftop Solar EPC Installer in Pulivendula & Andhra Pradesh" />
+  <meta property="og:description"
+    content="Save up to 90% on electricity bills with ₹78,000 PM Surya Ghar subsidy. 100+ homes powered, 300+ kW installed, 30-year warranty." />
+  <meta property="og:url" content="https://solarfi.in/" />
+  <meta property="og:site_name" content="Solarfi" />
+  <meta property="og:image" content="images/hero_family_solar.png" />
 
-    .header-info {
-      display: block;
-    }
+  <!-- Twitter / X Cards -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Solarfi – Rooftop Solar EPC Installer" />
+  <meta name="twitter:description" content="APSPDCL-approved, MNRE-certified rooftop solar EPC in Pulivendula, Andhra Pradesh. Get ₹78,000 subsidy." />
+  <meta name="twitter:image" content="images/hero_family_solar.png" />
 
-    @media only screen and (max-width: 767px) {
-      #chatbot-widget .chat-container {
-        bottom: 0px !important;
-        right: 0px !important;
-        width: 100% !important;
-        z-index: 2147483647 !important;
-      }
-    }
-  </style>
-
-  <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
-  <script src="chatbot.js"></script>
-  <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
-  <script src="chatbot.js"></script>
-  <script type="text/javascript">
-    var EhAPI = EhAPI || {}; EhAPI.after_load = function () {
-      EhAPI.set_account('qt8c227vvcbbj4himn6ka9564g', 'solarfi');
-      EhAPI.execute('rules');
-    }; (function (d, s, f) {
-      var sc = document.createElement(s); sc.type = 'text/javascript';
-      sc.async = true; sc.src = f; var m = document.getElementsByTagName(s)[0];
-      m.parentNode.insertBefore(sc, m);
-    })(document, 'script', '//d2p078bqz5urf7.cloudfront.net/jsapi/ehform.js?v' + new Date().getHours());
+  <!-- Schema.org Structured Data (JSON-LD) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "HomeAndConstructionBusiness",
+    "name": "Solarfi",
+    "image": "https://solarfi.in/images/logo.png",
+    "url": "https://solarfi.in/",
+    "telephone": "+917358258385",
+    "email": "info@solarfi.in",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "D.no: 3-6, Dr.Somireddy Towers, Guntha Bazar Rd",
+      "addressLocality": "Pulivendula",
+      "addressRegion": "Andhra Pradesh",
+      "postalCode": "516390",
+      "addressCountry": "IN"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 14.4234,
+      "longitude": 78.2324
+    },
+    "areaServed": ["Pulivendula", "Kadapa", "Andhra Pradesh", "India"],
+    "priceRange": "₹₹",
+    "description": "Rooftop solar EPC company specializing in residential and commercial solar installations, PM Surya Ghar subsidy support, DISCOM approvals, and AMC maintenance."
+  }
   </script>
+
+  <link rel="icon" type="image/png" href="images/favicon.png" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="graphics.css" />
+
+  <!-- Chatbot Integration (Single clean inclusion) -->
+  <script src="https://cdn.socket.io/4.5.4/socket.io.min.js" defer></script>
+  <script src="chatbot.js" defer></script>
+
+  <!-- Motion Choreography ES Module -->
+  <script type="module" src="motion.js"></script>
 </head>
 
 <body>
 
-  <!-- ===== FLASH POPUP MODAL ===== -->
-  <div id="flashPopupOverlay" style="
-    position: fixed; inset: 0; z-index: 99999;
-    background: rgba(0,0,0,0.72);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-    display: flex; align-items: center; justify-content: center;
-    opacity: 0; visibility: hidden;
-    transition: opacity 0.45s ease, visibility 0.45s ease;
-  " onclick="closeFlashPopup(event)">
-    <div id="flashPopupCard" style="
-      position: relative;
-      max-width: 420px; width: 90%;
-      border-radius: 20px;
-      overflow: hidden;
-      box-shadow: 0 0 0 3px #f97316, 0 0 40px rgba(249,115,22,0.55), 0 30px 80px rgba(0,0,0,0.6);
-      transform: scale(0.7) translateY(40px);
-      transition: transform 0.5s cubic-bezier(0.34,1.56,0.64,1);
-      cursor: default;
-    " onclick="event.stopPropagation()">
-      <!-- Celebration badge -->
-      <div style="
-        position: absolute; top: 14px; left: 14px; z-index: 2;
-        background: linear-gradient(135deg, #f97316, #ea580c);
-        color: #fff; font-size: 0.65rem; font-weight: 800;
-        letter-spacing: 1.5px; text-transform: uppercase;
-        padding: 5px 12px; border-radius: 20px;
-        box-shadow: 0 4px 12px rgba(249,115,22,0.5);
-        animation: flashPulse 1.8s ease-in-out infinite;
-      ">🎉 Milestone</div>
-      <!-- Close button -->
-      <button onclick="closeFlashPopup()" style="
-        position: absolute; top: 12px; right: 12px; z-index: 3;
-        background: rgba(0,0,0,0.55); border: none; cursor: pointer;
-        width: 34px; height: 34px; border-radius: 50%;
-        display: flex; align-items: center; justify-content: center;
-        color: #fff; font-size: 1.1rem; line-height: 1;
-        transition: background 0.2s, transform 0.2s;
-        backdrop-filter: blur(4px);
-      " onmouseover="this.style.background='rgba(249,115,22,0.8)';this.style.transform='scale(1.1)'"
-        onmouseout="this.style.background='rgba(0,0,0,0.55)';this.style.transform='scale(1)'"
-        aria-label="Close">✕</button>
-      <!-- Image -->
-      <img src="images/100-projets-completion.jpeg" alt="Solarfi celebrates successful completion of 100 projects"
-        style="display:block; width:100%; height:auto;" />
-      <!-- Auto-close progress bar -->
-      <div style="position:absolute; bottom:0; left:0; right:0; height:4px; background:rgba(0,0,0,0.3);">
-        <div id="flashProgressBar" style="
-          height:100%; width:100%;
-          background: linear-gradient(90deg, #f97316, #fbbf24);
-          transform-origin: left;
-          animation: flashCountdown 8s linear forwards;
-        "></div>
-      </div>
-    </div>
-  </div>
-
-  <style>
-    @keyframes flashPulse {
-
-      0%,
-      100% {
-        box-shadow: 0 4px 12px rgba(249, 115, 22, 0.5);
-      }
-
-      50% {
-        box-shadow: 0 4px 24px rgba(249, 115, 22, 0.9);
-      }
-    }
-
-    @keyframes flashCountdown {
-      from {
-        transform: scaleX(1);
-      }
-
-      to {
-        transform: scaleX(0);
-      }
-    }
-
-    @keyframes flashIn {
-      from {
-        opacity: 0;
-        transform: scale(0.7) translateY(40px);
-      }
-
-      to {
-        opacity: 1;
-        transform: scale(1) translateY(0);
-      }
-    }
-  </style>
-
-  <script>
-    (function () {
-      var overlay = document.getElementById('flashPopupOverlay');
-      var card = document.getElementById('flashPopupCard');
-      var timer;
-
-      function dismissFlash() {
-        clearTimeout(timer);
-        overlay.style.opacity = '0';
-        overlay.style.visibility = 'hidden';
-        card.style.transform = 'scale(0.85) translateY(20px)';
-      }
-
-      // Expose globally for button onclick and backdrop onclick
-      window.closeFlashPopup = function (e) {
-        // If called from backdrop click, only close if user clicked the backdrop itself
-        if (e && e.type === 'click' && e.currentTarget === overlay) {
-          if (e.target !== overlay) return;
-        }
-        dismissFlash();
-      };
-
-      function openFlashPopup() {
-        overlay.style.visibility = 'visible';
-        overlay.style.opacity = '1';
-        card.style.transform = 'scale(1) translateY(0)';
-        timer = setTimeout(dismissFlash, 8000);
-      }
-
-      // Trigger after short delay so page loads first
-      setTimeout(openFlashPopup, 800);
-    })();
-  </script>
-
-  <!-- NAVIGATION -->
-  <nav id="navbar">
+  <!-- ── 1. Top Navigation Bar (Strict 3-Zone Contract) ────────────────── -->
+  <nav id="navbar" aria-label="Main Navigation">
     <div class="nav-inner">
-      <div class="logo">
-        <a href="https://solarfi.in/" class="logo">
-          <img src="images/logo.png" alt="Solarfi Logo" class="logo-icon">
-        </a>
+      <!-- Zone 1: Brand Wordmark -->
+      <a href="index.html" class="logo" aria-label="Solarfi Home">
+        <img src="images/logo.png" alt="Solarfi Logo" class="logo-icon" width="200" height="66" />
+      </a>
 
-
-      </div>
+      <!-- Zone 2: Nav Links -->
       <div class="nav-links">
         <a href="#features">Why Solarfi</a>
         <div class="nav-dropdown">
           <a href="#services">Services ▾</a>
           <div class="dropdown-content">
-            <a href="design-engineering.html">Design & Engineering</a>
-            <a href="procurement.html">Procurement Supply</a> <a href="installation-commissioning.html">Installation
-              Setups</a>
-            <a href="operations-maintenance.html">Operations & Maintenance</a>
+            <a href="design-engineering.html">Design &amp; Engineering</a>
+            <a href="procurement.html">Procurement Supply</a>
+            <a href="installation-commissioning.html">Installation &amp; Commissioning</a>
+            <a href="operations-maintenance.html">Operations &amp; Maintenance</a>
             <a href="ev-charging-battery-storage.html">EV Charging Integration</a>
           </div>
         </div>
-        <a href="#savings">Calculator</a>
+        <a href="#savings">Savings Calculator</a>
         <a href="about-us.html">About Us</a>
         <a href="contact-us.html">Contact Us</a>
       </div>
-      <a href="https://wa.me/917358258385?text=Hello%20Solarfi%20Team%2C%20I'm%20interested%20in%20solar%20subsidy."
-        target="_blank" class="nav-wa-btn" id="navWhatsAppBtn" aria-label="WhatsApp Us">
-        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-          <path
-            d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
-        </svg>
-        WhatsApp Us
-      </a>
-      <a href="contact-us.html" class="nav-cta">Get Free Quote</a>
-      <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+
+      <!-- Zone 3: Primary Actions -->
+      <div class="nav-actions">
+        <a href="https://wa.me/917358258385?text=Hello%20Solarfi%20Team%2C%20I'm%20interested%20in%20solar%20subsidy."
+          target="_blank" rel="noopener noreferrer" class="nav-wa-btn" aria-label="WhatsApp Us">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+          </svg>
+          WhatsApp Us
+        </a>
+        <a href="contact-us.html" class="nav-cta">Get Free Quote</a>
+      </div>
+
+      <!-- Mobile Menu Trigger -->
+      <div class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Toggle navigation menu">
         <span></span><span></span><span></span>
       </div>
     </div>
+
+    <!-- Mobile Drawer -->
     <div class="mobile-menu" id="mobileMenu">
-      <a href="#features">Why Solarfi</a>
+      <a href="#features" onclick="toggleMenu()">Why Solarfi</a>
       <div class="mobile-dropdown">
         <a href="javascript:void(0)" onclick="this.parentElement.classList.toggle('open')">Services ▾</a>
         <div class="mobile-dropdown-content">
-          <a href="design-engineering.html">Design & Eng.</a>
+          <a href="design-engineering.html">Design &amp; Engineering</a>
           <a href="procurement.html">Procurement Supply</a>
-          <a href="installation-commissioning.html">Installation Setups</a>
-          <a href="operations-maintenance.html">Operations & Maintenance</a>
-          <a href="ev-charging-battery-storage.html">EV Charging</a>
+          <a href="installation-commissioning.html">Installation &amp; Commissioning</a>
+          <a href="operations-maintenance.html">Operations &amp; Maintenance</a>
+          <a href="ev-charging-battery-storage.html">EV Charging Integration</a>
         </div>
       </div>
-      <a href="#savings">Calculator</a>
+      <a href="#savings" onclick="toggleMenu()">Savings Calculator</a>
       <a href="about-us.html">About Us</a>
       <a href="contact-us.html">Contact Us</a>
       <a href="https://wa.me/917358258385?text=Hello%20Solarfi%20Team%2C%20I'm%20interested%20in%20solar%20subsidy."
-        target="_blank"
-        style="display:flex;align-items:center;justify-content:center;gap:6px;background:#25d366;color:#fff;padding:11px 12px;border-radius:8px;font-weight:700;font-size:0.88rem;">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-          <path
-            d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
-        </svg>
-        WhatsApp Us
-      </a>
-      <a href="contact-us.html"
-        style="display:flex;align-items:center;justify-content:center;background:#f97316;color:#fff;padding:11px 12px;border-radius:8px;font-weight:700;font-size:0.88rem;">Get
-        Free Quote</a>
+        target="_blank" rel="noopener noreferrer" style="color:#25d366;font-weight:700">💬 Chat on WhatsApp</a>
+      <a href="contact-us.html" style="color:var(--orange);font-weight:700">Get Free Quote →</a>
     </div>
   </nav>
 
-  <!-- HERO -->
+  <!-- ── 2. Hero Section ────────────────────────────────────────────────── -->
   <section class="hero" id="home">
+    <div class="grain-overlay" aria-hidden="true"></div>
     <div class="hero-art" aria-hidden="true">
       <div class="hero-sun"></div>
       <div class="sp sp-1"></div>
@@ -270,42 +150,162 @@
     <div class="hero-inner">
       <div class="hero-content">
         <div class="hero-badge">
-          <svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+          <svg width="12" height="12" fill="#22c55e" viewBox="0 0 16 16" aria-hidden="true">
             <circle cx="8" cy="8" r="8" />
           </svg>
           Government Approved · PM Surya Ghar Scheme
         </div>
-        <h1>Get Subsidy Of <span>₹78,000</span><br />With Solarfi Solar</h1>
-        <p class="hero-sub">Andhra Pradesh's most trusted solar EPC company. APSPDCL-approved, MNRE-certified, with
-          end-to-end PM Surya Ghar subsidy handling. Zero hassle. Zero upfront cost.</p>
+
+        <h1 class="motion-mask-title">
+          Get Subsidy Of <span>₹78,000</span><br />With Solarfi Solar
+        </h1>
+
+        <p class="hero-sub">
+          Andhra Pradesh's most trusted solar EPC installer based in Pulivendula. APSPDCL-approved, MNRE-certified, with end-to-end PM Surya Ghar subsidy handling and net-metering. Zero hassle. Zero upfront worries.
+        </p>
 
         <div class="hero-btns">
           <a href="contact-us.html" class="btn-primary">Get Free Quote</a>
-         <a href="SOLARFI-Company-Profile.pdf" target="_blank" class="btn-outline">Company Profile</a>
+          <a href="SOLARFI-Company-Profile.pdf" target="_blank" rel="noopener noreferrer" class="btn-outline">Company Profile (PDF)</a>
         </div>
 
+        <!-- Social Proof (Local SVG Avatars, No Unsplash) -->
         <div class="hero-prefer">
-          <div class="hero-avatars">
-            <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=120&h=120&fit=crop&q=80"
-              alt="Sample Customer 1" />
-            <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=120&h=120&fit=crop&q=80"
-              alt="Sample Customer 2" />
-            <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=120&h=120&fit=crop&q=80"
-              alt="Sample Customer 3" />
+          <div class="hero-avatars" aria-hidden="true">
+            <div class="hero-avatar-svg">SK</div>
+            <div class="hero-avatar-svg">RN</div>
+            <div class="hero-avatar-svg">VK</div>
           </div>
           <div class="hero-prefer-text">
             <div class="count">100+</div>
-            <div class="tagline">Families Prefer Us!</div>
+            <div class="tagline">Families in Andhra Pradesh Prefer Us!</div>
           </div>
         </div>
       </div>
-      <!-- HERO CALCULATOR (cloned from #calcCard by script below) -->
-      <div class="hero-contact-card" id="heroContactForm"></div>
+
+      <!-- ── Hero Advanced Glossy Glassmorphic Calculator ──────────────── -->
+      <div class="hero-contact-card" id="heroContactForm">
+        <div class="calc-card calc-card-hero calc-glassmorphic" id="calcCard">
+          <div class="glass-specular-edge" aria-hidden="true"></div>
+          
+          <div class="calc-card-head">
+            <div class="calc-head-title-wrap">
+              <span class="calc-head-glow-dot" aria-hidden="true"></span>
+              <h3>⚡ Solar Savings Estimator</h3>
+            </div>
+            <div class="calc-state-label" data-r="calcStateLabel">Andhra Pradesh · ₹6.00/unit</div>
+          </div>
+
+          <div class="form-row">
+            <label>
+              <span>Property Classification</span>
+              <span class="calc-sub-hint">Tariff Slab</span>
+            </label>
+            <div class="calc-toggle">
+              <button type="button" class="calc-toggle-btn active" data-val="Residential">Home</button>
+              <button type="button" class="calc-toggle-btn" data-val="Commercial">Business</button>
+              <button type="button" class="calc-toggle-btn" data-val="Industrial">Industrial</button>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <label>
+              <span>Monthly Electricity Bill</span>
+              <span class="calc-live-val" data-r="billVal">₹3,000</span>
+            </label>
+            <div class="calc-slider-wrap">
+              <input type="range" data-r="bill" min="500" max="15000" step="100" value="3000" class="calc-slider" oninput="calcAll()" aria-label="Monthly electricity bill" />
+            </div>
+            <div class="calc-range-labels">
+              <span>₹500 / mo</span>
+              <span>₹15,000+ / mo</span>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <label>
+              <span>Select State &amp; DISCOM</span>
+            </label>
+            <div class="calc-select-wrap">
+              <select data-r="state" onchange="calcAll()" class="calc-select" aria-label="Select state">
+                <option value="Andhra Pradesh" selected>Andhra Pradesh (APSPDCL / APEPDCL)</option>
+                <option value="Telangana">Telangana (TSSPDCL / TSNPDCL)</option>
+                <option value="Karnataka">Karnataka (BESCOM / HESCOM)</option>
+                <option value="Tamil Nadu">Tamil Nadu (TANGEDCO)</option>
+                <option value="Maharashtra">Maharashtra (MSEDCL)</option>
+                <option value="Gujarat">Gujarat (GUVNL)</option>
+                <option value="Delhi">Delhi (BSES / Tata Power)</option>
+                <option value="Rajasthan">Rajasthan (JVVNL / JdVVNL)</option>
+                <option value="Haryana">Haryana (DHBVN / UHBVN)</option>
+                <option value="Uttar Pradesh">Uttar Pradesh (UPPCL)</option>
+                <option value="Kerala">Kerala (KSEB)</option>
+                <option value="Punjab">Punjab (PSPCL)</option>
+                <option value="Madhya Pradesh">Madhya Pradesh (MPPKVVCL)</option>
+                <option value="West Bengal">West Bengal (WBSEDCL)</option>
+                <option value="Bihar">Bihar (NBPDCL / SBPDCL)</option>
+                <option value="Odisha">Odisha (TPCODL)</option>
+                <option value="Chhattisgarh">Chhattisgarh (CSPDCL)</option>
+                <option value="Jharkhand">Jharkhand (JBVNL)</option>
+                <option value="Assam">Assam (APDCL)</option>
+                <option value="Goa">Goa (Electricity Dept)</option>
+                <option value="Uttarakhand">Uttarakhand (UPCL)</option>
+                <option value="Himachal Pradesh">Himachal Pradesh (HPSEB)</option>
+                <option value="Chandigarh">Chandigarh (UT Dept)</option>
+                <option value="Puducherry">Puducherry (PED)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Live Results Grid -->
+          <div class="calc-result-live">
+            <div class="cr-live-grid">
+              <div class="cr-live-cell cr-highlight cr-glass-tile">
+                <div class="cr-live-lbl">You'll Save</div>
+                <div class="cr-live-val" data-r="monthlySaving">₹2,400</div>
+                <div class="cr-live-sub">per month</div>
+              </div>
+              <div class="cr-live-cell cr-glass-tile">
+                <div class="cr-live-lbl">System Size</div>
+                <div class="cr-live-val" data-r="systemSize">3.3 kW</div>
+                <div class="cr-live-sub">recommended</div>
+              </div>
+              <div class="cr-live-cell cr-glass-tile">
+                <div class="cr-live-lbl">After Subsidy</div>
+                <div class="cr-live-val" data-r="afterSubsidy">₹87,000</div>
+                <div class="cr-live-sub">net investment</div>
+              </div>
+              <div class="cr-live-cell cr-glass-tile">
+                <div class="cr-live-lbl">Payback In</div>
+                <div class="cr-live-val" data-r="roi">3.0 yrs</div>
+                <div class="cr-live-sub">then 100% free</div>
+              </div>
+            </div>
+
+            <div class="calc-subsidy-note" data-r="subsidyNote">
+              <span class="csn-badge">Central DBT</span>
+              <span>Includes <strong data-r="subsidyAmt">₹78,000</strong> PM Surya Ghar central subsidy</span>
+            </div>
+
+            <div class="calc-extra" data-r="calcExtra">Over 25 years: ₹15.8 L saved · 2.4 t CO₂ offset/yr</div>
+
+            <a href="contact-us.html" class="calc-btn">
+              <span>Get Free Site Survey &amp; Subsidy Quote</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+            <div class="calc-disclaimer">Zero obligation · APSPDCL &amp; MNRE approved · Site survey within 24 hrs</div>
+          </div>
+        </div>
+
+        <div class="hcf-trust">
+          <span>🔒 100% Free Survey</span>
+          <span>⚡ Instant AP Net-Metering</span>
+          <span>🏛 MNRE Authorized</span>
+        </div>
+      </div>
     </div>
   </section>
 
-
-  <!-- TRUST BAND (carousel) -->
+  <!-- ── 3. Trust Band (Auto-sliding Carousel) ─────────────────────────── -->
   <section class="trust-band" aria-label="Why customers trust Solarfi">
     <div class="trust-inner trust-carousel" role="region" aria-roledescription="carousel" aria-label="Solarfi highlights">
       <div class="tc-head">
@@ -313,47 +313,43 @@
           <div class="tc-kicker">Why Solarfi</div>
           <h2 class="tc-heading">Trusted. Certified. Subsidy-ready.</h2>
         </div>
-        <div class="tc-controls">
-          <button type="button" class="tc-btn tc-prev" aria-label="Previous">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-          </button>
-          <button type="button" class="tc-btn tc-next" aria-label="Next">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
-          </button>
-        </div>
       </div>
       <div class="tc-viewport">
         <div class="tc-track" tabindex="0" aria-live="off">
           <article class="trust-item" role="group" aria-roledescription="slide" aria-label="1 of 5">
             <span class="tc-num">01</span>
-            <div class="tc-icon"><svg width="26" height="26" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg></div>
+            <div class="tc-icon"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg></div>
             <div class="tc-eyebrow">Certified</div>
             <div class="tc-title">MNRE Approved Vendor</div>
+            <div class="tc-sub">APSPDCL Authorized</div>
           </article>
           <article class="trust-item" role="group" aria-roledescription="slide" aria-label="2 of 5">
             <span class="tc-num">02</span>
-            <div class="tc-icon"><svg width="26" height="26" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg></div>
+            <div class="tc-icon"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg></div>
             <div class="tc-eyebrow">Quality</div>
             <div class="tc-title">BIS Certified Panels</div>
+            <div class="tc-sub">Tier-1 Components Only</div>
           </article>
           <article class="trust-item" role="group" aria-roledescription="slide" aria-label="3 of 5">
             <span class="tc-num">03</span>
-            <div class="tc-icon"><svg width="26" height="26" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg></div>
+            <div class="tc-icon"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg></div>
             <div class="tc-eyebrow">Reputation</div>
-            <div class="tc-title">4.9★ Rating</div>
+            <div class="tc-title">4.9★ Google Rating</div>
             <div class="tc-sub">12,000+ Reviews</div>
           </article>
           <article class="trust-item" role="group" aria-roledescription="slide" aria-label="4 of 5">
             <span class="tc-num">04</span>
-            <div class="tc-icon"><svg width="26" height="26" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 10V3L4 14h7v7l9-11h-7z" /></svg></div>
+            <div class="tc-icon"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 10V3L4 14h7v7l9-11h-7z" /></svg></div>
             <div class="tc-eyebrow">Speed</div>
             <div class="tc-title">48-hr Installation</div>
+            <div class="tc-sub">Fast-Track Approvals</div>
           </article>
           <article class="trust-item" role="group" aria-roledescription="slide" aria-label="5 of 5">
             <span class="tc-num">05</span>
-            <div class="tc-icon"><svg width="26" height="26" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" /></svg></div>
+            <div class="tc-icon"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" /></svg></div>
             <div class="tc-eyebrow">Savings</div>
             <div class="tc-title">Subsidy Assistance</div>
+            <div class="tc-sub">Direct Account Credit</div>
           </article>
         </div>
       </div>
@@ -361,601 +357,760 @@
     </div>
   </section>
 
-  <!-- FEATURES -->
-  <section class="section" id="features">
-    <div class="section-inner">
-      <div class="tc">
-        <span class="sec-tag">Why Choose Us</span>
-        <h2 class="sec-title">We Make Solar <span>Easy, Reliable</span><br />&amp; Affordable</h2>
-        <p class="sec-sub">From paperwork to powering your home, we handle everything so you can sit back and save.</p>
+  <!-- ── 4. Why Choose Us (Interactive Feature Carousel) ─────────────── -->
+  <section class="section why-choose-section pinned-wrap" id="pinnedWhySection" aria-label="Why Choose Solarfi">
+    <div class="why-choose-container">
+      <div class="why-choose-header-wrap">
+        <div class="why-choose-header-left">
+          <span class="sec-tag">Why Choose Us</span>
+          <h2 class="sec-title">We Make Solar <span>Easy, Reliable</span> &amp; Affordable</h2>
+          <p class="sec-sub">From paperwork to powering your home in Pulivendula &amp; across Andhra Pradesh, we handle everything.</p>
+        </div>
+
+        <!-- Accessible, High-Contrast Navigation Controls -->
+        <div class="why-nav-controls" role="group" aria-label="Feature navigation controls">
+          <button type="button" class="why-nav-btn why-nav-prev" id="whyPrevBtn" aria-label="Previous feature block" title="Previous block">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 19l-7-7 7-7"/></svg>
+          </button>
+          
+          <div class="why-nav-counter" id="whyNavCounter" aria-live="polite">
+            <span class="why-counter-current">01</span>
+            <span class="why-counter-sep">/</span>
+            <span class="why-counter-total">06</span>
+          </div>
+
+          <button type="button" class="why-nav-btn why-nav-next" id="whyNextBtn" aria-label="Next feature block" title="Next block">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+          </button>
+        </div>
       </div>
-      <div class="features-grid">
-        <div class="feat-card">
-          <div class="feat-icon green"><img src="images/feat_warranty.svg" alt="25-Year Warranty" /></div>
-          <h3>25-Year Energy Guarantee</h3>
-          <p>Industry-leading warranty on panels and a 5-year workmanship guarantee. Your investment is protected for
-            decades.</p>
+
+      <!-- Carousel Viewport & Cards -->
+      <div class="why-carousel-viewport" id="whyCarouselViewport">
+        <div class="pinned-track" id="pinnedWhyTrack" tabindex="0" role="region" aria-label="Why Choose Us feature cards">
+          <div class="pinned-card">
+            <div>
+              <div class="feat-icon green"><img src="images/feat_warranty.svg" alt="25-Year Energy Guarantee" width="40" height="40" /></div>
+              <h3>25-Year Energy Guarantee</h3>
+              <p>Industry-leading performance warranty on solar panels and a 5-year workmanship guarantee. Your investment is protected for decades.</p>
+            </div>
+            <div class="ap-trust-badge" style="margin-top: 24px;">
+              <span class="ap-icon-pin">✓</span>
+              <span class="ap-trust-text">Tier-1 MNRE Equipment</span>
+            </div>
+          </div>
+
+          <div class="pinned-card">
+            <div>
+              <div class="feat-icon orange"><img src="images/feat_roi.svg" alt="Solar Return on Investment" width="40" height="40" /></div>
+              <h3>Solar Return on Investment</h3>
+              <p>Most residential clients in Andhra Pradesh see 100% ROI within 4–5 years and enjoy virtually free electricity for 20+ years thereafter.</p>
+            </div>
+            <div class="ap-trust-badge" style="margin-top: 24px;">
+              <span class="ap-icon-pin">₹</span>
+              <span class="ap-trust-text">Payback in 4–5 Years</span>
+            </div>
+          </div>
+
+          <div class="pinned-card">
+            <div>
+              <div class="feat-icon green"><img src="images/feat_installation.svg" alt="5-Star Installation" width="40" height="40" /></div>
+              <h3>5-Star Installation</h3>
+              <p>Our MNRE-certified technicians install your system professionally, safely, and within 48 hours of DISCOM structural clearance.</p>
+            </div>
+            <div class="ap-trust-badge" style="margin-top: 24px;">
+              <span class="ap-icon-pin">⚡</span>
+              <span class="ap-trust-text">APSPDCL Net Metering</span>
+            </div>
+          </div>
+
+          <div class="pinned-card">
+            <div>
+              <div class="feat-icon orange"><img src="images/feat_subsidy.svg" alt="Government Subsidy" width="40" height="40" /></div>
+              <h3>Up to ₹78,000 Subsidy</h3>
+              <p>We handle all PM Surya Ghar Muft Bijli Yojana paperwork end-to-end. You receive the maximum allowable central subsidy directly into your bank.</p>
+            </div>
+            <div class="ap-trust-badge" style="margin-top: 24px;">
+              <span class="ap-icon-pin">🏛</span>
+              <span class="ap-trust-text">Direct DBT Transfer</span>
+            </div>
+          </div>
+
+          <div class="pinned-card">
+            <div>
+              <div class="feat-icon green"><img src="images/feat_app.svg" alt="Smart Monitoring App" width="40" height="40" /></div>
+              <h3>Smart Monitoring App</h3>
+              <p>Track your daily solar generation, monthly savings, and CO₂ offset in real-time right from your smartphone anywhere, anytime.</p>
+            </div>
+            <div class="ap-trust-badge" style="margin-top: 24px;">
+              <span class="ap-icon-pin">📱</span>
+              <span class="ap-trust-text">Live Generation Analytics</span>
+            </div>
+          </div>
+
+          <div class="pinned-card">
+            <div>
+              <div class="feat-icon orange"><img src="images/feat_amc.svg" alt="Free AMC Support" width="40" height="40" /></div>
+              <h3>Free AMC Support</h3>
+              <p>Free Annual Maintenance Contract for the first full year. Our Pulivendula field service squad is always a call away for routine cleaning and health checks.</p>
+            </div>
+            <div class="ap-trust-badge" style="margin-top: 24px;">
+              <span class="ap-icon-pin">🛠</span>
+              <span class="ap-trust-text">Local AP Field Crew</span>
+            </div>
+          </div>
         </div>
-        <div class="feat-card">
-          <div class="feat-icon orange"><img src="images/feat_roi.svg" alt="Solar ROI" /></div>
-          <h3>Solar Return on Investment</h3>
-          <p>Most customers see 100% ROI within 4–5 years and enjoy free electricity for 20+ years after that.</p>
+      </div>
+
+      <!-- Pagination Progress Dots -->
+      <div class="why-dots-wrap" id="whyDotsWrap" role="tablist" aria-label="Feature card pagination"></div>
+    </div>
+  </section>
+
+  <!-- ── 5. Solar Workings: Animated Energy-Flow Architecture ──────────── -->
+  <section class="section" id="how-it-works-visual" style="background: #ffffff;">
+    <div class="section-inner">
+      <div class="section-heading-center">
+        <span class="sec-tag">How Rooftop Solar Works</span>
+        <h2 class="sec-title">From Sunlight to <span>Free Electricity</span></h2>
+        <p class="sec-sub">See how high-efficiency rooftop panels convert tropical sun into zero-bill power for your appliances and export surplus to the DISCOM grid.</p>
+      </div>
+
+      <div class="energy-pipeline-container">
+        <div class="pipeline-blueprint-grid" aria-hidden="true"></div>
+        <div class="pipeline-ambient-glows" aria-hidden="true">
+          <div class="glow-orb glow-orange"></div>
+          <div class="glow-orb glow-cyan"></div>
+          <div class="glow-orb glow-emerald"></div>
         </div>
-        <div class="feat-card">
-          <div class="feat-icon green"><img src="images/feat_installation.svg" alt="5-Star Installation" /></div>
-          <h3>5-Star Installation</h3>
-          <p>Our MNRE-certified technicians install your system professionally, safely, and within 48 hours of approval.
-          </p>
+
+        <div class="pipeline-track-wrapper">
+          <!-- Continuous Glowing Neon Energy Rail with Active Traveling Photons -->
+          <div class="pipeline-neon-rail" aria-hidden="true">
+            <div class="pipeline-photon-pulse pulse-1"></div>
+            <div class="pipeline-photon-pulse pulse-2"></div>
+            <div class="pipeline-photon-pulse pulse-3"></div>
+          </div>
+
+          <div class="energy-pipeline-track">
+            <!-- Stage 01: Solar Capture -->
+            <div class="pipeline-card-wrap">
+              <article class="pipeline-card border-orange">
+                <div class="pcard-top">
+                  <span class="pcard-badge badge-orange">01 · SOLAR CAPTURE</span>
+                  <div class="pcard-icon-box" aria-hidden="true">☀️</div>
+                </div>
+                <div>
+                  <h3 class="pcard-title">Tropical Sunlight</h3>
+                  <p class="pcard-desc">High-irradiance sunshine in Andhra Pradesh captured across peak daily solar generation windows.</p>
+                </div>
+                <div class="pcard-telemetry">
+                  <div class="telemetry-status status-amber">
+                    <span class="pulse-dot dot-amber"></span>
+                    <span>Active Peak Sun</span>
+                  </div>
+                  <div class="telemetry-stat">5.5 Peak Sun Hrs</div>
+                </div>
+              </article>
+              <div class="pipeline-junction" aria-hidden="true">
+                <span class="junction-orb"></span>
+                <span class="junction-ring"></span>
+              </div>
+            </div>
+
+            <!-- Stage 02: DC Generation -->
+            <div class="pipeline-card-wrap">
+              <article class="pipeline-card border-cyan">
+                <div class="pcard-top">
+                  <span class="pcard-badge badge-cyan">02 · DC GENERATION</span>
+                  <div class="pcard-icon-box" aria-hidden="true">⚡</div>
+                </div>
+                <div>
+                  <h3 class="pcard-title">Tier-1 Mono PERC</h3>
+                  <p class="pcard-desc">Advanced photovoltaic silicon cells convert photons directly into clean high-efficiency direct current.</p>
+                </div>
+                <div class="pcard-telemetry">
+                  <div class="telemetry-status status-cyan">
+                    <span class="pulse-dot dot-cyan"></span>
+                    <span>High Yield</span>
+                  </div>
+                  <div class="telemetry-stat">30-Yr Warranty</div>
+                </div>
+              </article>
+              <div class="pipeline-junction" aria-hidden="true">
+                <span class="junction-orb"></span>
+                <span class="junction-ring"></span>
+              </div>
+            </div>
+
+            <!-- Stage 03: Smart MPPT Inverter -->
+            <div class="pipeline-card-wrap">
+              <article class="pipeline-card border-emerald">
+                <div class="pcard-top">
+                  <span class="pcard-badge badge-emerald">03 · SMART MPPT</span>
+                  <div class="pcard-icon-box" aria-hidden="true">🔄</div>
+                </div>
+                <div>
+                  <h3 class="pcard-title">Hybrid Inverter</h3>
+                  <p class="pcard-desc">Synchronizes raw solar DC into stable 230V pure sine-wave AC power calibrated for household appliances.</p>
+                </div>
+                <div class="pcard-telemetry">
+                  <div class="telemetry-status status-emerald">
+                    <span class="pulse-dot dot-emerald"></span>
+                    <span>Synchronized</span>
+                  </div>
+                  <div class="telemetry-stat">98.6% Efficiency</div>
+                </div>
+              </article>
+              <div class="pipeline-junction" aria-hidden="true">
+                <span class="junction-orb"></span>
+                <span class="junction-ring"></span>
+              </div>
+            </div>
+
+            <!-- Stage 04: Zero-Bill Usage -->
+            <div class="pipeline-card-wrap">
+              <article class="pipeline-card border-purple">
+                <div class="pcard-top">
+                  <span class="pcard-badge badge-purple">04 · ZERO-BILL USAGE</span>
+                  <div class="pcard-icon-box" aria-hidden="true">🏡</div>
+                </div>
+                <div>
+                  <h3 class="pcard-title">Direct Home Loads</h3>
+                  <p class="pcard-desc">Instantly powers lighting, fans, air conditioners, refrigeration, water pumps, and EV chargers.</p>
+                </div>
+                <div class="pcard-telemetry">
+                  <div class="telemetry-status status-purple">
+                    <span class="pulse-dot dot-purple"></span>
+                    <span>Self-Powered</span>
+                  </div>
+                  <div class="telemetry-stat">Up to 90% Off Bill</div>
+                </div>
+              </article>
+              <div class="pipeline-junction" aria-hidden="true">
+                <span class="junction-orb"></span>
+                <span class="junction-ring"></span>
+              </div>
+            </div>
+
+            <!-- Stage 05: DISCOM Grid Export -->
+            <div class="pipeline-card-wrap">
+              <article class="pipeline-card border-sky">
+                <div class="pcard-top">
+                  <span class="pcard-badge badge-sky">05 · DISCOM GRID</span>
+                  <div class="pcard-icon-box" aria-hidden="true">🌐</div>
+                </div>
+                <div>
+                  <h3 class="pcard-title">Bi-Dir Net Meter</h3>
+                  <p class="pcard-desc">Automatic surplus power export directly into APSPDCL grid, banking energy credits on your monthly billing.</p>
+                </div>
+                <div class="pcard-telemetry">
+                  <div class="telemetry-status status-sky">
+                    <span class="pulse-dot dot-sky"></span>
+                    <span>Grid Sync</span>
+                  </div>
+                  <div class="telemetry-stat">APSPDCL Credit</div>
+                </div>
+              </article>
+            </div>
+          </div>
         </div>
-        <div class="feat-card">
-          <div class="feat-icon orange"><img src="images/feat_subsidy.svg" alt="Government Subsidy" /></div>
-          <h3>Up to ₹78,000 Subsidy</h3>
-          <p>We handle all PM Surya Ghar subsidy paperwork end-to-end. You get the benefit without any hassle.</p>
-        </div>
-        <div class="feat-card">
-          <div class="feat-icon green"><img src="images/feat_app.svg" alt="Smart Monitoring App" /></div>
-          <h3>Smart Monitoring App</h3>
-          <p>Track your solar generation, savings, and CO₂ offset in real-time via our intuitive mobile app.</p>
-        </div>
-        <div class="feat-card">
-          <div class="feat-icon orange"><img src="images/feat_amc.svg" alt="Free AMC Support" /></div>
-          <h3>Free AMC Support</h3>
-          <p>Free Annual Maintenance Contracts for the first year. Our team is always a call away for any support.</p>
+
+        <!-- Subsidy Benefit Strip Inside Flow Card (Compact & Glossy) -->
+        <div style="margin-top: 22px; padding-top: 18px; border-top: 1px solid rgba(255,255,255,0.12);">
+          <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px;">
+            <div>
+              <div style="font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.9px; color: var(--orange); font-weight: 700;">PM Surya Ghar Muft Bijli Yojana</div>
+              <h3 style="font-size: 1.18rem; font-weight: 800; color: #fff; margin-top: 3px;">Flat ₹78,000 Central Subsidy for 3kW Systems</h3>
+            </div>
+            <div class="ap-trust-badge ap-trust-badge-dark">
+              <span class="ap-icon-pin">📍</span>
+              <span class="ap-trust-text">Pulivendula &amp; Andhra Pradesh DISCOM Registered</span>
+            </div>
+          </div>
+
+          <div class="subsidy-steps-wrap">
+            <div class="subsidy-step-card">
+              <span class="subsidy-kw-pill">1 kW System</span>
+              <div class="subsidy-rate">₹30,000</div>
+              <div class="subsidy-label">Direct Central Subsidy<br>Ideal for small residential load</div>
+            </div>
+            <div class="subsidy-step-card">
+              <span class="subsidy-kw-pill">2 kW System</span>
+              <div class="subsidy-rate">₹60,000</div>
+              <div class="subsidy-label">Direct Central Subsidy<br>₹30,000 per kW benchmark</div>
+            </div>
+            <div class="subsidy-step-card subsidy-step-cap">
+              <span class="subsidy-kw-pill">3 kW &amp; Above</span>
+              <div class="subsidy-rate">₹78,000</div>
+              <div class="subsidy-label">Maximum Central Subsidy Cap<br>Covers up to 100% of standard home bills</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- PROCESS -->
+  <!-- ── 6. Process Section: Step-by-Step Timeline ─────────────────────── -->
   <section class="process" id="process">
-    <div style="max-width:1300px;margin:0 auto;position:relative;z-index:1">
-      <div class="process-header">
+    <div class="section-inner">
+      <div class="section-heading-center">
         <span class="sec-tag">How It Works</span>
         <h2 class="sec-title">Your Solar Journey, <span>Step by Step</span></h2>
-        <p class="sec-sub">From first consultation to generating free electricity, we make every step seamless,
-          transparent, and fast.</p>
+        <p class="sec-sub">From your first site survey in Pulivendula to generating free power, our certified team handles every approval and installation phase seamlessly.</p>
       </div>
-      <div class="steps-row">
 
-        <div class="step-card">
-          <div class="step-num-ghost">01</div>
-          <div class="step-bubble">
-            <svg width="30" height="30" fill="none" viewBox="0 0 24 24" stroke="#fff" stroke-width="2">
-              <path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0h6" />
-            </svg>
+      <div class="timeline-track-wrap">
+        <div class="timeline-line" aria-hidden="true"></div>
+        <div class="timeline-grid">
+          <div class="timeline-node">
+            <div class="timeline-circle">01</div>
+            <div>
+              <div class="timeline-title">Site Survey</div>
+              <div class="timeline-desc">Engineers assess roof layout, azimuth, and shade tolerance completely free.</div>
+              <span class="timeline-badge">Day 1</span>
+            </div>
           </div>
-          <h4>Free Site Survey</h4>
-          <p>Our certified engineers assess your rooftop potential, shade analysis &amp; electricity load, completely
-            free.</p>
-          <span class="step-tag">Day 1</span>
-        </div>
 
-        <div class="step-card">
-          <div class="step-num-ghost">02</div>
-          <div class="step-bubble">
-            <svg width="30" height="30" fill="none" viewBox="0 0 24 24" stroke="#fff" stroke-width="2">
-              <path
-                d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg>
+          <div class="timeline-node">
+            <div class="timeline-circle">02</div>
+            <div>
+              <div class="timeline-title">Custom Design</div>
+              <div class="timeline-desc">PVsyst &amp; AutoCAD simulated 3D model designed for maximum generation.</div>
+              <span class="timeline-badge">Day 2</span>
+            </div>
           </div>
-          <h4>Custom Solar Design</h4>
-          <p>AI-powered system design tailored to your roof layout, energy consumption, and budget for maximum ROI.</p>
-          <span class="step-tag">Day 2</span>
-        </div>
 
-        <div class="step-card">
-          <div class="step-num-ghost">03</div>
-          <div class="step-bubble">
-            <svg width="30" height="30" fill="none" viewBox="0 0 24 24" stroke="#fff" stroke-width="2">
-              <path
-                d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-            </svg>
+          <div class="timeline-node">
+            <div class="timeline-circle">03</div>
+            <div>
+              <div class="timeline-title">Subsidy &amp; Approval</div>
+              <div class="timeline-desc">We file PM Surya Ghar papers and secure DISCOM net-metering sanctions.</div>
+              <span class="timeline-badge">Days 3–5</span>
+            </div>
           </div>
-          <h4>Subsidy &amp; Approval</h4>
-          <p>We handle all DISCOM approvals, net metering applications, and PM Surya Ghar subsidy paperwork on your
-            behalf.</p>
-          <span class="step-tag">Day 3–5</span>
-        </div>
 
-        <div class="step-card">
-          <div class="step-num-ghost">04</div>
-          <div class="step-bubble">
-            <svg width="30" height="30" fill="none" viewBox="0 0 24 24" stroke="#fff" stroke-width="2">
-              <path
-                d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-              <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-            </svg>
+          <div class="timeline-node">
+            <div class="timeline-circle">04</div>
+            <div>
+              <div class="timeline-title">Installation</div>
+              <div class="timeline-desc">MNRE-certified technicians erect galvanized frames and wire certified panels.</div>
+              <span class="timeline-badge">Days 6–7</span>
+            </div>
           </div>
-          <h4>Professional Installation</h4>
-          <p>MNRE-certified technicians install your premium solar system within 48 hours with zero disruption to your
-            life.</p>
-          <span class="step-tag">Day 6–7</span>
-        </div>
 
-        <div class="step-card">
-          <div class="step-num-ghost">05</div>
-          <div class="step-bubble"
-            style="background:linear-gradient(135deg,#f97316,#ea6600);box-shadow:0 0 0 4px rgba(249,115,22,.2),0 0 0 10px rgba(249,115,22,.07),0 12px 28px rgba(249,115,22,.4)">
-            <svg width="30" height="30" fill="none" viewBox="0 0 24 24" stroke="#fff" stroke-width="2">
-              <path d="M13 10V3L4 14h7v7l9-11h-7z" />
-            </svg>
+          <div class="timeline-node">
+            <div class="timeline-circle">05</div>
+            <div>
+              <div class="timeline-title">Net Metering</div>
+              <div class="timeline-desc">DISCOM meter inspection, bi-directional testing, and official grid sync.</div>
+              <span class="timeline-badge">Days 8–12</span>
+            </div>
           </div>
-          <h4>Power Up &amp; Save!</h4>
-          <p>Live system activation, smart app setup &amp; real-time monitoring. Start generating free electricity from
-            day one.</p>
-          <span class="step-tag live">&#10003; Go Live!</span>
-        </div>
 
+          <div class="timeline-node highlight">
+            <div class="timeline-circle">06</div>
+            <div>
+              <div class="timeline-title">Power Up &amp; Save</div>
+              <div class="timeline-desc">Live app monitoring setup and 1st year complimentary AMC activation.</div>
+              <span class="timeline-badge" style="background:#fff7ed;color:#ea580c">Live!</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- SAVINGS CALCULATOR -->
-  <section class="section" id="savings">
+  <!-- ── 7. Verified Savings & 25-Year Wealth Section ─────────────────── -->
+  <section class="section" id="savings" style="background: #f9fafb;">
     <div class="section-inner">
+      <div class="sec-header" style="text-align: center; margin-bottom: 28px;">
+        <span class="sec-tag sec-tag-orange">Real Performance &amp; ROI</span>
+        <h2 class="sec-title">Verified Savings. <span>Proven Returns.</span></h2>
+        <p class="sec-sub" style="max-width: 680px; margin: 0 auto;">See how Andhra Pradesh families eliminate up to 90% of electricity bills with Solarfi and secure 25 years of guaranteed solar generation.</p>
+      </div>
+
       <div class="savings-wrap">
-        <div class="savings-img" style="
-    background-color: black;
-    padding: 20px;">
-          <video width="100%" height="500px" controls>
-  <source src="solarfi-client.mp4" type="video/mp4">
- 
-
-</video>
-        </div>
-        <div>
-          <span class="sec-tag">Savings Estimator</span>
-          <h2 class="sec-title">Estimate Your <span>Solar Savings</span></h2>
-          <p class="sec-sub" style="margin-bottom:28px">Select your state and bill to instantly see how much you
-            can save with Solarfi rooftop solar.</p>
-
-          <div class="calc-card" id="calcCard">
-            <div class="calc-card-head">
-              <h3>⚡ Solar Savings Calculator</h3>
-              <div class="calc-state-label" data-r="calcStateLabel"></div>
+        <!-- Client Experience Video Card -->
+        <div class="savings-img">
+          <video controls poster="images/engineering-design-hero.jpg" preload="metadata">
+            <source src="solarfi-client.mp4" type="video/mp4" />
+            Your browser does not support HTML5 video.
+          </video>
+          <div style="padding: 14px 12px 10px; color: #fff; font-size: 0.85rem; display: flex; align-items: center; justify-content: space-between; border-top: 1px solid rgba(255, 255, 255, 0.1);">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #22c55e;"></span>
+              <span style="font-weight: 600;">Real Solarfi Client Review</span>
             </div>
-
-            <div class="form-row">
-              <label>I want solar for</label>
-              <div class="calc-toggle">
-                <button type="button" class="calc-toggle-btn active" data-val="Residential">Home</button>
-                <button type="button" class="calc-toggle-btn" data-val="Commercial">Business</button>
-                <button type="button" class="calc-toggle-btn" data-val="Industrial">Industrial</button>
-              </div>
-            </div>
-
-            <div class="form-row">
-              <label>Monthly Electricity Bill <span class="calc-live-val" data-r="billVal">₹3,000</span></label>
-              <input type="range" data-r="bill" min="500" max="15000" step="100" value="3000" class="calc-slider" oninput="calcAll()">
-              <div class="calc-range-labels"><span>₹500</span><span>₹15,000</span></div>
-            </div>
-
-            <div class="form-row">
-              <label>Select Your State</label>
-              <select data-r="state" onchange="calcAll()">
-                <option value="Andhra Pradesh" selected>Andhra Pradesh</option>
-                <option value="Arunachal Pradesh">Arunachal Pradesh</option>
-                <option value="Assam">Assam</option>
-                <option value="Bihar">Bihar</option>
-                <option value="Chhattisgarh">Chhattisgarh</option>
-                <option value="Goa">Goa</option>
-                <option value="Gujarat">Gujarat</option>
-                <option value="Haryana">Haryana</option>
-                <option value="Himachal Pradesh">Himachal Pradesh</option>
-                <option value="Jharkhand">Jharkhand</option>
-                <option value="Karnataka">Karnataka</option>
-                <option value="Kerala">Kerala</option>
-                <option value="Madhya Pradesh">Madhya Pradesh</option>
-                <option value="Maharashtra">Maharashtra</option>
-                <option value="Manipur">Manipur</option>
-                <option value="Meghalaya">Meghalaya</option>
-                <option value="Mizoram">Mizoram</option>
-                <option value="Nagaland">Nagaland</option>
-                <option value="Odisha">Odisha</option>
-                <option value="Punjab">Punjab</option>
-                <option value="Rajasthan">Rajasthan</option>
-                <option value="Sikkim">Sikkim</option>
-                <option value="Tamil Nadu">Tamil Nadu</option>
-                <option value="Telangana">Telangana</option>
-                <option value="Tripura">Tripura</option>
-                <option value="Uttar Pradesh">Uttar Pradesh</option>
-                <option value="Uttarakhand">Uttarakhand</option>
-                <option value="West Bengal">West Bengal</option>
-                <option value="Delhi">Delhi (NCT)</option>
-                <option value="Chandigarh">Chandigarh (UT)</option>
-                <option value="Puducherry">Puducherry (UT)</option>
-              </select>
-            </div>
-
-            <!-- Live results -->
-            <div class="calc-result-live">
-              <div class="cr-live-grid">
-                <div class="cr-live-cell cr-highlight">
-                  <div class="cr-live-lbl">You'll Save</div>
-                  <div class="cr-live-val" data-r="monthlySaving">—</div>
-                  <div class="cr-live-sub">per month</div>
-                </div>
-                <div class="cr-live-cell">
-                  <div class="cr-live-lbl">System Size</div>
-                  <div class="cr-live-val" data-r="systemSize">—</div>
-                  <div class="cr-live-sub">recommended</div>
-                </div>
-                <div class="cr-live-cell">
-                  <div class="cr-live-lbl">After Subsidy</div>
-                  <div class="cr-live-val" data-r="afterSubsidy">—</div>
-                  <div class="cr-live-sub">net investment</div>
-                </div>
-                <div class="cr-live-cell">
-                  <div class="cr-live-lbl">Payback In</div>
-                  <div class="cr-live-val" data-r="roi">—</div>
-                  <div class="cr-live-sub">then it keeps saving</div>
-                </div>
-              </div>
-
-              <div class="calc-subsidy-note" data-r="subsidyNote">
-                Includes <strong data-r="subsidyAmt">₹78,000</strong> PM Surya Ghar central subsidy
-              </div>
-
-              <div class="calc-extra" data-r="calcExtra"></div>
-
-              <a href="contact-us.html" class="calc-btn" style="display:block;text-align:center;text-decoration:none;">Get My Exact Quote →</a>
-              <div class="calc-disclaimer">Free site visit · No obligation · Response within 24 hrs. Estimates only — final tariff, subsidy and net-metering terms are set by your DISCOM.</div>
-            </div>
+            <span style="color: var(--orange); font-weight: 700;">Pulivendula, AP Home</span>
           </div>
         </div>
+
+        <!-- Proven Wealth Creation & Lifetime Warranty Showcase -->
+        <div class="savings-proof-card">
+          <div class="spc-badge">25-Year Generational Return</div>
+          <h3 class="spc-title">Why Rooftop Solar is Your Highest-Yield Home Asset</h3>
+          <p class="spc-sub">While traditional DISCOM electricity bills escalate by 3%–5% every single year, your Solarfi rooftop system locks in ₹0 daytime electricity costs for three decades.</p>
+
+          <div class="spc-highlights">
+            <div class="spc-item">
+              <div class="spc-icon" aria-hidden="true">
+                <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+              </div>
+              <div>
+                <div class="spc-val">₹15,00,000+ Lifetime Wealth Creation</div>
+                <div class="spc-desc">Average net savings across 25 years for a standard 3 kW residential installation in Andhra Pradesh.</div>
+              </div>
+            </div>
+
+            <div class="spc-item">
+              <div class="spc-icon" aria-hidden="true">
+                <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+              </div>
+              <div>
+                <div class="spc-val">Break-Even in ~3 to 4 Years</div>
+                <div class="spc-desc">Direct DBT central subsidy of ₹78,000 under PM Surya Ghar credited straight to your bank account.</div>
+              </div>
+            </div>
+
+            <div class="spc-item">
+              <div class="spc-icon" aria-hidden="true">
+                <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
+              </div>
+              <div>
+                <div class="spc-val">30-Year Performance Guarantee</div>
+                <div class="spc-desc">Tier-1 Mono PERC panels, APSPDCL net-metering synchronization, and live mobile generation monitoring.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="spc-actions">
+            <a href="contact-us.html" class="btn-primary" style="padding: 11px 22px; font-size: 0.9rem;">Book Free Site Survey →</a>
+            <a href="#hero" class="btn-outline" style="border-color: #d1d5db; color: var(--dark); padding: 11px 18px; font-size: 0.9rem;">⚡ Try Hero Estimator</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cumulative Savings Curve Visualisation -->
+      <div class="savings-curve-container" style="margin-top: 48px;">
+        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; margin-bottom: 20px;">
+          <div>
+            <span class="sec-tag">25-Year Cumulative Wealth Creation</span>
+            <h3 style="font-size: 1.35rem; font-weight: 800; color: var(--dark); margin-top: 4px;">Break-Even at Year 4 · Pure Profit Thereafter</h3>
+          </div>
+          <div style="display: flex; gap: 20px; font-size: 0.82rem; font-weight: 600;">
+            <span style="color: #ef4444;">● Traditional Grid Cost Escalation (+4%/yr)</span>
+            <span style="color: var(--green);">● Solarfi Cumulative Net Savings</span>
+          </div>
+        </div>
+
+        <svg class="savings-curve-svg" viewBox="0 0 1000 280" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Cumulative 25-year solar savings graph showing break-even point in Year 4 and exponential savings thereafter.">
+          <!-- Grid Lines -->
+          <line x1="80" y1="40" x2="960" y2="40" stroke="#f3f4f6" stroke-width="1" />
+          <line x1="80" y1="100" x2="960" y2="100" stroke="#f3f4f6" stroke-width="1" />
+          <line x1="80" y1="160" x2="960" y2="160" stroke="#f3f4f6" stroke-width="1" />
+          <line x1="80" y1="220" x2="960" y2="220" stroke="#f3f4f6" stroke-width="1" />
+
+          <!-- Axes -->
+          <line x1="80" y1="230" x2="960" y2="230" stroke="#9ca3af" stroke-width="1.5" />
+          <line x1="80" y1="30" x2="80" y2="230" stroke="#9ca3af" stroke-width="1.5" />
+
+          <!-- X Labels -->
+          <text x="80" y="252" fill="#6b7280" font-size="11" text-anchor="middle">Year 0</text>
+          <text x="226" y="252" fill="#1a8c3e" font-size="11" font-weight="700" text-anchor="middle">Year 4 (Break-Even)</text>
+          <text x="520" y="252" fill="#6b7280" font-size="11" text-anchor="middle">Year 12</text>
+          <text x="740" y="252" fill="#6b7280" font-size="11" text-anchor="middle">Year 18</text>
+          <text x="960" y="252" fill="#1a8c3e" font-size="11" font-weight="700" text-anchor="middle">Year 25 (₹15L+ Saved)</text>
+
+          <!-- Y Labels -->
+          <text x="70" y="234" fill="#6b7280" font-size="10" text-anchor="end">₹0</text>
+          <text x="70" y="164" fill="#6b7280" font-size="10" text-anchor="end">₹5L</text>
+          <text x="70" y="104" fill="#6b7280" font-size="10" text-anchor="end">₹10L</text>
+          <text x="70" y="44" fill="#6b7280" font-size="10" text-anchor="end">₹15L+</text>
+
+          <!-- Break-Even Threshold Zone -->
+          <rect x="206" y="30" width="40" height="200" fill="rgba(249, 115, 22, 0.08)" rx="4" />
+
+          <!-- Traditional Cost Curve (Rising expense) -->
+          <path d="M80 230 C250 210 500 170 960 90" stroke="#f87171" stroke-width="2.5" stroke-dasharray="5 5" fill="none" />
+
+          <!-- Solarfi Savings Curve (Draw-in on scroll) -->
+          <path d="M80 210 Q226 220 380 180 T680 110 T960 40" stroke="#1a8c3e" stroke-width="3.5" stroke-linecap="round" fill="none" class="curve-path-draw" />
+
+          <!-- Break-Even Marker Point -->
+          <circle cx="226" cy="216" r="6" fill="#f97316" stroke="#ffffff" stroke-width="2" />
+        </svg>
       </div>
     </div>
   </section>
 
-  <style>
-    @keyframes calcFadeUp {
-      from {
-        opacity: 0;
-        transform: translateY(18px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .cr-cell {
-      background: rgba(0, 0, 0, 0.16);
-      padding: 14px 16px;
-      text-align: center;
-    }
-
-    .cr-val {
-      font-size: 1.45rem;
-      font-weight: 800;
-      color: #fff;
-      line-height: 1.1;
-    }
-
-    .cr-lbl {
-      font-size: 0.68rem;
-      font-weight: 700;
-      color: #b7f5cf;
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
-      margin-top: 4px;
-    }
-
-    @media(max-width:480px) {
-      .cr-val {
-        font-size: 1.1rem;
-      }
-    }
-  </style>
-
-  <!-- ZERO WORRIES -->
-  <div class="zero" id="contact">
+  <!-- ── 8. Go Solar With ZERO Worries Section ──────────────────────────── -->
+  <section class="zero" id="contact">
+    <div class="grain-overlay" aria-hidden="true"></div>
     <svg class="zero-scene" viewBox="0 0 1440 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
-<defs>
-<radialGradient id="zSph" cx=".34" cy=".28" r=".85"><stop offset="0" stop-color="#fff" stop-opacity=".85"/><stop offset=".25" stop-color="#d6f5df" stop-opacity=".35"/><stop offset=".7" stop-color="#34c05f" stop-opacity=".18"/><stop offset="1" stop-color="#062b13" stop-opacity=".45"/></radialGradient>
-<radialGradient id="zSphRim" cx=".5" cy=".5" r=".5"><stop offset=".86" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#fff" stop-opacity=".55"/></radialGradient>
-<radialGradient id="zSphGlow" cx=".5" cy=".92" r=".55"><stop offset="0" stop-color="#ecfdf3" stop-opacity=".5"/><stop offset="1" stop-color="#ecfdf3" stop-opacity="0"/></radialGradient>
-<linearGradient id="zFaceTop" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".62"/><stop offset="1" stop-color="#b9f0c9" stop-opacity=".25"/></linearGradient>
-<linearGradient id="zFaceL" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#d9f7e2" stop-opacity=".34"/><stop offset="1" stop-color="#1a8c3e" stop-opacity=".22"/></linearGradient>
-<linearGradient id="zFaceR" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7be39a" stop-opacity=".22"/><stop offset="1" stop-color="#062b13" stop-opacity=".38"/></linearGradient>
-<linearGradient id="zRing" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".8"/><stop offset=".5" stop-color="#9be8b3" stop-opacity=".25"/><stop offset="1" stop-color="#fff" stop-opacity=".5"/></linearGradient>
-<linearGradient id="zSlab" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".5"/><stop offset="1" stop-color="#8fe0a8" stop-opacity=".10"/></linearGradient>
-<linearGradient id="zStreak" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".9"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
-<linearGradient id="zPanel" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".5"/><stop offset=".55" stop-color="#9be8b3" stop-opacity=".22"/><stop offset="1" stop-color="#062b13" stop-opacity=".32"/></linearGradient>
-<linearGradient id="zEdge" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".45"/><stop offset="1" stop-color="#1a8c3e" stop-opacity=".3"/></linearGradient>
-<linearGradient id="zAmber" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fffbe6" stop-opacity=".98"/><stop offset=".5" stop-color="#fde68a" stop-opacity=".85"/><stop offset="1" stop-color="#fbbf24" stop-opacity=".75"/></linearGradient>
-<radialGradient id="zSunGlass" cx=".35" cy=".3" r=".9"><stop offset="0" stop-color="#fff" stop-opacity=".95"/><stop offset=".45" stop-color="#fde68a" stop-opacity=".9"/><stop offset="1" stop-color="#fbbf24" stop-opacity=".75"/></radialGradient>
-<filter id="zBlur" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="3.5"/></filter>
-<filter id="zBlur2" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="9"/></filter>
-</defs>
+      <defs>
+        <radialGradient id="zSph" cx=".34" cy=".28" r=".85"><stop offset="0" stop-color="#fff" stop-opacity=".85"/><stop offset=".25" stop-color="#d6f5df" stop-opacity=".35"/><stop offset=".7" stop-color="#34c05f" stop-opacity=".18"/><stop offset="1" stop-color="#062b13" stop-opacity=".45"/></radialGradient>
+        <radialGradient id="zSphRim" cx=".5" cy=".5" r=".5"><stop offset=".86" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#fff" stop-opacity=".55"/></radialGradient>
+        <linearGradient id="zEdge" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".45"/><stop offset="1" stop-color="#1a8c3e" stop-opacity=".3"/></linearGradient>
+        <linearGradient id="zPanel" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".5"/><stop offset=".55" stop-color="#9be8b3" stop-opacity=".22"/><stop offset="1" stop-color="#062b13" stop-opacity=".32"/></linearGradient>
+      </defs>
+      <circle cx="1290" cy="120" r="130" fill="url(#zSph)" opacity="0.6" />
+      <circle cx="70" cy="510" r="78" fill="url(#zSph)" opacity="0.5" />
+    </svg>
 
-<g class="zs zs-streaks">
-<rect x="210" y="0" width="1.3" height="260" fill="url(#zStreak)" opacity=".5"/>
-<rect x="520" y="40" width="1.3" height="200" fill="url(#zStreak)" opacity=".4"/>
-<rect x="1010" y="0" width="1.3" height="300" fill="url(#zStreak)" opacity=".45"/>
-<rect x="1380" y="120" width="1.3" height="230" fill="url(#zStreak)" opacity=".4"/>
-</g>
-
-<!-- big sphere, top right -->
-<g class="zs fl1">
-<circle cx="1290" cy="120" r="130" fill="url(#zSph)"/>
-<circle cx="1290" cy="120" r="130" fill="url(#zSphGlow)"/>
-<circle cx="1290" cy="120" r="130" fill="url(#zSphRim)"/>
-<circle cx="1290" cy="120" r="129.5" fill="none" stroke="#fff" stroke-opacity=".45" stroke-width="1.2"/>
-<ellipse cx="1245" cy="62" rx="52" ry="26" fill="#fff" opacity=".5" transform="rotate(-24 1245 62)" filter="url(#zBlur)"/>
-<path d="M1190 190 A110 110 0 0 0 1370 190" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="2" stroke-linecap="round"/>
-</g>
-
-<!-- small sphere, bottom left -->
-<g class="zs fl2">
-<circle cx="70" cy="510" r="78" fill="url(#zSph)" filter="url(#zBlur)" opacity=".85"/>
-<circle cx="70" cy="510" r="78" fill="url(#zSphRim)"/>
-<ellipse cx="44" cy="478" rx="26" ry="12" fill="#fff" opacity=".5" transform="rotate(-24 44 478)" filter="url(#zBlur)"/>
-</g>
-
-<!-- glass solar panel between columns -->
-<g class="zs fl3" transform="translate(745 150) rotate(-4)"><polygon points="-32.0,54.0 96.0,28.0 96.0,39.0 -32.0,65.0" fill="url(#zEdge)" stroke="#fff" stroke-opacity=".5" stroke-width="1" stroke-linejoin="round"/><polygon points="-70.0,-40.0 62.0,-62.0 96.0,28.0 -32.0,54.0" fill="url(#zPanel)" stroke="#fff" stroke-opacity=".85" stroke-width="1.5" stroke-linejoin="round"/><path d="M-43.6,-44.4 L-6.4,48.8 M-17.2,-48.8 L19.2,43.6 M9.2,-53.2 L44.8,38.4 M35.6,-57.6 L70.4,33.2 M-64.6,-26.6 L66.9,-49.1 M-59.1,-13.1 L71.7,-36.3 M-53.7,0.3 L76.6,-23.4 M-48.3,13.7 L81.4,-10.6 M-42.9,27.1 L86.3,2.3 M-37.4,40.6 L91.1,15.1 " stroke="#fff" stroke-opacity=".5" stroke-width="1" fill="none"/><polygon points="-54.2,-42.6 -14.6,-49.2 21.8,43.1 -16.6,50.9" fill="#fff" opacity=".16"/><path d="M-6,70 L-6,100 M-22,100 L12,100" stroke="#fff" stroke-opacity=".6" stroke-width="3" stroke-linecap="round" fill="none"/></g>
-
-<!-- glass sun -->
-<g class="zs fl4" transform="translate(800 500)"><line x1="44.0" y1="0.0" x2="58.0" y2="0.0" stroke="#fff" stroke-opacity=".75" stroke-width="3" stroke-linecap="round"/><line x1="40.7" y1="16.8" x2="48.0" y2="19.9" stroke="#fff" stroke-opacity=".75" stroke-width="3" stroke-linecap="round"/><line x1="31.1" y1="31.1" x2="41.0" y2="41.0" stroke="#fff" stroke-opacity=".75" stroke-width="3" stroke-linecap="round"/><line x1="16.8" y1="40.7" x2="19.9" y2="48.0" stroke="#fff" stroke-opacity=".75" stroke-width="3" stroke-linecap="round"/><line x1="0.0" y1="44.0" x2="0.0" y2="58.0" stroke="#fff" stroke-opacity=".75" stroke-width="3" stroke-linecap="round"/><line x1="-16.8" y1="40.7" x2="-19.9" y2="48.0" stroke="#fff" stroke-opacity=".75" stroke-width="3" stroke-linecap="round"/><line x1="-31.1" y1="31.1" x2="-41.0" y2="41.0" stroke="#fff" stroke-opacity=".75" stroke-width="3" stroke-linecap="round"/><line x1="-40.7" y1="16.8" x2="-48.0" y2="19.9" stroke="#fff" stroke-opacity=".75" stroke-width="3" stroke-linecap="round"/><line x1="-44.0" y1="0.0" x2="-58.0" y2="0.0" stroke="#fff" stroke-opacity=".75" stroke-width="3" stroke-linecap="round"/><line x1="-40.7" y1="-16.8" x2="-48.0" y2="-19.9" stroke="#fff" stroke-opacity=".75" stroke-width="3" stroke-linecap="round"/><line x1="-31.1" y1="-31.1" x2="-41.0" y2="-41.0" stroke="#fff" stroke-opacity=".75" stroke-width="3" stroke-linecap="round"/><line x1="-16.8" y1="-40.7" x2="-19.9" y2="-48.0" stroke="#fff" stroke-opacity=".75" stroke-width="3" stroke-linecap="round"/><line x1="-0.0" y1="-44.0" x2="-0.0" y2="-58.0" stroke="#fff" stroke-opacity=".75" stroke-width="3" stroke-linecap="round"/><line x1="16.8" y1="-40.7" x2="19.9" y2="-48.0" stroke="#fff" stroke-opacity=".75" stroke-width="3" stroke-linecap="round"/><line x1="31.1" y1="-31.1" x2="41.0" y2="-41.0" stroke="#fff" stroke-opacity=".75" stroke-width="3" stroke-linecap="round"/><line x1="40.7" y1="-16.8" x2="48.0" y2="-19.9" stroke="#fff" stroke-opacity=".75" stroke-width="3" stroke-linecap="round"/><circle r="33" fill="url(#zSunGlass)"/><circle r="33" fill="none" stroke="#fff" stroke-opacity=".8" stroke-width="1.5"/><ellipse cx="-11" cy="-14" rx="12" ry="6" fill="#fff" opacity=".55" transform="rotate(-30 -11 -14)"/></g>
-
-<!-- glass rooftop panel array, bottom right -->
-<g class="zs fl5" transform="translate(1010 500)"><g transform="translate(0 0)"><polygon points="22.0,58.0 110.0,38.0 110.0,46.0 22.0,66.0" fill="url(#zEdge)" stroke="#fff" stroke-opacity=".5" stroke-width="1" stroke-linejoin="round"/><polygon points="0.0,0.0 88.0,-18.0 110.0,38.0 22.0,58.0" fill="url(#zPanel)" stroke="#fff" stroke-opacity=".85" stroke-width="1.5" stroke-linejoin="round"/><path d="M22.0,-4.5 L44.0,53.0 M44.0,-9.0 L66.0,48.0 M66.0,-13.5 L88.0,43.0 M4.4,11.6 L92.4,-6.8 M8.8,23.2 L96.8,4.4 M13.2,34.8 L101.2,15.6 M17.6,46.4 L105.6,26.8 " stroke="#fff" stroke-opacity=".5" stroke-width="1" fill="none"/><polygon points="10.6,-2.2 37.0,-7.6 59.0,49.6 32.6,55.6" fill="#fff" opacity=".16"/></g><g transform="translate(104 -14)"><polygon points="22.0,58.0 110.0,38.0 110.0,46.0 22.0,66.0" fill="url(#zEdge)" stroke="#fff" stroke-opacity=".5" stroke-width="1" stroke-linejoin="round"/><polygon points="0.0,0.0 88.0,-18.0 110.0,38.0 22.0,58.0" fill="url(#zPanel)" stroke="#fff" stroke-opacity=".85" stroke-width="1.5" stroke-linejoin="round"/><path d="M22.0,-4.5 L44.0,53.0 M44.0,-9.0 L66.0,48.0 M66.0,-13.5 L88.0,43.0 M4.4,11.6 L92.4,-6.8 M8.8,23.2 L96.8,4.4 M13.2,34.8 L101.2,15.6 M17.6,46.4 L105.6,26.8 " stroke="#fff" stroke-opacity=".5" stroke-width="1" fill="none"/><polygon points="10.6,-2.2 37.0,-7.6 59.0,49.6 32.6,55.6" fill="#fff" opacity=".16"/></g><g transform="translate(208 -28)"><polygon points="22.0,58.0 110.0,38.0 110.0,46.0 22.0,66.0" fill="url(#zEdge)" stroke="#fff" stroke-opacity=".5" stroke-width="1" stroke-linejoin="round"/><polygon points="0.0,0.0 88.0,-18.0 110.0,38.0 22.0,58.0" fill="url(#zPanel)" stroke="#fff" stroke-opacity=".85" stroke-width="1.5" stroke-linejoin="round"/><path d="M22.0,-4.5 L44.0,53.0 M44.0,-9.0 L66.0,48.0 M66.0,-13.5 L88.0,43.0 M4.4,11.6 L92.4,-6.8 M8.8,23.2 L96.8,4.4 M13.2,34.8 L101.2,15.6 M17.6,46.4 L105.6,26.8 " stroke="#fff" stroke-opacity=".5" stroke-width="1" fill="none"/><polygon points="10.6,-2.2 37.0,-7.6 59.0,49.6 32.6,55.6" fill="#fff" opacity=".16"/></g></g>
-
-<!-- glass lightning bolt -->
-<g class="zs fl2" transform="translate(935 28) rotate(8)"><path d="M22,-4 L-16,50 L4,50 L-10,100 L36,38 L13,38 Z" fill="url(#zAmber)" stroke="#fff" stroke-opacity=".9" stroke-width="1.5" stroke-linejoin="round"/><path d="M18,6 L-4,38" stroke="#fff" stroke-opacity=".65" stroke-width="3" stroke-linecap="round"/></g>
-<circle class="zs fl3" cx="610" cy="560" r="14" fill="url(#zSph)" opacity=".9"/>
-<circle class="zs fl1" cx="1000" cy="300" r="7" fill="#fff" opacity=".5"/>
-<circle class="zs fl4" cx="470" cy="40" r="9" fill="#fff" opacity=".35"/>
-</svg>
     <div class="zero-inner">
       <div>
         <h2>Go Solar With ZERO Worries!</h2>
-        <p>From site survey to subsidy, from installation to after-sales support, Solarfi takes care of everything. All
-          you need to do is enjoy the savings.</p>
+        <p>From site survey to subsidy, from DISCOM net-metering to after-sales care, Solarfi handles everything so you can simply enjoy free green electricity.</p>
+
         <div class="worries-list">
-          <div class="worry"><span class="w-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4h6v3H9z"/><path d="m9 14 2 2 4-4.5"/></svg></span><span class="w-txt">Free Site Survey</span></div>
-          <div class="worry"><span class="w-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 8h7M8.5 11.2h7M10 8c3.6 0 3.6 5.2 0 5.2H8.8L14 17"/></svg></span><span class="w-txt">Subsidy Assistance</span></div>
-          <div class="worry"><span class="w-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="m9 15 2 2 4-4"/></svg></span><span class="w-txt">DISCOM Approvals</span></div>
-          <div class="worry"><span class="w-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h14l-3-3.2M20 16H6l3 3.2"/></svg></span><span class="w-txt">Net Metering Setup</span></div>
-          <div class="worry"><span class="w-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.2 2"/></svg></span><span class="w-txt">48-hr Installation</span></div>
-          <div class="worry"><span class="w-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="3" y="14" width="4" height="6" rx="1.5"/><rect x="17" y="14" width="4" height="6" rx="1.5"/><path d="M19 20c0 1-1.5 1.8-4 1.8"/></svg></span><span class="w-txt">AMC Support</span></div>
-          <div class="worry"><span class="w-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="3" width="10" height="18" rx="2.2"/><path d="m9.8 15.5 2-3 1.6 1.6 1.8-3"/></svg></span><span class="w-txt">App Monitoring</span></div>
-          <div class="worry"><span class="w-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4.5 6v5.5c0 4.6 3.2 8.2 7.5 9.5 4.3-1.3 7.5-4.9 7.5-9.5V6z"/><path d="m8.8 12 2.4 2.4 4.2-4.8"/></svg></span><span class="w-txt">25-yr Warranty</span></div>
+          <div class="worry"><span class="w-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4h6v3H9z"/><path d="m9 14 2 2 4-4.5"/></svg></span><span class="w-txt">Free Site Survey</span></div>
+          <div class="worry"><span class="w-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 8h7M8.5 11.2h7M10 8c3.6 0 3.6 5.2 0 5.2H8.8L14 17"/></svg></span><span class="w-txt">Subsidy Assistance</span></div>
+          <div class="worry"><span class="w-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="m9 15 2 2 4-4"/></svg></span><span class="w-txt">DISCOM Approvals</span></div>
+          <div class="worry"><span class="w-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h14l-3-3.2M20 16H6l3 3.2"/></svg></span><span class="w-txt">Net Metering Setup</span></div>
+          <div class="worry"><span class="w-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.2 2"/></svg></span><span class="w-txt">48-hr Installation</span></div>
+          <div class="worry"><span class="w-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="3" y="14" width="4" height="6" rx="1.5"/><rect x="17" y="14" width="4" height="6" rx="1.5"/><path d="M19 20c0 1-1.5 1.8-4 1.8"/></svg></span><span class="w-txt">AMC Support</span></div>
+          <div class="worry"><span class="w-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="3" width="10" height="18" rx="2.2"/><path d="m9.8 15.5 2-3 1.6 1.6 1.8-3"/></svg></span><span class="w-txt">App Monitoring</span></div>
+          <div class="worry"><span class="w-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4.5 6v5.5c0 4.6 3.2 8.2 7.5 9.5 4.3-1.3 7.5-4.9 7.5-9.5V6z"/><path d="m8.8 12 2.4 2.4 4.2-4.8"/></svg></span><span class="w-txt">30-yr Warranty</span></div>
         </div>
-        <a href="tel:+91 7358258385" class="btn-primary" style="display:inline-block;margin-top:28px"> Book a Call</a>
+
+        <div style="margin-top: 36px;">
+          <a href="tel:+917358258385" class="btn-primary">📞 Book a Free Call</a>
+        </div>
       </div>
+
       <div class="zero-img">
-        <img src="images/soalr-pannel-fixing-team.jpg" alt="Solarfi engineers reviewing a rooftop solar system on site" loading="lazy" />
-        <span class="zi-chip zi-a"><b>100+</b> Homes powered</span>
-        <span class="zi-chip zi-b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>Survey → Subsidy → Installed</span>
+        <img src="images/soalr-pannel-fixing-team.jpg" alt="Solarfi installation engineers on rooftop in Andhra Pradesh" loading="lazy" width="600" height="480" />
+        <span class="zi-chip zi-a"><b>100+</b> Homes Powered in AP</span>
+        <span class="zi-chip zi-b">Survey ➔ Subsidy ➔ Live</span>
       </div>
     </div>
-  </div>
-
-  <!-- TESTIMONIALS -->
-  <section class="section testimonials" id="testimonials">
-    <!-- Elfsight Google Reviews | Untitled Google Reviews -->
-    <script src="https://elfsightcdn.com/platform.js" async></script>
-    <div class="elfsight-app-931d4179-4eae-4ab6-87b7-cf22725e0b1d" data-elfsight-app-lazy></div>
   </section>
 
-  <!-- IMPACT SECTION -->
-  <section class="impact-section">
-    <svg class="impact-scene" viewBox="0 0 1440 560" preserveAspectRatio="xMidYMax slice" aria-hidden="true" focusable="false">
-<defs>
-<linearGradient id="gSlab" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#eaf4fc" stop-opacity=".98"/><stop offset="1" stop-color="#a8cdea" stop-opacity=".95"/></linearGradient>
-<linearGradient id="gSide" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d4e8f8"/><stop offset="1" stop-color="#6d9fcb"/></linearGradient>
-<linearGradient id="gEdge" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity="1"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
-<linearGradient id="gStreak" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity="1"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
-<linearGradient id="gLineA" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#f59e0b" stop-opacity="0"/><stop offset=".25" stop-color="#f59e0b"/><stop offset=".75" stop-color="#fcd34d"/><stop offset="1" stop-color="#fcd34d" stop-opacity="0"/></linearGradient>
-<linearGradient id="gLineB" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#1a8c3e" stop-opacity="0"/><stop offset=".35" stop-color="#34c05f"/><stop offset=".8" stop-color="#8fe0a8"/><stop offset="1" stop-color="#8fe0a8" stop-opacity="0"/></linearGradient>
-<linearGradient id="gSlash" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".75"/><stop offset="1" stop-color="#fff" stop-opacity=".08"/></linearGradient>
-<radialGradient id="gWarm" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fbbf24" stop-opacity=".75"/><stop offset=".5" stop-color="#fb923c" stop-opacity=".25"/><stop offset="1" stop-color="#fb923c" stop-opacity="0"/></radialGradient>
-<filter id="glow" x="-200%" y="-200%" width="500%" height="500%"><feGaussianBlur stdDeviation="3.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-<filter id="soft" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="14"/></filter>
-</defs>
-<g class="streaks"><rect class="st" x="683" y="212" width="1.4" height="128" fill="url(#gStreak)" style="animation-duration:12.2s;animation-delay:-1.0s;--o:0.44"/><rect class="st" x="768" y="39" width="1.4" height="239" fill="url(#gStreak)" style="animation-duration:14.3s;animation-delay:-3.0s;--o:0.28"/><rect class="st" x="876" y="133" width="1.4" height="107" fill="url(#gStreak)" style="animation-duration:7.7s;animation-delay:-5.9s;--o:0.54"/><rect class="st" x="273" y="41" width="1.4" height="147" fill="url(#gStreak)" style="animation-duration:11.6s;animation-delay:-5.6s;--o:0.59"/><rect class="st" x="115" y="78" width="1.4" height="232" fill="url(#gStreak)" style="animation-duration:9.3s;animation-delay:-2.0s;--o:0.29"/><rect class="st" x="651" y="102" width="1.4" height="233" fill="url(#gStreak)" style="animation-duration:7.8s;animation-delay:-8.0s;--o:0.32"/><rect class="st" x="219" y="42" width="1.4" height="230" fill="url(#gStreak)" style="animation-duration:11.5s;animation-delay:-8.7s;--o:0.42"/><rect class="st" x="1108" y="170" width="1.4" height="199" fill="url(#gStreak)" style="animation-duration:10.7s;animation-delay:-12.9s;--o:0.38"/><rect class="st" x="528" y="134" width="1.4" height="136" fill="url(#gStreak)" style="animation-duration:7.7s;animation-delay:-4.2s;--o:0.42"/><rect class="st" x="723" y="157" width="1.4" height="204" fill="url(#gStreak)" style="animation-duration:11.9s;animation-delay:-1.0s;--o:0.43"/><rect class="st" x="357" y="87" width="1.4" height="177" fill="url(#gStreak)" style="animation-duration:14.5s;animation-delay:-5.9s;--o:0.59"/><rect class="st" x="178" y="170" width="1.4" height="232" fill="url(#gStreak)" style="animation-duration:9.7s;animation-delay:-4.9s;--o:0.42"/><rect class="st" x="954" y="57" width="1.4" height="107" fill="url(#gStreak)" style="animation-duration:14.6s;animation-delay:-6.6s;--o:0.48"/><rect class="st" x="144" y="238" width="1.4" height="169" fill="url(#gStreak)" style="animation-duration:9.3s;animation-delay:-5.4s;--o:0.48"/><rect class="st" x="66" y="191" width="1.4" height="208" fill="url(#gStreak)" style="animation-duration:8.3s;animation-delay:-1.6s;--o:0.27"/><rect class="st" x="608" y="136" width="1.4" height="123" fill="url(#gStreak)" style="animation-duration:10.2s;animation-delay:-12.8s;--o:0.42"/><rect class="st" x="360" y="215" width="1.4" height="204" fill="url(#gStreak)" style="animation-duration:11.4s;animation-delay:-12.4s;--o:0.54"/><rect class="st" x="1146" y="222" width="1.4" height="161" fill="url(#gStreak)" style="animation-duration:14.9s;animation-delay:-9.6s;--o:0.38"/><rect class="st" x="492" y="52" width="1.4" height="128" fill="url(#gStreak)" style="animation-duration:8.4s;animation-delay:-3.2s;--o:0.33"/><rect class="st" x="1013" y="103" width="1.4" height="240" fill="url(#gStreak)" style="animation-duration:9.1s;animation-delay:-0.1s;--o:0.40"/><rect class="st" x="776" y="299" width="1.4" height="246" fill="url(#gStreak)" style="animation-duration:9.5s;animation-delay:-1.8s;--o:0.55"/><rect class="st" x="1284" y="37" width="1.4" height="257" fill="url(#gStreak)" style="animation-duration:10.7s;animation-delay:-12.2s;--o:0.58"/><rect class="st" x="1413" y="210" width="1.4" height="233" fill="url(#gStreak)" style="animation-duration:10.2s;animation-delay:-5.5s;--o:0.42"/><rect class="st" x="840" y="107" width="1.4" height="105" fill="url(#gStreak)" style="animation-duration:7.5s;animation-delay:-2.9s;--o:0.31"/><rect class="st" x="716" y="36" width="1.4" height="243" fill="url(#gStreak)" style="animation-duration:7.8s;animation-delay:-7.9s;--o:0.44"/><rect class="st" x="764" y="23" width="1.4" height="247" fill="url(#gStreak)" style="animation-duration:7.6s;animation-delay:-2.9s;--o:0.38"/></g>
-<ellipse class="warm" cx="720" cy="540" rx="620" ry="70" fill="url(#gWarm)"/>
-<ellipse class="warm2" cx="300" cy="545" rx="200" ry="40" fill="url(#gWarm)" opacity=".7"/>
-<ellipse class="warm2" cx="1150" cy="545" rx="220" ry="40" fill="url(#gWarm)" opacity=".7"/>
-<g class="slab">
-<path d="M80,520 L1360,520 L1360,552 L80,552 Z" fill="url(#gSide)"/>
-<path d="M80,520 L330,380 L1110,380 L1360,520 Z" fill="url(#gSlab)"/>
-<g stroke="#5f95c4" stroke-opacity=".5" stroke-width="1"><line x1="395.0" y1="380" x2="186.7" y2="520"/><line x1="460.0" y1="380" x2="293.3" y2="520"/><line x1="525.0" y1="380" x2="400.0" y2="520"/><line x1="590.0" y1="380" x2="506.7" y2="520"/><line x1="655.0" y1="380" x2="613.3" y2="520"/><line x1="720.0" y1="380" x2="720.0" y2="520"/><line x1="785.0" y1="380" x2="826.7" y2="520"/><line x1="850.0" y1="380" x2="933.3" y2="520"/><line x1="915.0" y1="380" x2="1040.0" y2="520"/><line x1="980.0" y1="380" x2="1146.7" y2="520"/><line x1="1045.0" y1="380" x2="1253.3" y2="520"/><line x1="297.9" y1="398" x2="1142.1" y2="398"/><line x1="258.6" y1="420" x2="1181.4" y2="420"/><line x1="210.4" y1="447" x2="1229.6" y2="447"/><line x1="149.6" y1="481" x2="1290.4" y2="481"/></g>
-<path d="M330,380 L1110,380" stroke="url(#gEdge)" stroke-width="2"/>
-<path d="M80,520 L1360,520" stroke="#fff" stroke-width="2" opacity=".95"/>
-<path d="M80,520 L330,380 L1110,380 L1360,520 Z" fill="none" stroke="#fff" stroke-opacity=".9" stroke-width="1.5"/>
-<path class="sweep" d="M330,380 L430,380 L260,520 L160,520 Z" fill="#fff" opacity=".0"/>
-</g>
-<g class="lines"><path d="M150,505 C330,330 470,440 650,330 S980,250 1200,340 S1330,430 1420,400" fill="none" stroke="url(#gLineA)" stroke-width="1.3" stroke-linecap="round" opacity=".7"/><path class="ln ln1" d="M150,505 C330,330 470,440 650,330 S980,250 1200,340 S1330,430 1420,400" fill="none" stroke="url(#gLineA)" stroke-width="3.2" stroke-linecap="round" filter="url(#glow)"/><path d="M60,470 C240,380 400,300 600,360 S900,420 1120,300 S1330,260 1440,300" fill="none" stroke="url(#gLineB)" stroke-width="1.3" stroke-linecap="round" opacity=".7"/><path class="ln ln2" d="M60,470 C240,380 400,300 600,360 S900,420 1120,300 S1330,260 1440,300" fill="none" stroke="url(#gLineB)" stroke-width="2.6" stroke-linecap="round" filter="url(#glow)"/><path d="M250,520 C420,430 560,500 760,390 S1050,330 1260,420" fill="none" stroke="url(#gLineA)" stroke-width="1.3" stroke-linecap="round" opacity=".7"/><path class="ln ln3" d="M250,520 C420,430 560,500 760,390 S1050,330 1260,420" fill="none" stroke="url(#gLineA)" stroke-width="2.4" stroke-linecap="round" filter="url(#glow)"/></g>
-<g class="nodes"><g class="nd" style="animation-delay:0.00s"><circle cx="330" cy="347" r="9" fill="#fbbf24" opacity=".25"/><circle cx="330" cy="347" r="3.6" fill="#fbbf24" filter="url(#glow)"/></g><g class="nd" style="animation-delay:-0.55s"><circle cx="470" cy="405" r="9" fill="#ffffff" opacity=".25"/><circle cx="470" cy="405" r="3.6" fill="#ffffff" filter="url(#glow)"/></g><g class="nd" style="animation-delay:-1.10s"><circle cx="650" cy="330" r="9" fill="#fbbf24" opacity=".25"/><circle cx="650" cy="330" r="3.6" fill="#fbbf24" filter="url(#glow)"/></g><g class="nd" style="animation-delay:-1.65s"><circle cx="812" cy="292" r="9" fill="#fbbf24" opacity=".25"/><circle cx="812" cy="292" r="3.6" fill="#fbbf24" filter="url(#glow)"/></g><g class="nd" style="animation-delay:-2.20s"><circle cx="1120" cy="300" r="9" fill="#ffffff" opacity=".25"/><circle cx="1120" cy="300" r="3.6" fill="#ffffff" filter="url(#glow)"/></g><g class="nd" style="animation-delay:-2.75s"><circle cx="1200" cy="340" r="9" fill="#fbbf24" opacity=".25"/><circle cx="1200" cy="340" r="3.6" fill="#fbbf24" filter="url(#glow)"/></g><g class="nd" style="animation-delay:-3.30s"><circle cx="930" cy="276" r="9" fill="#fbbf24" opacity=".25"/><circle cx="930" cy="276" r="3.6" fill="#fbbf24" filter="url(#glow)"/></g><g class="nd" style="animation-delay:-3.85s"><circle cx="600" cy="360" r="9" fill="#ffffff" opacity=".25"/><circle cx="600" cy="360" r="3.6" fill="#ffffff" filter="url(#glow)"/></g><g class="nd" style="animation-delay:-4.40s"><circle cx="240" cy="383" r="9" fill="#fbbf24" opacity=".25"/><circle cx="240" cy="383" r="3.6" fill="#fbbf24" filter="url(#glow)"/></g><g class="nd" style="animation-delay:-4.95s"><circle cx="1330" cy="262" r="9" fill="#fbbf24" opacity=".25"/><circle cx="1330" cy="262" r="3.6" fill="#fbbf24" filter="url(#glow)"/></g><g class="nd" style="animation-delay:-5.50s"><circle cx="400" cy="300" r="9" fill="#ffffff" opacity=".25"/><circle cx="400" cy="300" r="3.6" fill="#ffffff" filter="url(#glow)"/></g><g class="nd" style="animation-delay:-6.05s"><circle cx="1050" cy="405" r="9" fill="#fbbf24" opacity=".25"/><circle cx="1050" cy="405" r="3.6" fill="#fbbf24" filter="url(#glow)"/></g></g>
-<g class="slashes">
-<path class="sl s1" d="M1040,60 L1190,60 L1020,300 L870,300 Z" fill="url(#gSlash)" stroke="#fff" stroke-opacity=".9" stroke-width="1.5"/>
-<path class="sl s2" d="M150,120 L230,120 L150,240 L70,240 Z" fill="url(#gSlash)" stroke="#fff" stroke-opacity=".9" stroke-width="1.2"/>
-</g>
-</svg>
+  <!-- ── 9. Impact Section (Glass Metric Band) ─────────────────────────── -->
+  <section class="impact-section" aria-label="Our impact in numbers">
+    <div class="grain-overlay" aria-hidden="true"></div>
     <div class="impact-grid">
       <div class="impact-item">
-        <span class="impact-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.5 12 4l9 7.5"/><path d="M5 10v9.5h14V10"/><path d="M10 19.5v-5h4v5"/></svg></span>
+        <span class="impact-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.5 12 4l9 7.5"/><path d="M5 10v9.5h14V10"/><path d="M10 19.5v-5h4v5"/></svg></span>
         <div class="impact-val"><span class="n" data-count="100">100</span><span class="suf">+</span></div>
-        <div class="impact-lbl"><i aria-hidden="true"></i>Happy Homes</div>
+        <div class="impact-lbl">Happy Homes Powered</div>
       </div>
+
       <div class="impact-item">
-        <span class="impact-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></span>
-        <div class="impact-val"><span class="n" data-count="300">300</span><span class="suf">+</span></div>
-        <div class="impact-lbl"><i aria-hidden="true"></i>KW Projects Executed</div>
+        <span class="impact-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></span>
+        <div class="impact-val"><span class="n" data-count="300">300</span><span class="suf">+ kW</span></div>
+        <div class="impact-lbl">Projects Executed</div>
       </div>
+
       <div class="impact-item">
-        <span class="impact-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4.5 6v5.5c0 4.6 3.2 8.2 7.5 9.5 4.3-1.3 7.5-4.9 7.5-9.5V6z"/><path d="m8.8 12 2.4 2.4 4.2-4.8"/></svg></span>
+        <span class="impact-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4.5 6v5.5c0 4.6 3.2 8.2 7.5 9.5 4.3-1.3 7.5-4.9 7.5-9.5V6z"/><path d="m8.8 12 2.4 2.4 4.2-4.8"/></svg></span>
         <div class="impact-val"><span class="n" data-count="30">30</span><span class="suf"> Yr</span></div>
-        <div class="impact-lbl"><i aria-hidden="true"></i>Panel Warranty</div>
+        <div class="impact-lbl">Panel Warranty</div>
       </div>
+
       <div class="impact-item">
-        <span class="impact-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.3M12 19.2v2.3M2.5 12h2.3M19.2 12h2.3M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg></span>
+        <span class="impact-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.3M12 19.2v2.3M2.5 12h2.3M19.2 12h2.3M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg></span>
         <div class="impact-val"><span class="n" data-count="16">16</span><span class="suf">+</span></div>
-        <div class="impact-lbl"><i aria-hidden="true"></i>Years Solar Experience</div>
+        <div class="impact-lbl">Years Solar Experience</div>
       </div>
     </div>
   </section>
 
-  <!-- FAQ -->
+  <!-- ── 10. Reviews & Testimonials ────────────────────────────────────── -->
+  <section class="testimonials" id="testimonials">
+    <div class="section-inner">
+      <div class="section-heading-center">
+        <span class="sec-tag">Customer Reviews</span>
+        <h2 class="sec-title">What Andhra Pradesh <span>Homeowners Say</span></h2>
+        <p class="sec-sub">Verified feedback from residential, agricultural, and commercial solar projects in Pulivendula and across South India.</p>
+      </div>
+
+      <!-- Elfsight Google Reviews Embed Container -->
+      <script src="https://elfsightcdn.com/platform.js" async></script>
+      <div class="elfsight-app-931d4179-4eae-4ab6-87b7-cf22725e0b1d" data-elfsight-app-lazy></div>
+    </div>
+  </section>
+
+  <!-- ── 11. Frequently Asked Questions ────────────────────────────────── -->
   <section class="faq-section" id="faq">
     <div class="faq-layout">
-      <!-- LEFT -->
       <div class="faq-left">
         <div class="faq-left-heading">The Answers You Need For A Solar Rooftop System</div>
         <div class="faq-img-wrap">
-          <img src="images/faq_couple.png" alt="Indian couple consulting about solar" />
+          <img src="images/faq_couple.png" alt="Indian couple consulting about rooftop solar" loading="lazy" width="500" height="420" />
           <div class="faq-img-overlay">
             <h4>Still Have A Question?</h4>
-            <p>Don't worry, we're here for free consultation. Just click the button below.</p>
-            <a href="tel:+91 7358258385" class="faq-cta-btn">📞 Talk to an Expert</a>
+            <p>We provide free one-on-one consultation with zero commitment. Speak directly with our Pulivendula team.</p>
+            <a href="tel:+917358258385" class="faq-cta-btn">📞 Talk to an Expert</a>
           </div>
         </div>
       </div>
-      <!-- RIGHT -->
+
       <div class="faq-right">
         <h2>Your Questions, Answered</h2>
         <div class="faq-list">
           <div class="faq-item open" onclick="toggleFaq(this)">
-            <button class="faq-q">Who can apply for the rooftop solar subsidy? <span
-                class="arrow">&#8964;</span></button>
+            <button type="button" class="faq-q">Who can apply for the rooftop solar subsidy? <span class="arrow">&#8964;</span></button>
             <div class="faq-a">
-              <p>Any Indian homeowner with a valid electricity connection and rooftop space can apply under the PM Surya
-                Ghar Yojana. Both urban and rural homeowners across all states are eligible.</p>
-            </div>
-          </div>
-          <div class="faq-item" onclick="toggleFaq(this)">
-            <button class="faq-q">How much subsidy do I get for a 3kW system? <span
-                class="arrow">&#8964;</span></button>
-            <div class="faq-a">
-              <p>For a 3kW system, you can receive up to ₹78,000 under PM Surya Ghar, ₹30,000/kW for the first 2kW and
-                ₹18,000/kW for the 3rd kW.</p>
-            </div>
-          </div>
-          <div class="faq-item" onclick="toggleFaq(this)">
-            <button class="faq-q">What documents are needed to apply? <span class="arrow">&#8964;</span></button>
-            <div class="faq-a">
-              <p>You'll need your Aadhaar card, electricity bill (last 3 months), bank passbook, and a recent
-                passport-size photo. Solarfi handles all the paperwork for you.</p>
-            </div>
-          </div>
-          <div class="faq-item" onclick="toggleFaq(this)">
-            <button class="faq-q">How long does installation take? <span class="arrow">&#8964;</span></button>
-            <div class="faq-a">
-              <p>Once approvals are in place, our certified team completes installation in just 48 hours. The total
-                process from inquiry to live system is typically 7–14 days.</p>
+              <p>Any Indian homeowner with a valid electricity connection and rooftop space can apply under the PM Surya Ghar Muft Bijli Yojana. Both urban and rural homeowners across all states (including all APSPDCL districts) are fully eligible.</p>
             </div>
           </div>
 
+          <div class="faq-item" onclick="toggleFaq(this)">
+            <button type="button" class="faq-q">How much subsidy do I get for a 3kW system? <span class="arrow">&#8964;</span></button>
+            <div class="faq-a">
+              <p>For a 3kW residential system, you receive a flat ₹78,000 central subsidy under PM Surya Ghar — ₹30,000/kW for the first 2kW and ₹18,000 for the 3rd kW. Solarfi credits this directly into your bank account through the national DBT portal.</p>
+            </div>
+          </div>
+
+          <div class="faq-item" onclick="toggleFaq(this)">
+            <button type="button" class="faq-q">What documents are needed to apply? <span class="arrow">&#8964;</span></button>
+            <div class="faq-a">
+              <p>You need your Aadhaar card, electricity bill (last 3 months), bank passbook or cancelled cheque, and a passport-size photo. Solarfi takes care of 100% of the portal submissions and paperwork for you.</p>
+            </div>
+          </div>
+
+          <div class="faq-item" onclick="toggleFaq(this)">
+            <button type="button" class="faq-q">How long does installation take? <span class="arrow">&#8964;</span></button>
+            <div class="faq-a">
+              <p>Once structural and load clearances are in place, our certified team completes the physical rooftop installation in just 48 hours. Total time from first survey to grid-tied live power is typically 7–14 days.</p>
+            </div>
+          </div>
+
+          <div class="faq-item" onclick="toggleFaq(this)">
+            <button type="button" class="faq-q">What happens during power cuts? <span class="arrow">&#8964;</span></button>
+            <div class="faq-a">
+              <p>Standard on-grid systems shut down during grid outages for lineman safety. If you need backup during power cuts, Solarfi supplies and configures hybrid inverters paired with lithium battery storage.</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- CTA BANNER -->
+  <!-- ── 12. CTA Banner ────────────────────────────────────────────────── -->
   <div class="cta-banner" id="getquote">
-    <div style="max-width:700px;margin:auto">
-      <h2 style="color: #f97316;;">Your Solar Plan Is Ready 🌞</h2>
-      <p>Join 50,000+ happy homeowners who are saving big with Solarfi. Book your free site survey today and get your
-        personalised solar proposal within 24 hours.</p>
+    <div style="max-width: 820px; margin: 0 auto; position: relative; z-index: 2;">
+      <h2>Your Solar Plan Is Ready 🌞</h2>
+      <p>Join over 100+ happy homes across Andhra Pradesh saving up to 90% every single month. Book your free site survey today and receive your personalized proposal within 24 hours.</p>
       <div class="cta-btns">
-        <a href="tel:+91 7358258385" class="btn-white">📞 Call Us Free</a>
-        <a href="https://wa.me/917358258385" class="btn-outline-w">💬 WhatsApp Us</a>
+        <a href="tel:+917358258385" class="btn-white">📞 Call +91 7358258385</a>
+        <a href="https://wa.me/917358258385?text=Hello%20Solarfi%20Team%2C%20I'm%20interested%20in%20solar%20subsidy." target="_blank" rel="noopener noreferrer" class="btn-outline-w">💬 Chat on WhatsApp</a>
       </div>
     </div>
   </div>
 
-
+  <!-- ── 13. Master Footer ──────────────────────────────────────────────── -->
   <footer class="new-footer">
+    <div class="grain-overlay" aria-hidden="true"></div>
     <div class="fc-container">
       <div class="ft-top">
         <div class="fc">
-          <h4 class="fc-title">About Us</h4>
-          <p class="fc-desc">Discover smart, reliable solar EPC solutions with Solarfi. From AI-powered consultations to
-            certified installations, we help homes, businesses & farms across India save energy and money. Get a free
-            quote today!</p>
+          <h4 class="fc-title">About Solarfi</h4>
+          <p class="fc-desc">Discover smart, reliable rooftop solar EPC solutions with Solarfi. From precision design to certified installations, we empower homes, businesses, and institutions across Andhra Pradesh to generate clean, low-cost power.</p>
           <div class="fc-social">
-            <a href="https://www.instagram.com/solarfi_pvt_ltd" target="_blank" aria-label="Instagram">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                <path
-                  d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
-              </svg>
+            <a href="https://www.instagram.com/solarfi_pvt_ltd" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" /></svg>
             </a>
-            <a href="https://www.facebook.com/share/1B56Nxq1ak/" target="_blank" aria-label="Facebook">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                <path
-                  d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
-              </svg>
+            <a href="https://www.facebook.com/share/1B56Nxq1ak/" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
             </a>
-            <a href="https://youtube.com/@solarpvsystem?si=Oz05mA4xD6JQelbi" target="_blank" aria-label="YouTube">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                <path
-                  d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
-              </svg>
+            <a href="https://youtube.com/@solarpvsystem?si=Oz05mA4xD6JQelbi" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
             </a>
           </div>
         </div>
+
         <div class="fc">
           <h4 class="fc-title">Quick Links</h4>
           <ul class="fc-links">
-            <li><a href="https://solarfi.in/#features">Why Solarfi</a></li>
-            <li><a href="https://solarfi.in/#process">How It Works</a></li>
-            <li><a href="https://solarfi.in/#savings">Calculator</a></li>
-            <li><a href="https://solarfi.in/#testimonials">Reviews</a></li>
-            <li><a href="https://solarfi.in/#faq">FAQ</a></li>
-            <li><a href="contact-us.html">Contact Us</a></li>
+            <li><a href="#features">Why Solarfi</a></li>
+            <li><a href="#process">How It Works</a></li>
+            <li><a href="#savings">Savings Calculator</a></li>
+            <li><a href="#testimonials">Customer Reviews</a></li>
+            <li><a href="#faq">Frequently Asked Questions</a></li>
+            <li><a href="contact-us.html">Request Free Quote</a></li>
           </ul>
         </div>
+
         <div class="fc">
-          <h4 class="fc-title">Services</h4>
+          <h4 class="fc-title">Our Services</h4>
           <ul class="fc-links">
-            <li><a href="design-engineering.html">Design & Engineering</a></li>
-            <li><a href="procurement.html">Procurement Supply</a></li>
-            <li><a href="installation-commissioning.html">Installation Setups</a></li>
-            <li><a href="operations-maintenance.html">Operations & Maintenance</a></li>
-            <li><a href="ev-charging-battery-storage.html">EV Charging Integration</a></li>
+            <li><a href="design-engineering.html">Design &amp; Engineering</a></li>
+            <li><a href="procurement.html">Procurement &amp; Supply</a></li>
+            <li><a href="installation-commissioning.html">Installation &amp; Commissioning</a></li>
+            <li><a href="operations-maintenance.html">Operations &amp; Maintenance (AMC)</a></li>
+            <li><a href="ev-charging-battery-storage.html">EV Charging &amp; Battery Storage</a></li>
           </ul>
         </div>
       </div>
 
       <div class="ft-mid">
         <div class="fc-address">
-          <h4 class="fc-title">USA Office</h4>
-          <p>3021 Scanlan Ln NE, Rochester, MN 55906, United States.<br>+1 507-358-1319<br>info@solarfi.in</p>
+          <h4 class="fc-title">INDIA Headquarters</h4>
+          <p>D.no: 3-6, Dr.Somireddy Towers, Guntha Bazar Rd, Pulivendula, Andhra Pradesh 516390, India.<br>
+            <strong>Phone:</strong> <a href="tel:+917358258385" style="color:#22c55e;">+91 7358258385</a><br>
+            <strong>Email:</strong> <a href="mailto:info@solarfi.in" style="color:#ffffff;">info@solarfi.in</a>
+          </p>
         </div>
+
         <div class="fc-address">
-          <h4 class="fc-title">INDIA Office</h4>
-          <p>D.no: 3-6, Dr.Somireddy Towers, Guntha Bazar Rd, Pulivendula, Andhra Pradesh 516390, India.<br>+91
-            7358258385
+          <h4 class="fc-title">USA Liaison Office</h4>
+          <p>3021 Scanlan Ln NE, Rochester, MN 55906, United States.<br>
+            <strong>Phone:</strong> <a href="tel:+15073581319" style="color:#ffffff;">+1 507-358-1319</a><br>
+            <strong>Email:</strong> <a href="mailto:info@solarfi.in" style="color:#ffffff;">info@solarfi.in</a>
           </p>
         </div>
       </div>
 
       <div class="ft-bottom">
-        Copyright © 2026 Solarfi. All Rights Reserved.
+        <div>Copyright &copy; 2026 Solarfi. All Rights Reserved.</div>
+        <div style="font-size: 0.8rem; color: rgba(255, 255, 255, 0.45);">PM Surya Ghar Subsidy Partner · MNRE Compliant</div>
       </div>
     </div>
     <div class="footer-watermark">solarfi</div>
   </footer>
 
+  <!-- ── 14. Mobile Sticky Bottom Bar (15% Cap Compliant) ────────────────── -->
+  <div class="mobile-sticky-bar" id="mobileStickyBar">
+    <a href="tel:+917358258385" class="msb-item msb-call" aria-label="Call Solarfi">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z" />
+      </svg>
+      <span>Call</span>
+    </a>
+    <a href="https://wa.me/917358258385?text=Hello%20Solarfi%20Team%2C%20I'm%20interested%20in%20solar%20subsidy."
+      target="_blank" rel="noopener noreferrer" class="msb-item msb-wa" aria-label="Chat on WhatsApp">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+      </svg>
+      <span>WhatsApp</span>
+    </a>
+    <a href="contact-us.html" class="msb-item msb-quote" aria-label="Get Free Solar Quote">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z" />
+      </svg>
+      <span>Get Quote</span>
+    </a>
+  </div>
+
+  <!-- ── 15. Inline Core Scripts ────────────────────────────────────────── -->
   <script>
-    // Mobile menu
+    // Mobile navigation toggle
     function toggleMenu() {
       document.getElementById('mobileMenu').classList.toggle('open');
       document.getElementById('hamburger').classList.toggle('open');
     }
 
-    // FAQ accordion
+    // FAQ Accordion
     function toggleFaq(el) {
       const isOpen = el.classList.contains('open');
       document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
       if (!isOpen) el.classList.add('open');
     }
 
-    // ── State-wise solar data (tariff ₹/unit, peak sun hrs/day) ─────────────
+    // State solar tariffs and sun hours
     const SOLAR_STATE = {
       'Andhra Pradesh': { tariff: 7.50, sun: 5.5, label: 'High Solar Belt' },
       'Arunachal Pradesh': { tariff: 5.00, sun: 4.0, label: 'NE Region' },
@@ -987,7 +1142,7 @@
       'West Bengal': { tariff: 7.00, sun: 4.5, label: 'Eastern India' },
       'Delhi': { tariff: 8.00, sun: 5.3, label: 'High Tariff Zone' },
       'Chandigarh': { tariff: 4.50, sun: 5.1, label: 'North India' },
-      'Puducherry': { tariff: 3.50, sun: 5.4, label: 'South India' },
+      'Puducherry': { tariff: 3.50, sun: 5.4, label: 'South India' }
     };
 
     function fmtINR(n) {
@@ -996,27 +1151,36 @@
       return '₹' + Math.round(n).toLocaleString('en-IN');
     }
 
-    // Savings calculator (live). Works on every .calc-card on the page (hero + calculator section).
-    // PM Surya Ghar central subsidy: flat Rs 78,000 (cap for 3kW+ residential systems). Residential only.
     function calcSubsidy(systemKW, propType) {
       return propType === 'Residential' ? 78000 : 0;
     }
 
     function runCalc(root) {
+      if (!root) return;
       const q = k => root.querySelector('[data-r="' + k + '"]');
       const activeBtn = root.querySelector('.calc-toggle-btn.active');
       const propType = activeBtn ? activeBtn.dataset.val : 'Residential';
-      const bill = parseFloat(q('bill').value) || 3000;
-      const stateName = q('state').value;
-      const sd = SOLAR_STATE[stateName] || { tariff: 6.0, sun: 5.0, label: '' };
+      const billInput = q('bill');
+      const bill = billInput ? parseFloat(billInput.value) || 3000 : 3000;
+      const stateSelect = q('state');
+      const stateName = stateSelect ? stateSelect.value : 'Andhra Pradesh';
+      const sd = SOLAR_STATE[stateName] || { tariff: 6.0, sun: 5.0, label: 'High Solar Belt' };
 
-      q('billVal').textContent = fmtINR(bill);
+      if (q('billVal')) q('billVal').textContent = fmtINR(bill);
+
+      // Dynamic slider track fill for glossy glowing aesthetic
+      if (billInput) {
+        const min = parseFloat(billInput.min) || 500;
+        const max = parseFloat(billInput.max) || 15000;
+        const pct = Math.min(100, Math.max(0, ((bill - min) / (max - min)) * 100));
+        billInput.style.background = `linear-gradient(90deg, #22c55e 0%, #16a34a ${pct}%, rgba(255, 255, 255, 0.16) ${pct}%, rgba(255, 255, 255, 0.16) 100%)`;
+      }
 
       const pf = propType === 'Commercial' ? 1.4 : propType === 'Industrial' ? 1.8 : 1.0;
       const offsetPct = 0.80;
       const saveMonth = bill * offsetPct * pf;
       const saveYear = saveMonth * 12;
-      const save25 = saveYear * 25 * 1.04;          // 4% tariff escalation
+      const save25 = saveYear * 25 * 1.04;
       const unitsMonth = (bill / sd.tariff) * pf;
       const systemKW = unitsMonth / (sd.sun * 30);
       const installCost = systemKW * 50000;
@@ -1025,29 +1189,34 @@
       const payback = (afterSubsidyCost / saveYear).toFixed(1);
       const co2 = (unitsMonth * 0.82 * 12 * offsetPct).toFixed(0);
 
-      q('monthlySaving').textContent = fmtINR(saveMonth);
-      q('systemSize').textContent = systemKW.toFixed(1) + ' kW';
-      q('afterSubsidy').textContent = fmtINR(afterSubsidyCost);
-      q('roi').textContent = payback + ' yrs';
-      q('calcExtra').textContent =
-        'Over 25 years: ' + fmtINR(save25) + ' saved \u00b7 ' + (co2 / 1000).toFixed(1) + ' t CO\u2082 offset/yr';
+      if (q('monthlySaving')) q('monthlySaving').textContent = fmtINR(saveMonth);
+      if (q('systemSize')) q('systemSize').textContent = systemKW.toFixed(1) + ' kW';
+      if (q('afterSubsidy')) q('afterSubsidy').textContent = fmtINR(afterSubsidyCost);
+      if (q('roi')) q('roi').textContent = payback + ' yrs';
+      if (q('calcExtra')) {
+        q('calcExtra').textContent =
+          'Over 25 years: ' + fmtINR(save25) + ' saved \u00b7 ' + (co2 / 1000).toFixed(1) + ' t CO\u2082 offset/yr';
+      }
 
       const note = q('subsidyNote');
-      if (subsidy > 0) {
-        note.style.display = 'flex';
-        q('subsidyAmt').textContent = fmtINR(subsidy);
-      } else {
-        note.style.display = 'none';
+      if (note) {
+        if (subsidy > 0) {
+          note.style.display = 'flex';
+          if (q('subsidyAmt')) q('subsidyAmt').textContent = fmtINR(subsidy);
+        } else {
+          note.style.display = 'none';
+        }
       }
-      q('calcStateLabel').textContent = stateName + '  \u00b7  ' + sd.label + '  \u00b7  \u20b9' + sd.tariff.toFixed(2) + '/unit';
+      if (q('calcStateLabel')) {
+        q('calcStateLabel').textContent = stateName + (sd.label ? ' \u00b7 ' + sd.label : '') + ' \u00b7 \u20b9' + sd.tariff.toFixed(2) + '/unit';
+      }
     }
 
     function calcAll() {
       document.querySelectorAll('.calc-card').forEach(runCalc);
     }
-    function calculate() { calcAll(); }   // backwards-compatible alias
+    function calculate() { calcAll(); }
 
-    // Home / Business / Industrial toggle (event delegation so cloned cards work too)
     document.addEventListener('click', e => {
       const btn = e.target.closest('.calc-toggle-btn');
       if (!btn) return;
@@ -1056,26 +1225,10 @@
       runCalc(btn.closest('.calc-card'));
     });
 
-    // Hero: mount a copy of the calculator card in the hero panel
-    (function mountHeroCalc() {
-      const src = document.getElementById('calcCard');
-      const mount = document.getElementById('heroContactForm');
-      if (!src || !mount) return;
-      const clone = src.cloneNode(true);
-      clone.removeAttribute('id');
-      clone.classList.add('calc-card-hero');
-      mount.innerHTML = '';
-      mount.appendChild(clone);
-      const trust = document.createElement('div');
-      trust.className = 'hcf-trust';
-      trust.innerHTML = '<span>\ud83d\udd12 100% Free</span><span>\u26a1 Instant Estimate</span><span>\ud83c\udfc6 MNRE Approved</span>';
-      mount.appendChild(trust);
-    })();
-
-    // Run once on load so the cards are never empty
+    // Run once on initial load
     calcAll();
 
-    // Trust carousel
+    // Trust Carousel Controller
     (function () {
       const root = document.querySelector('.trust-carousel');
       if (!root) return;
@@ -1104,20 +1257,20 @@
           b.addEventListener('click', () => { go(i); restart(); });
           dotsEl.appendChild(b);
         }
-        root.classList.toggle('tc-single', positions <= 1);
         paint();
       }
       function paint() {
         const c = current();
         dotsEl.querySelectorAll('.tc-dot').forEach((d, i) => {
-          d.classList.toggle('active', i === c); d.setAttribute('aria-selected', i === c);
+          d.classList.toggle('active', i === c);
+          d.setAttribute('aria-selected', i === c);
         });
       }
       function tick() { if (!paused && positions > 1) go(current() + 1); }
       function restart() { clearInterval(timer); if (!reduce) timer = setInterval(tick, 4500); }
 
-      prev.addEventListener('click', () => { go(current() - 1); restart(); });
-      next.addEventListener('click', () => { go(current() + 1); restart(); });
+      if (prev) prev.addEventListener('click', () => { go(current() - 1); restart(); });
+      if (next) next.addEventListener('click', () => { go(current() + 1); restart(); });
       track.addEventListener('scroll', () => requestAnimationFrame(paint), { passive: true });
       track.addEventListener('keydown', e => {
         if (e.key === 'ArrowRight') { go(current() + 1); e.preventDefault(); }
@@ -1130,52 +1283,158 @@
       build(); restart();
     })();
 
+    // ── Why Choose Us Carousel Controller ────────────────────────────────────
+    (function initWhyChooseCarousel() {
+      const viewport = document.getElementById('whyCarouselViewport');
+      const track = document.getElementById('pinnedWhyTrack');
+      const prevBtn = document.getElementById('whyPrevBtn');
+      const nextBtn = document.getElementById('whyNextBtn');
+      const counterEl = document.getElementById('whyNavCounter');
+      const dotsWrap = document.getElementById('whyDotsWrap');
+      if (!viewport || !track) return;
 
-    // Smooth scroll
-    document.querySelectorAll('a[href^="#"]').forEach(a => {
-      a.addEventListener('click', e => {
-        const t = document.querySelector(a.getAttribute('href'));
-        if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth' }); document.getElementById('mobileMenu').classList.remove('open'); }
+      const cards = Array.from(track.querySelectorAll('.pinned-card'));
+      if (cards.length === 0) return;
+
+      let currentIndex = 0;
+      let isProgrammaticScroll = false;
+      let scrollTimeout = null;
+
+      // Build pagination dots
+      if (dotsWrap) {
+        dotsWrap.innerHTML = '';
+        cards.forEach((_, idx) => {
+          const dot = document.createElement('button');
+          dot.type = 'button';
+          dot.className = 'why-dot' + (idx === 0 ? ' active' : '');
+          dot.setAttribute('role', 'tab');
+          dot.setAttribute('aria-label', `Go to feature block ${idx + 1} of ${cards.length}`);
+          dot.addEventListener('click', () => scrollToCard(idx));
+          dotsWrap.appendChild(dot);
+        });
+      }
+
+      function updateNavState() {
+        // Update Counter
+        if (counterEl) {
+          const curSpan = counterEl.querySelector('.why-counter-current');
+          if (curSpan) curSpan.textContent = String(currentIndex + 1).padStart(2, '0');
+        }
+
+        // Update Buttons state
+        if (prevBtn) {
+          const isAtStart = currentIndex <= 0;
+          prevBtn.disabled = isAtStart;
+          prevBtn.classList.toggle('disabled', isAtStart);
+          prevBtn.setAttribute('aria-disabled', isAtStart ? 'true' : 'false');
+        }
+
+        if (nextBtn) {
+          const isAtEnd = currentIndex >= cards.length - 1 || 
+            (viewport.scrollLeft + viewport.clientWidth >= viewport.scrollWidth - 15);
+          nextBtn.disabled = isAtEnd;
+          nextBtn.classList.toggle('disabled', isAtEnd);
+          nextBtn.setAttribute('aria-disabled', isAtEnd ? 'true' : 'false');
+        }
+
+        // Update Dots
+        if (dotsWrap) {
+          const dots = dotsWrap.querySelectorAll('.why-dot');
+          dots.forEach((dot, idx) => {
+            dot.classList.toggle('active', idx === currentIndex);
+            dot.setAttribute('aria-selected', idx === currentIndex ? 'true' : 'false');
+          });
+        }
+      }
+
+      function scrollToCard(index) {
+        if (index < 0) index = 0;
+        if (index >= cards.length) index = cards.length - 1;
+        currentIndex = index;
+
+        const targetCard = cards[currentIndex];
+        const targetLeft = targetCard.offsetLeft - track.offsetLeft;
+
+        isProgrammaticScroll = true;
+        clearTimeout(scrollTimeout);
+
+        viewport.scrollTo({
+          left: Math.max(0, targetLeft),
+          behavior: 'smooth'
+        });
+
+        updateNavState();
+
+        scrollTimeout = setTimeout(() => {
+          isProgrammaticScroll = false;
+        }, 500);
+      }
+
+      if (prevBtn) {
+        prevBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          if (currentIndex > 0) {
+            scrollToCard(currentIndex - 1);
+          }
+        });
+      }
+
+      if (nextBtn) {
+        nextBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          if (currentIndex < cards.length - 1) {
+            scrollToCard(currentIndex + 1);
+          }
+        });
+      }
+
+      // Sync active index on manual touch / mouse scroll
+      viewport.addEventListener('scroll', () => {
+        if (isProgrammaticScroll) return;
+        requestAnimationFrame(() => {
+          const scrollLeft = viewport.scrollLeft;
+          let bestIdx = 0;
+          let minDistance = Infinity;
+
+          cards.forEach((card, idx) => {
+            const cardLeft = card.offsetLeft - track.offsetLeft;
+            const dist = Math.abs(cardLeft - scrollLeft);
+            if (dist < minDistance) {
+              minDistance = dist;
+              bestIdx = idx;
+            }
+          });
+
+          if (viewport.scrollLeft + viewport.clientWidth >= viewport.scrollWidth - 20) {
+            bestIdx = cards.length - 1;
+          }
+
+          if (bestIdx !== currentIndex) {
+            currentIndex = bestIdx;
+            updateNavState();
+          }
+        });
+      }, { passive: true });
+
+      // Keyboard arrow navigation when focused
+      track.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight') {
+          e.preventDefault();
+          scrollToCard(currentIndex + 1);
+        } else if (e.key === 'ArrowLeft') {
+          e.preventDefault();
+          scrollToCard(currentIndex - 1);
+        }
       });
-    });
 
-    // Animate on scroll
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(e => { if (e.isIntersecting) e.target.style.opacity = '1' });
-    }, { threshold: .1 });
-    document.querySelectorAll('.feat-card,.testi-card,.step').forEach(el => {
-      el.style.opacity = '0'; el.style.transition = 'opacity .5s ease';
-      observer.observe(el);
-    });
-  </script>
-  <!-- MOBILE STICKY BOTTOM BAR -->
-  <div class="mobile-sticky-bar" id="mobileStickyBar">
-    <a href="tel:+917358258385" class="msb-item msb-call">
-      <svg viewBox="0 0 24 24" fill="currentColor">
-        <path
-          d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z" />
-      </svg>
-      <span>Call</span>
-    </a>
-    <a href="https://wa.me/917358258385?text=Hello%20Solarfi%20Team%2C%20I'm%20interested%20in%20solar%20subsidy."
-      target="_blank" class="msb-item msb-wa">
-      <svg viewBox="0 0 24 24" fill="currentColor">
-        <path
-          d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
-      </svg>
-      <span>WhatsApp</span>
-    </a>
-    <a href="contact-us.html" class="msb-item msb-quote">
-      <svg viewBox="0 0 24 24" fill="currentColor">
-        <path
-          d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z" />
-      </svg>
-      <span>Get Quote</span>
-    </a>
-  </div>
-  <script>
+      // Initial state
+      updateNavState();
+      window.addEventListener('resize', updateNavState);
+    })();
+
+    // Sticky mobile bar on scroll
     window.addEventListener('scroll', function () {
-      var bar = document.getElementById('mobileStickyBar');
+      const bar = document.getElementById('mobileStickyBar');
       if (bar) {
         if (window.scrollY > 400) {
           bar.classList.add('show');
@@ -1183,47 +1442,39 @@
           bar.classList.remove('show');
         }
       }
-    });
-  </script>
-  <script>
-  /* Impact stats: count-up + pause scene when off-screen */
-  (function () {
-    var sec = document.querySelector('.impact-section');
-    if (!sec) return;
-    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var nums = sec.querySelectorAll('[data-count]');
-    function run(el) {
-      var end = parseInt(el.getAttribute('data-count'), 10), t0 = null, dur = 1700;
-      if (reduce || isNaN(end)) return;
-      function step(ts) {
-        if (t0 === null) t0 = ts;
-        var p = Math.min((ts - t0) / dur, 1), e = 1 - Math.pow(1 - p, 4);
-        el.textContent = Math.round(end * e);
-        if (p < 1) requestAnimationFrame(step);
+    }, { passive: true });
+
+    // Impact count-up numbers on enter viewport
+    (function () {
+      const sec = document.querySelector('.impact-section');
+      if (!sec) return;
+      const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const nums = sec.querySelectorAll('[data-count]');
+      function run(el) {
+        const end = parseInt(el.getAttribute('data-count'), 10), dur = 1600;
+        let t0 = null;
+        if (reduce || isNaN(end)) return;
+        function step(ts) {
+          if (t0 === null) t0 = ts;
+          const p = Math.min((ts - t0) / dur, 1), e = 1 - Math.pow(1 - p, 4);
+          el.textContent = Math.round(end * e);
+          if (p < 1) requestAnimationFrame(step);
+        }
+        el.textContent = '0';
+        requestAnimationFrame(step);
       }
-      el.textContent = '0';
-      requestAnimationFrame(step);
-    }
-    if ('IntersectionObserver' in window) {
-      var io = new IntersectionObserver(function (en) {
-        en.forEach(function (x) { if (x.isIntersecting) { run(x.target); io.unobserve(x.target); } });
-      }, { threshold: .4 });
-      nums.forEach(function (n) { io.observe(n); });
-      new IntersectionObserver(function (en) {
-        en.forEach(function (x) { sec.classList.toggle('is-paused', !x.isIntersecting); });
-      }).observe(sec);
-    }
-  })();
-  </script>
-<script>
-  /* pause zero-worries scene when off-screen */
-  (function () {
-    var z = document.querySelector('.zero');
-    if (!z || !('IntersectionObserver' in window)) return;
-    new IntersectionObserver(function (en) {
-      en.forEach(function (x) { z.classList.toggle('is-paused', !x.isIntersecting); });
-    }).observe(z);
-  })();
+      if ('IntersectionObserver' in window) {
+        const io = new IntersectionObserver((entries) => {
+          entries.forEach(x => {
+            if (x.isIntersecting) {
+              run(x.target);
+              io.unobserve(x.target);
+            }
+          });
+        }, { threshold: 0.35 });
+        nums.forEach(n => io.observe(n));
+      }
+    })();
   </script>
 </body>
 

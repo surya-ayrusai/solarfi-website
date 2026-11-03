@@ -1,0 +1,815 @@
+/* graphics.css - Solarfi Bespoke Solar Visualizations & SVG Graphics */
+
+/* ── 1. Film Grain Layer (Inline SVG Turbulence) ────────────────────────── */
+.grain-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0.055;
+  z-index: 1;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+/* ── 2. Futuristic Energy Flow Architecture (Glossy Cyber-Glass Pipeline) ─── */
+.energy-pipeline-container {
+  background: radial-gradient(130% 120% at 50% 0%, rgba(20, 95, 42, 0.24) 0%, rgba(13, 22, 36, 0.98) 60%), #070d18;
+  border: 1px solid rgba(56, 189, 248, 0.22);
+  border-radius: var(--radius-card, 24px);
+  padding: clamp(20px, 3.2vw, 32px);
+  position: relative;
+  overflow: hidden;
+  color: #ffffff;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.pipeline-blueprint-grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: 
+    linear-gradient(rgba(56, 189, 248, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(56, 189, 248, 0.04) 1px, transparent 1px);
+  background-size: 28px 28px;
+  opacity: 0.7;
+}
+
+.pipeline-ambient-glows {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.glow-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0.18;
+}
+
+.glow-cyan {
+  top: 10%;
+  left: 20%;
+  width: 320px;
+  height: 240px;
+  background: #06b6d4;
+}
+
+.glow-emerald {
+  top: 20%;
+  left: 55%;
+  width: 300px;
+  height: 220px;
+  background: #10b981;
+}
+
+.glow-orange {
+  top: -10%;
+  left: 0%;
+  width: 280px;
+  height: 240px;
+  background: #f97316;
+}
+
+/* Continuous Glowing Energy Rail with Traveling Photons */
+.pipeline-track-wrapper {
+  position: relative;
+  margin: 10px 0 28px;
+}
+
+.pipeline-neon-rail {
+  position: absolute;
+  top: 48%;
+  left: 30px;
+  right: 30px;
+  height: 3px;
+  background: linear-gradient(90deg, #f97316 0%, #22c55e 32%, #06b6d4 68%, #38bdf8 100%);
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.65), 0 0 24px rgba(34, 197, 94, 0.35);
+  border-radius: 4px;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.pipeline-photon-pulse {
+  position: absolute;
+  top: -4px;
+  width: 14px;
+  height: 11px;
+  border-radius: 6px;
+  background: #ffffff;
+  box-shadow: 0 0 14px 4px #38bdf8, 0 0 24px 6px rgba(255, 255, 255, 0.8);
+  animation: photonSlide 4.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.pipeline-photon-pulse.pulse-2 {
+  animation-delay: 1.4s;
+}
+
+.pipeline-photon-pulse.pulse-3 {
+  animation-delay: 2.8s;
+}
+
+@keyframes photonSlide {
+  0% { left: 0%; opacity: 0; transform: scaleX(0.5); }
+  8% { opacity: 1; transform: scaleX(1.4); }
+  92% { opacity: 1; transform: scaleX(1.4); }
+  100% { left: 100%; opacity: 0; transform: scaleX(0.5); }
+}
+
+/* 5 Interconnected Pipeline Cards */
+.energy-pipeline-track {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 14px;
+  position: relative;
+  z-index: 2;
+}
+
+.pipeline-card-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* Glowing Joint Dots between cards */
+.pipeline-junction {
+  position: absolute;
+  right: -9px;
+  top: 48%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  z-index: 4;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.junction-orb {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 0 10px #38bdf8, 0 0 18px rgba(56, 189, 248, 0.9);
+}
+
+.junction-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1.5px solid rgba(56, 189, 248, 0.6);
+  animation: junctionPulse 2.4s ease-in-out infinite;
+}
+
+@keyframes junctionPulse {
+  0%, 100% { transform: scale(1); opacity: 0.6; }
+  50% { transform: scale(1.4); opacity: 1; }
+}
+
+/* Glossy Futuristic Card Surface (Matching Screenshot) */
+.pipeline-card {
+  width: 100%;
+  background: linear-gradient(180deg, rgba(16, 29, 54, 0.78) 0%, rgba(9, 17, 34, 0.94) 100%);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-radius: 18px;
+  padding: 16px 14px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 236px;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, border-color 0.25s ease;
+  border: 1px solid rgba(56, 189, 248, 0.24);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.14);
+}
+
+.pipeline-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.6), 0 0 24px rgba(56, 189, 248, 0.28);
+}
+
+/* Card Border & Accent Colorways */
+.border-orange {
+  border-color: rgba(249, 115, 22, 0.4);
+}
+.border-orange:hover {
+  border-color: rgba(249, 115, 22, 0.85);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.6), 0 0 24px rgba(249, 115, 22, 0.35);
+}
+
+.border-cyan {
+  border-color: rgba(6, 182, 212, 0.4);
+}
+.border-cyan:hover {
+  border-color: rgba(6, 182, 212, 0.85);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.6), 0 0 24px rgba(6, 182, 212, 0.35);
+}
+
+.border-emerald {
+  border-color: rgba(16, 185, 129, 0.4);
+}
+.border-emerald:hover {
+  border-color: rgba(16, 185, 129, 0.85);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.6), 0 0 24px rgba(16, 185, 129, 0.35);
+}
+
+.border-purple {
+  border-color: rgba(168, 85, 247, 0.4);
+}
+.border-purple:hover {
+  border-color: rgba(168, 85, 247, 0.85);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.6), 0 0 24px rgba(168, 85, 247, 0.35);
+}
+
+.border-sky {
+  border-color: rgba(56, 189, 248, 0.4);
+}
+.border-sky:hover {
+  border-color: rgba(56, 189, 248, 0.85);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.6), 0 0 24px rgba(56, 189, 248, 0.35);
+}
+
+/* Card Header: Eyebrow + Icon Badge */
+.pcard-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.pcard-badge {
+  font-size: 0.64rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-variant-numeric: tabular-nums;
+}
+
+.badge-orange { background: rgba(249, 115, 22, 0.16); color: #fb923c; border: 1px solid rgba(249, 115, 22, 0.35); }
+.badge-cyan { background: rgba(6, 182, 212, 0.16); color: #22d3ee; border: 1px solid rgba(6, 182, 212, 0.35); }
+.badge-emerald { background: rgba(16, 185, 129, 0.16); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.35); }
+.badge-purple { background: rgba(168, 85, 247, 0.16); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.35); }
+.badge-sky { background: rgba(56, 189, 248, 0.16); color: #7dd3fc; border: 1px solid rgba(56, 189, 248, 0.35); }
+
+.pcard-icon-box {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+}
+
+/* Card Content */
+.pcard-title {
+  font-size: 1.02rem;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1.25;
+  margin-bottom: 5px;
+}
+
+.pcard-desc {
+  font-size: 0.78rem;
+  color: #94a3b8;
+  line-height: 1.45;
+  margin-bottom: 12px;
+}
+
+/* Bottom Telemetry Status Bar */
+.pcard-telemetry {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.09);
+  font-size: 0.72rem;
+  margin-top: auto;
+}
+
+.telemetry-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 700;
+}
+
+.pulse-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dot-amber { background: #f59e0b; box-shadow: 0 0 8px #f59e0b; }
+.dot-cyan { background: #06b6d4; box-shadow: 0 0 8px #06b6d4; }
+.dot-emerald { background: #10b981; box-shadow: 0 0 8px #10b981; }
+.dot-purple { background: #a855f7; box-shadow: 0 0 8px #a855f7; }
+.dot-sky { background: #38bdf8; box-shadow: 0 0 8px #38bdf8; }
+
+.status-amber { color: #fcd34d; }
+.status-cyan { color: #67e8f9; }
+.status-emerald { color: #6ee7b7; }
+.status-purple { color: #d8b4fe; }
+.status-sky { color: #7dd3fc; }
+
+.telemetry-stat {
+  color: #e2e8f0;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Responsive Handling for Pipeline */
+@media (max-width: 1099px) {
+  .energy-pipeline-track {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 14px;
+    padding-bottom: 14px;
+    scrollbar-width: thin;
+  }
+  .pipeline-card-wrap {
+    min-width: 240px;
+    scroll-snap-align: start;
+    flex-shrink: 0;
+  }
+  .pipeline-neon-rail {
+    top: 50%;
+    left: 15px;
+    right: 15px;
+  }
+}
+
+@media (max-width: 640px) {
+  .energy-pipeline-track {
+    flex-direction: column;
+    overflow-x: visible;
+    gap: 12px;
+  }
+  .pipeline-card-wrap {
+    min-width: auto;
+    width: 100%;
+  }
+  .pipeline-neon-rail {
+    display: none;
+  }
+  .pipeline-junction {
+    display: none;
+  }
+}
+
+/* ── 3. Cumulative Savings & Payback Curve ──────────────────────────────── */
+.savings-curve-container {
+  background: #ffffff;
+  border: 1px solid rgba(17, 24, 39, 0.12);
+  border-radius: var(--radius-card, 28px);
+  padding: clamp(20px, 3.5vw, 32px);
+  position: relative;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+}
+
+.savings-curve-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.curve-path-draw {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  transition: stroke-dashoffset 1.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.curve-path-draw.in-view {
+  stroke-dashoffset: 0;
+}
+
+/* ── 4. Subsidy Stepped Visual (PM Surya Ghar ₹78,000) ──────────────────── */
+.subsidy-steps-wrap {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.subsidy-step-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 20px;
+  padding: 20px;
+  text-align: center;
+  position: relative;
+  transition: transform 0.25s ease, border-color 0.25s ease;
+}
+
+.subsidy-step-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(249, 115, 22, 0.5);
+}
+
+.subsidy-step-cap {
+  border-color: #f97316;
+  background: linear-gradient(180deg, rgba(249, 115, 22, 0.15) 0%, rgba(20, 95, 42, 0.25) 100%);
+}
+
+.subsidy-kw-pill {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: var(--radius-pill, 999px);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  margin-bottom: 12px;
+}
+
+.subsidy-step-cap .subsidy-kw-pill {
+  background: #f97316;
+  color: #fff;
+}
+
+.subsidy-rate {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 4px;
+}
+
+.subsidy-label {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.4;
+}
+
+/* ── 5. Process Timeline (Horizontal Desktop / Vertical Phone) ───────────── */
+.timeline-track-wrap {
+  position: relative;
+  padding: 40px 0 20px;
+}
+
+.timeline-line {
+  position: absolute;
+  top: 72px;
+  left: 5%;
+  right: 5%;
+  height: 2px;
+  background: linear-gradient(90deg, #1a8c3e 0%, #f97316 100%);
+  opacity: 0.35;
+  z-index: 0;
+}
+
+.timeline-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 16px;
+  position: relative;
+  z-index: 1;
+}
+
+.timeline-node {
+  background: #ffffff;
+  border: 1px solid rgba(17, 24, 39, 0.12);
+  border-radius: 20px;
+  padding: 24px 16px;
+  text-align: center;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.timeline-node:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+  border-color: #1a8c3e;
+}
+
+.timeline-circle {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: #e8f7ed;
+  color: #1a8c3e;
+  border: 2px solid #1a8c3e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  font-weight: 800;
+  font-size: 0.95rem;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(26, 140, 62, 0.18);
+}
+
+.timeline-node.highlight .timeline-circle {
+  background: #f97316;
+  border-color: #f97316;
+  color: #ffffff;
+  box-shadow: 0 4px 16px rgba(249, 115, 22, 0.35);
+}
+
+.timeline-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 6px;
+  line-height: 1.3;
+}
+
+.timeline-desc {
+  font-size: 0.78rem;
+  color: #6b7280;
+  line-height: 1.5;
+}
+
+.timeline-badge {
+  display: inline-block;
+  margin-top: 10px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #1a8c3e;
+  background: #e8f7ed;
+  padding: 2px 8px;
+  border-radius: var(--radius-pill, 999px);
+}
+
+/* ── 6. Pulivendula & Andhra Pradesh Trust Seal / Map Graphic ───────────── */
+.ap-trust-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(20, 95, 42, 0.12);
+  border: 1px solid rgba(26, 140, 62, 0.25);
+  border-radius: var(--radius-pill, 999px);
+  padding: 8px 18px 8px 12px;
+  color: #145f2a;
+}
+
+.ap-trust-badge-dark {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.16);
+  color: #ffffff;
+}
+
+.ap-icon-pin {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #1a8c3e;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.ap-trust-text {
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+
+/* ── 7. Why Choose Us (Interactive Feature Carousel) ────────────────────── */
+.why-choose-section {
+  position: relative;
+  width: 100%;
+  padding: var(--space-section) 0;
+  background: #ffffff;
+  overflow: hidden;
+}
+
+.why-choose-container {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.why-choose-header-wrap {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.why-choose-header-left {
+  max-width: 680px;
+}
+
+/* Nav Controls (Accessible 48px touch targets, visible, never clipped) */
+.why-nav-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+  margin-bottom: 4px;
+}
+
+.why-nav-btn {
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  min-height: 48px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 1.5px solid var(--hairline-light);
+  color: var(--dark);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  z-index: 5;
+}
+
+.why-nav-btn:hover:not(.disabled) {
+  background: var(--green-light);
+  border-color: var(--green);
+  color: var(--green-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(26, 140, 62, 0.2);
+}
+
+.why-nav-btn:active:not(.disabled) {
+  transform: scale(0.95);
+}
+
+.why-nav-btn.disabled,
+.why-nav-btn:disabled {
+  opacity: 0.32;
+  cursor: not-allowed;
+  pointer-events: none;
+  box-shadow: none;
+  background: #f9fafb;
+  border-color: #e5e7eb;
+}
+
+.why-nav-counter {
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: var(--dark);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.5px;
+  padding: 4px 6px;
+  user-select: none;
+}
+
+.why-counter-sep {
+  color: #9ca3af;
+  margin: 0 2px;
+}
+
+.why-counter-total {
+  color: #6b7280;
+  font-weight: 600;
+}
+
+/* Viewport and Track */
+.why-carousel-viewport {
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  -webkit-overflow-scrolling: touch;
+  padding: 8px 4px 16px;
+  margin: 0 -4px;
+}
+
+.why-carousel-viewport::-webkit-scrollbar {
+  display: none;
+}
+
+.pinned-track {
+  display: flex;
+  gap: 20px;
+  padding: 4px 4px 8px;
+  width: max-content;
+  outline: none;
+}
+
+.pinned-card {
+  min-width: 320px;
+  max-width: 340px;
+  width: 330px;
+  background: #ffffff;
+  border: 1px solid var(--hairline-light);
+  border-radius: 20px;
+  padding: 24px 22px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  scroll-snap-align: start;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.pinned-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+  border-color: var(--green);
+}
+
+.pinned-card h3 {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--dark);
+  margin-bottom: 6px;
+  line-height: 1.25;
+}
+
+.pinned-card p {
+  font-size: 0.88rem;
+  color: var(--gray);
+  line-height: 1.5;
+}
+
+/* Pagination Dots */
+.why-dots-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  margin-top: 14px;
+}
+
+.why-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #d1d5db;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.why-dot.active {
+  background: var(--green);
+  width: 22px;
+  border-radius: 4px;
+}
+
+/* ── Responsive adjustments for graphics ────────────────────────────────── */
+@media (max-width: 1024px) {
+  .timeline-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .timeline-line {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .subsidy-steps-wrap {
+    grid-template-columns: 1fr;
+  }
+  .timeline-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .timeline-node {
+    flex-direction: row;
+    text-align: left;
+    gap: 16px;
+    padding: 18px;
+  }
+  .timeline-circle {
+    margin-bottom: 0;
+  }
+  .why-choose-header-wrap {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  .why-nav-controls {
+    align-self: flex-start;
+  }
+  .pinned-track {
+    gap: 16px;
+    padding: 4px 16px 12px;
+  }
+  .pinned-card {
+    min-width: 280px;
+    max-width: 300px;
+    width: 290px;
+  }
+}

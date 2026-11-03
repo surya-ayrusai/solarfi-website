@@ -1,657 +1,699 @@
-const fs = require('fs');
+/**
+ * build_pages.js - Generator for Solarfi Service Pages (ES Module)
+ * Upgraded with distinct SVG header graphics, tailored processes, FAQs, and unified design system.
+ */
+import fs from 'fs';
 
 const pages_data = [
   {
-    "filename": "design-engineering.html",
-    "title": "Design & Engineering",
-    "meta_title": "Solar Design & Engineering Services | Solarfi",
-    "meta_desc": "Get award-winning solar design and engineering services with accurate yield predictions and MNRE-compliant blueprints.",
-    "subtitle": "Precision Planning for Maximum Performance",
-    "breadcrumb": "Design & Engineering",
-    "info_subtitle": "PROJECTS SUPPLIED AND INSTALLED",
-    "info_title": "Smart, Accurate Design",
-    "left_image": "images/hero_family_solar.png",
-    "features": [
+    filename: "design-engineering.html",
+    title: "Solar Design & Engineering",
+    meta_title: "Solar Design & Engineering Services | Solarfi Pulivendula",
+    meta_desc: "Get award-winning solar design and engineering in Andhra Pradesh. LiDAR drone mapping, PVsyst yield simulations, and APSPDCL-compliant blueprints.",
+    subtitle: "Precision CAD & LiDAR Planning for Maximum Generation Yield",
+    breadcrumb: "Design & Engineering",
+    service_pill: "01 · Engineering Precision",
+    header_svg: `<svg viewBox="0 0 540 280" fill="none" class="solar-flow-svg">
+      <defs>
+        <pattern id="cadGrid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1"/></pattern>
+      </defs>
+      <rect width="540" height="280" fill="#0d141e" rx="20"/>
+      <rect width="540" height="280" fill="url(#cadGrid)" rx="20"/>
+      <!-- Rooftop 3D isometric layout -->
+      <polygon points="120,180 270,100 420,180 270,240" fill="rgba(26,140,62,0.25)" stroke="#1a8c3e" stroke-width="2"/>
+      <polygon points="150,165 270,110 390,165 270,215" fill="rgba(34,197,94,0.18)" stroke="#22c55e" stroke-width="1.5"/>
+      <!-- Solar arrays -->
+      <line x1="180" y1="150" x2="300" y2="200" stroke="#f97316" stroke-width="2" stroke-dasharray="4 4"/>
+      <line x1="240" y1="125" x2="360" y2="175" stroke="#f97316" stroke-width="2" stroke-dasharray="4 4"/>
+      <!-- Sun ray angle -->
+      <line x1="70" y1="40" x2="230" y2="130" stroke="#fde047" stroke-width="2" stroke-dasharray="6 4"/>
+      <circle cx="70" cy="40" r="16" fill="#f59e0b"/>
+      <text x="270" y="260" fill="#ffffff" font-size="12" font-weight="700" text-anchor="middle">Azimuth 180° South · Tilt 15° · Zero Shadow Loss</text>
+    </svg>`,
+    info_title: "Precision Engineering for Maximum Lifetime Yield",
+    left_image: "images/engineering-design-hero.jpg",
+    features: [
+      { title: "LiDAR & Drone 3D Mapping", desc: "Millimeter-accurate rooftop dimensioning and obstacle shade modeling." },
+      { title: "PVsyst Generation Modeling", desc: "Rigorous generation forecasting accounting for Pulivendula weather data." },
+      { title: "DISCOM Approval CAD", desc: "Single-line electrical schematics prepared to APSPDCL standards." },
+      { title: "Structural Load Safety", desc: "Wind speed resistance analysis up to 150 km/h for cyclone stability." }
+    ],
+    right_text: "At Solarfi, we use best-in-class software for rooftop solar plant engineering. Our team evaluates your roof orientation, executes shadow simulations across all 365 days of the sun's path, and optimizes string inverters for peak generation. We deliver complete MNRE & APSPDCL compliant CAD drawings ready for rapid DISCOM approvals.",
+    checklist: [
+      "365-Day 3D Shadow Simulation & Azimuth Optimization",
+      "Single-Line Electrical Diagrams (SLD) & Earthing Plans",
+      "Structural Stability & Roof Load Clearance",
+      "Guaranteed Generation Forecasts via PVsyst & AutoCAD"
+    ],
+    right_img: "images/hero_family_solar.png",
+    process_steps: [
+      { step: "01", name: "Drone Survey", desc: "High-resolution roof photography and 3D terrain point cloud mapping." },
+      { step: "02", name: "Shadow Analysis", desc: "Identifying parapet walls, trees, and future building obstructions." },
+      { step: "03", name: "Electrical Sizing", desc: "Optimizing string layouts, MPPT voltage matching, and AC/DC losses." },
+      { step: "04", name: "Sanction Blueprint", desc: "Submitting formal CAD filings to APSPDCL for net-metering sanctions." }
+    ],
+    cards: [
       {
-        "icon": "<svg viewBox='0 0 24 24' fill='currentColor'><path d='M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z'/></svg>",
-        "title": "Award-Winning Team",
-        "desc": "Led by certified solar engineers with 10+ years of EPC experience across India."
+        title: "Rooftop Layout & Shadow Analysis",
+        desc: "Custom CAD layouts engineered to capture peak morning and afternoon solar irradiance.",
+        img: "images/feat_installation.png",
+        checklist: ["15° seasonal tilt optimization", "Obstacle shade-free setback buffers", "Uniform roof weight distribution"]
       },
       {
-        "icon": "<svg viewBox='0 0 24 24' fill='currentColor'><path d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/></svg>",
-        "title": "Smart, Accurate Design",
-        "desc": "We use LiDAR, drone mapping, and solar simulation tools for precise output predictions."
+        title: "Single-Line Diagram (SLD)",
+        desc: "Complete electrical schematics with surge protection, DC isolators, and earthing pits.",
+        img: "images/feat_warranty.png",
+        checklist: ["Dual earthing protection design", "AC/DC junction box schematics", "DISCOM safety compliance checks"]
       },
       {
-        "icon": "<svg viewBox='0 0 24 24' fill='currentColor'><path d='M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z'/></svg>",
-        "title": "Customized Solutions",
-        "desc": "Tailored solar layouts adapted perfectly for maximum efficiency and site limits."
-      },
-      {
-        "icon": "<svg viewBox='0 0 24 24' fill='currentColor'><path d='M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z'/></svg>",
-        "title": "Quick Turnaround",
-        "desc": "Rapid delivery of engineering blueprints to fast-track your complete installation."
+        title: "Load Estimation & Sizing",
+        desc: "Granular energy demand analysis to match your sanctioned load and PM Surya Ghar subsidy.",
+        img: "images/feat_roi.png",
+        checklist: ["Historical 12-month bill audit", "Sanctioned load enhancement filings", "3kW to 100kW system configurations"]
       }
     ],
-    "right_text": "At Solarfi, we use best-in-class software for solar plant design. Our team evaluates your site, performs shadow analysis, and creates optimal layouts using AutoCAD & PVsyst. We deliver MNRE-compliant CAD designs ready for installation, approvals, and long-term performance.",
-    "checklist": [
-      "Shadow-Free Layout Planning",
-      "High Yield System Design",
-      "Engineering Drawings & Reports",
-      "Scalable for Rooftop and Utility Projects"
-    ],
-    "right_img": "images/feat_installation.png",
-    "cards": [
-      {
-        "title": "Solar Panel Design",
-        "desc": "Custom design for optimal solar power performance tailored to your location and load.",
-        "img": "images/feat_installation.png",
-        "checklist": [
-          "Site-specific tilt & azimuth planning",
-          "Panel placement optimization",
-          "Roof load distribution planning"
-        ]
-      },
-      {
-        "title": "Battery Integration Blueprint",
-        "desc": "Ensure seamless battery performance with precise inverter compatibility and backup plans.",
-        "img": "images/feat_amc.png",
-        "checklist": [
-          "Hybrid-ready wiring diagrams",
-          "Inverter-battery compatibility",
-          "Backup load priority design"
-        ]
-      },
-      {
-        "title": "Load Estimation & System Sizing",
-        "desc": "Analyze energy demand and calculate required system size effectively.",
-        "img": "images/feat_app.png",
-        "checklist": [
-          "Energy demand analysis",
-          "Monthly generation simulation",
-          "System sizing for residential, commercial & industrial"
-        ]
-      }
+    faqs: [
+      { q: "Why is 3D shadow analysis necessary before installation?", a: "Even partial shade on a single solar cell can reduce string output by up to 40%. Our 3D simulation ensures panels are placed exclusively in shade-free zones for maximum generation." },
+      { q: "Will installing solar panels damage my roof waterproofing?", a: "No. We utilize non-penetrative ballasted clamps or chemically sealed stainless steel anchor bolts with neoprene gaskets that maintain 100% waterproof integrity." },
+      { q: "Are your engineering drawings accepted by APSPDCL?", a: "Yes, 100%. Solarfi's blueprints strictly adhere to Central Electricity Authority (CEA) and APSPDCL technical guidelines for seamless net-metering approval." }
     ]
   },
   {
-    "filename": "procurement.html",
-    "title": "Procurement & Supply Services",
-    "meta_title": "Solar Procurement & Supply Services | Solarfi",
-    "meta_desc": "Top-quality solar components sourced directly from verified Tier-1 manufacturers with full warranty support.",
-    "subtitle": "Top-Quality Solar Components Sourced & Delivered",
-    "breadcrumb": "Procurement & Supply Services",
-    "info_subtitle": "PROJECTS SUPPLIED AND INSTALLED",
-    "info_title": "Reliable Procurement for Long-Lasting Solar Performance",
-    "left_image": "images/feat_installation.png",
-    "features": [
+    filename: "procurement.html",
+    title: "Procurement & Supply Services",
+    meta_title: "Solar Procurement & Supply Services | Solarfi Pulivendula",
+    meta_desc: "Tier-1 solar panels, inverters, and mounting hardware procured directly from verified manufacturers with 30-year warranty support.",
+    subtitle: "Direct-from-Manufacturer Tier-1 Components for Lifetime Reliability",
+    breadcrumb: "Procurement & Supply",
+    service_pill: "02 · Tier-1 Hardware",
+    header_svg: `<svg viewBox="0 0 540 280" fill="none" class="solar-flow-svg">
+      <rect width="540" height="280" fill="#0d141e" rx="20"/>
+      <!-- Tier 1 badge -->
+      <circle cx="270" cy="120" r="64" fill="rgba(249,115,22,0.15)" stroke="#f97316" stroke-width="2"/>
+      <path d="M250 120 L265 135 L295 105" stroke="#22c55e" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="270" y="210" fill="#ffffff" font-size="15" font-weight="800" text-anchor="middle">BloombergNEF Tier-1 Certified</text>
+      <text x="270" y="230" fill="#9ca3af" font-size="12" text-anchor="middle">Waaree · Vikram Solar · Growatt · BIS &amp; ALMM Approved</text>
+    </svg>`,
+    info_title: "Reliable Procurement for 30+ Years of Solar Performance",
+    left_image: "images/feat_installation.png",
+    features: [
+      { title: "Direct Factory Sourcing", desc: "Procured straight from Tier-1 manufacturers eliminating middlemen markups." },
+      { title: "ALMM & BIS Verified", desc: "All modules certified on the MNRE Approved List of Module Manufacturers." },
+      { title: "Galvanized Structure", desc: "Hot-dip galvanized steel engineered to resist coastal and dryland rust." },
+      { title: "Full Warranty Documentation", desc: "Direct manufacturer warranty cards and factory flash test data." }
+    ],
+    right_text: "Solarfi procures only Tier-1 high-efficiency solar panels, hybrid inverters, and galvanized mounting hardware from industry leaders such as Vikram Solar, Waaree, and Growatt. Every component meets strict Bureau of Indian Standards (BIS) and MNRE specifications, ensuring maximum energy yields and total peace of mind.",
+    checklist: [
+      "Tier-1 BloombergNEF Rated Mono PERC & Bifacial Modules",
+      "High-Efficiency Inverters with 98.6% Conversion Rates",
+      "Hot-Dip Galvanized Mounting Structures (80-Micron Coating)",
+      "UV-Resistant Dual-Insulated DC Copper Cabling"
+    ],
+    right_img: "images/soalr-pannel-fixing-team.jpg",
+    process_steps: [
+      { step: "01", name: "Component Selection", desc: "Matching solar module ratings to site temperature and DISCOM voltage." },
+      { step: "02", name: "Factory Flash Test", desc: "Auditing factory test reports for peak wattage and cell luminescence." },
+      { step: "03", name: "Protected Transport", desc: "Direct delivery to your rooftop in Pulivendula with zero transit damage." },
+      { step: "04", name: "Warranty Registry", desc: "Registering official 25-30 year performance warranties directly with makers." }
+    ],
+    cards: [
       {
-        "icon": "<svg viewBox='0 0 24 24' fill='currentColor'><path d='M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z'/></svg>",
-        "title": "Verified Partners",
-        "desc": "We source our products directly from certified brands to ensure authenticity and optimal performance."
+        title: "Tier-1 Mono & Bifacial Panels",
+        desc: "550W+ high-density panels capturing sunlight from both top and reflected ground surfaces.",
+        img: "images/feat_subsidy.png",
+        checklist: ["ALMM listed for PM Surya Ghar", "Low-light degradation resistance", "30-year linear power warranty"]
       },
       {
-        "icon": "<svg viewBox='0 0 24 24' fill='currentColor'><path d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/></svg>",
-        "title": "Efficient Logistics",
-        "desc": "Our supply chain ensures timely delivery to site, reducing project delays."
+        title: "Grid-Tie & Hybrid Inverters",
+        desc: "Advanced MPPT inverters delivering stable sinusoidal AC with instant mobile tracking.",
+        img: "images/feat_warranty.png",
+        checklist: ["Dual MPPT string trackers", "Built-in Wi-Fi and 4G data logging", "IP65 weatherproof enclosures"]
       },
       {
-        "icon": "<svg viewBox='0 0 24 24' fill='currentColor'><path d='M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z'/></svg>",
-        "title": "Full Warranty Support",
-        "desc": "All procured items come with manufacturer warranties and documentation."
-      },
-      {
-        "icon": "<svg viewBox='0 0 24 24' fill='currentColor'><path d='M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z'/></svg>",
-        "title": "Cost-Effective Pricing",
-        "desc": "Competitive pricing for high-quality components without ever compromising on standard."
+        title: "Mounting & Safety Hardware",
+        desc: "Heavy-gauge galvanized steel and class-A earthing rods to safeguard your home against lightning.",
+        img: "images/feat_app.png",
+        checklist: ["80+ micron hot-dip galvanization", "Class-1 lightning arrestors", "Chemical earthing compound kits"]
       }
     ],
-    "right_text": "At Solarfi, we procure only Tier-1 solar panels, inverters, and mounting systems from trusted manufacturers like Vikram Solar, Waaree, and Growatt. All materials meet MNRE and BIS standards for quality, warranty, and reliability. We handle the entire supply chain — so you don't have to.",
-    "checklist": [
-      "Tier-1 Certified Equipment",
-      "Verified Vendor Network",
-      "Fast On-Site Delivery",
-      "MNRE/BIS Compliant Materials"
-    ],
-    "right_img": "images/hero_family_solar.png",
-    "cards": [
-      {
-        "title": "Solar Panel Supply",
-        "desc": "High-efficiency mono & bifacial panels with long-term performance warranties from Tier-1 manufacturers.",
-        "img": "images/feat_subsidy.png",
-        "checklist": [
-          "High-efficiency mono & bifacial panels",
-          "Tier-1 rated by BloombergNEF",
-          "Long-term performance warranties"
-        ]
-      },
-      {
-        "title": "Inverter & Mounting Hardware",
-        "desc": "Compliant inverter solutions and galvanized mounting structures to handle monitoring capabilities.",
-        "img": "images/feat_warranty.png",
-        "checklist": [
-          "On-grid, off-grid & hybrid inverters",
-          "Galvanized mounting structures",
-          "Remote monitoring hardware"
-        ]
-      },
-      {
-        "title": "Batteries & Accessories",
-        "desc": "Complete range of energy storage solutions and essential accessories for optimal system performance.",
-        "img": "images/feat_app.png",
-        "checklist": [
-          "Lithium & lead-acid batteries",
-          "Surge protectors, DC cabling and connectors",
-          "Electrical junction boxes"
-        ]
-      }
+    faqs: [
+      { q: "Which solar panel brands do you install?", a: "We install only Tier-1 manufacturers like Waaree, Vikram Solar, and Tata Power Solar, all of which are on the MNRE Approved List of Models and Manufacturers (ALMM)." },
+      { q: "How long is the warranty on panels and inverters?", a: "Panels come with a 25 to 30-year linear performance warranty. Inverters carry a 5 to 10-year manufacturer replacement warranty with local service support." },
+      { q: "Are all components eligible for PM Surya Ghar subsidy?", a: "Yes. Every single panel, inverter, and meter we procure is 100% compliant with Central Government PM Surya Ghar technical specifications." }
     ]
   },
   {
-    "filename": "installation-commissioning.html",
-    "title": "Installation & Commissioning Services",
-    "meta_title": "Solar Installation & Commissioning | Solarfi",
-    "meta_desc": "Professional, fast, and compliant solar installation services across India by MNRE-certified technicians.",
-    "subtitle": "Seamless Solar Setups – Certified, Compliant, and Efficient",
-    "breadcrumb": "Installation & Commissioning Services",
-    "info_subtitle": "PROJECTS SUPPLIED AND INSTALLER",
-    "info_title": "Flawless Execution from Panel to Power",
-    "left_image": "images/feat_installation.png",
-    "features": [
+    filename: "installation-commissioning.html",
+    title: "Installation & Commissioning",
+    meta_title: "Solar Installation & Commissioning | Solarfi Pulivendula",
+    meta_desc: "Professional 48-hour solar installation in Andhra Pradesh by MNRE-certified electricians. APSPDCL net-metering and grid-tie commissioning.",
+    subtitle: "Fast-Track 48-Hour Installation with Certified Electrical Safety",
+    breadcrumb: "Installation & Commissioning",
+    service_pill: "03 · Precision Build",
+    header_svg: `<svg viewBox="0 0 540 280" fill="none" class="solar-flow-svg">
+      <rect width="540" height="280" fill="#0d141e" rx="20"/>
+      <!-- Grid line -->
+      <line x1="80" y1="200" x2="460" y2="200" stroke="rgba(255,255,255,0.15)" stroke-width="2"/>
+      <!-- Solar Array on Roof -->
+      <polygon points="140,160 260,110 380,160 260,200" fill="rgba(26,140,62,0.3)" stroke="#1a8c3e" stroke-width="2"/>
+      <circle cx="260" cy="155" r="8" fill="#f97316"/>
+      <text x="270" y="240" fill="#ffffff" font-size="14" font-weight="800" text-anchor="middle">48-Hour Guaranteed Installation</text>
+      <text x="270" y="258" fill="#22c55e" font-size="12" font-weight="600" text-anchor="middle">Certified MNRE Technicians · Zero Leakage Mounting</text>
+    </svg>`,
+    info_title: "Flawless Execution from Rooftop to the Grid",
+    left_image: "images/soalr-pannel-fixing-team2.jpg",
+    features: [
+      { title: "48-Hour Execution", desc: "Physical mounting completed in just 2 days with zero disruption to your daily life." },
+      { title: "Certified Electricians", desc: "MNRE-trained technicians with 16+ years of specialized solar experience." },
+      { title: "Dual Earth Pits", desc: "Dedicated copper earthing for lightning protection and equipment safety." },
+      { title: "Commissioning Certificate", desc: "Full DISCOM inspection report and official net-meter synchronization." }
+    ],
+    right_text: "At Solarfi, our installation teams are certified by the National Institute of Solar Energy (NISE) and MNRE. We treat your rooftop with utmost care: using non-destructive clamps, industrial torque wrenches on all bolts, and weatherproof conduit piping. Once mounted, we synchronize your bi-directional meter with the APSPDCL grid.",
+    checklist: [
+      "Rigid Structural Anchoring Tailored to RCC & Sheet Roofs",
+      "Dedicated AC/DC Segregated Conduits with Fire-Retardant Sleeving",
+      "Chemical Earthing Pit Installation (< 2 Ohms Resistance)",
+      "DISCOM Net-Meter Synchronization & Official Handover"
+    ],
+    right_img: "images/hero_family_solar.png",
+    process_steps: [
+      { step: "01", name: "Structure Assembly", desc: "Setting galvanized pillars, purlins, and rafter beams to precision tilt." },
+      { step: "02", name: "Panel Clamping", desc: "Mounting Tier-1 panels with stainless mid-clamps and end-clamps." },
+      { step: "03", name: "Wiring & Earthing", desc: "Connecting DC strings, junction boxes, and separate chemical earth pits." },
+      { step: "04", name: "Grid Sync", desc: "Joint inspection with DISCOM assistant engineers and bi-directional test." }
+    ],
+    cards: [
       {
-        "icon": "<svg viewBox='0 0 24 24' fill='currentColor'><path d='M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z'/></svg>",
-        "title": "Certified Crew",
-        "desc": "Our team consists of trained professionals with hands-on experience in urban and rural solar installations."
+        title: "Residential Rooftop Mounting",
+        desc: "Tailored to Indian concrete RCC terraces, preserving walking space and drying areas.",
+        img: "images/feat_installation.png",
+        checklist: ["Elevated structures available", "Zero roof water leakage", "Clean concealed wiring conduits"]
       },
       {
-        "icon": "<svg viewBox='0 0 24 24' fill='currentColor'><path d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/></svg>",
-        "title": "On-Time Execution",
-        "desc": "We commit to fast-track installations with project timelines ranging from 3 to 14 days based on system size."
+        title: "Commercial & Industrial Setups",
+        desc: "Large-scale solar installations for factories, warehouses, schools, and hospitals.",
+        img: "images/feat_amc.png",
+        checklist: ["Trapezoidal sheet clamps", "Walkway & safety lifeline setup", "LT/HT breaker synchronization"]
       },
       {
-        "icon": "<svg viewBox='0 0 24 24' fill='currentColor'><path d='M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z'/></svg>",
-        "title": "Complete Documentation",
-        "desc": "We provide installation reports, test sheets and commissioning certificates for all projects."
-      },
-      {
-        "icon": "<svg viewBox='0 0 24 24' fill='currentColor'><path d='M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z'/></svg>",
-        "title": "Safety First Approach",
-        "desc": "Strict adherence to electrical and structural safety standards without compromise."
+        title: "Net Metering Commissioning",
+        desc: "End-to-end liaison with APSPDCL from initial sanction to bi-directional meter installation.",
+        img: "images/feat_app.png",
+        checklist: ["DISCOM test certificate", "Export/import meter programming", "Portal subsidy claim submission"]
       }
     ],
-    "right_text": "At Solarfi, we ensure fail-proof installation and commissioning for rooftop, ground-mounted, and hybrid solar systems. Our MNRE-certified technicians ensure error-free execution from mounting to grid synchronization. We adhere strictly to local load limits, electrical codes, and site-specific standards for maximum system performance.",
-    "checklist": [
-      "Certified Installation Teams",
-      "MNRE & DISCOM Compliance",
-      "Fast Turnaround",
-      "Grid-Ready Commissioning"
-    ],
-    "right_img": "images/hero_family_solar.png",
-    "cards": [
-      {
-        "title": "Residential & Rooftop Setup",
-        "desc": "Professional rooftop installations with net-metering-ready sizing for residential properties.",
-        "img": "images/feat_subsidy.png",
-        "checklist": [
-          "MNRE/BIS compliant mounting",
-          "Net-metering ready setup",
-          "Earth, SPD & grounding installations"
-        ]
-      },
-      {
-        "title": "Commercial & Industrial Installations",
-        "desc": "Large-scale installations for commercial and industrial applications with complete safety systems.",
-        "img": "images/feat_amc.png",
-        "checklist": [
-          "Large-scale mounting & grid-compliant systems",
-          "Internal AC/DC wiring & junction boxes",
-          "Transformer set up with cabling & safety"
-        ]
-      },
-      {
-        "title": "Hybrid & EV Integration",
-        "desc": "Advanced hybrid systems with EV charging integration and intelligent backup configurations.",
-        "img": "images/feat_app.png",
-        "checklist": [
-          "EV charging point integrations",
-          "Battery-inverter wiring",
-          "Auto-switch backup configurations"
-        ]
-      }
+    faqs: [
+      { q: "How long does physical rooftop installation take?", a: "For residential systems up to 10kW, physical mounting and wiring is completed within 48 hours. Net-meter inspection by DISCOM takes another 5-10 working days." },
+      { q: "Will installation disrupt my household power supply?", a: "No. Your normal power remains on throughout the structural mounting. Only a brief 20-minute shutdown is needed during final inverter connection to your main distribution board." },
+      { q: "Do you handle the APSPDCL net meter replacement?", a: "Yes. Solarfi handles the entire process — from testing the bi-directional meter at the departmental testing lab to on-site sealing and energization." }
     ]
   },
   {
-    "filename": "operations-maintenance.html",
-    "title": "Operations & Maintenance (O&M)",
-    "meta_title": "Solar Operations & Maintenance (O&M) | Solarfi",
-    "meta_desc": "Maximize your solar investment with our proactive O&M services, real-time monitoring, and detailed reporting.",
-    "subtitle": "Ensure Peak Performance with Smart Solar Care",
-    "breadcrumb": "Operations & Maintenance (O&M)",
-    "info_subtitle": "PROJECTS SUPPLIED AND INSTALLER",
-    "info_title": "Protect Your Solar Investment for Years to Come",
-    "left_image": "images/hero_family_solar.png",
-    "features": [
+    filename: "operations-maintenance.html",
+    title: "Operations & Maintenance (O&M)",
+    meta_title: "Solar O&M & Annual Maintenance Contracts | Solarfi",
+    meta_desc: "Keep your solar system generating at peak capacity with Solarfi AMC services. Real-time generation alerts, panel cleaning, and electrical health checkups.",
+    subtitle: "Protect Your Solar Investment with Proactive AMC & Live Monitoring",
+    breadcrumb: "Operations & Maintenance",
+    service_pill: "04 · Long-Term Care",
+    header_svg: `<svg viewBox="0 0 540 280" fill="none" class="solar-flow-svg">
+      <rect width="540" height="280" fill="#0d141e" rx="20"/>
+      <!-- Pulse radar -->
+      <circle cx="270" cy="130" r="70" stroke="rgba(34,197,94,0.3)" stroke-width="2"/>
+      <circle cx="270" cy="130" r="45" stroke="rgba(34,197,94,0.5)" stroke-width="2"/>
+      <circle cx="270" cy="130" r="20" fill="#22c55e"/>
+      <text x="270" y="235" fill="#ffffff" font-size="14" font-weight="800" text-anchor="middle">24/7 Smart Telemetry &amp; Field AMC</text>
+      <text x="270" y="255" fill="#9ca3af" font-size="12" text-anchor="middle">Free 1st Year AMC · Immediate Local AP Dispatch</text>
+    </svg>`,
+    info_title: "Protect Your Generation Yield for Decades to Come",
+    left_image: "images/savings_solar_home.png",
+    features: [
+      { title: "Free 1st Year AMC", desc: "Complimentary comprehensive maintenance included with every Solarfi system." },
+      { title: "De-ionized Cleaning", desc: "Regular de-soiling visits restoring up to 15% generation lost to dry dust." },
+      { title: "Infrared Thermal Scan", desc: "Drone thermal imaging to detect hot spots, diode failures, and micro-cracks." },
+      { title: "Local AP Service Fleet", desc: "Pulivendula based response team resolving inverter issues within 24 hours." }
+    ],
+    right_text: "Solar panels are built to generate for 30+ years, but local dust, heat, and grid fluctuations require routine maintenance to ensure peak efficiency. Solarfi offers end-to-end Operations & Maintenance (O&M) contracts. We monitor your system via smart cloud telemetry, notify you of anomalies, and dispatch field technicians for preventive care.",
+    checklist: [
+      "24/7 Remote Generation Monitoring with Instant WhatsApp Alerts",
+      "Scheduled High-Pressure Panel Cleaning & Soil Removal",
+      "Thermographic Hotspot Scanning & Inverter Diagnostics",
+      "Earthing Resistance Audits & Lightning Protection Checks"
+    ],
+    right_img: "images/100-projets-completion.jpeg",
+    process_steps: [
+      { step: "01", name: "Telemetry Monitoring", desc: "Inverter sends 5-minute generation metrics to our local monitoring station." },
+      { step: "02", name: "Automated Alerts", desc: "System flags any grid drop, under-voltage, or panel string mismatch." },
+      { step: "03", name: "Scheduled Visits", desc: "Technicians clean panels and check connection torques every quarter." },
+      { step: "04", name: "Performance Report", desc: "Monthly summary sent to you documenting kWh generated and ₹ saved." }
+    ],
+    cards: [
       {
-        "icon": "<svg viewBox='0 0 24 24' fill='currentColor'><path d='M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z'/></svg>",
-        "title": "Real-Time Monitoring",
-        "desc": "We track system health constantly and detect faults before they affect performance."
+        title: "Comprehensive AMC Package",
+        desc: "Complete peace of mind covering all electrical components, quarterly cleaning, and emergency repairs.",
+        img: "images/feat_amc.png",
+        checklist: ["Quarterly deep cleaning visits", "Priority on-site technician dispatch", "Free fuse, SPD, and cable replacements"]
       },
       {
-        "icon": "<svg viewBox='0 0 24 24' fill='currentColor'><path d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/></svg>",
-        "title": "Trained Maintenance Crew",
-        "desc": "Our technicians conduct regular inspections, panel cleaning, inverter checks, and electrical testing."
+        title: "Remote Monitoring Support",
+        desc: "Live generation tracking on your smartphone with instant fault diagnosis from our command hub.",
+        img: "images/feat_app.png",
+        checklist: ["Daily generation vs target graphs", "Inverter error code decoding", "Export credit tracking on bill"]
       },
       {
-        "icon": "<svg viewBox='0 0 24 24' fill='currentColor'><path d='M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z'/></svg>",
-        "title": "Detailed Reporting",
-        "desc": "You'll receive monthly performance reports, fault summaries, and maintenance records."
-      },
-      {
-        "icon": "<svg viewBox='0 0 24 24' fill='currentColor'><path d='M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z'/></svg>",
-        "title": "Maximized Uptime",
-        "desc": "Proactive checks to ensure your system never stops generating and downtime is eliminated."
+        title: "System Retrofits & Upgrades",
+        desc: "Expand your existing rooftop plant, add battery storage, or integrate EV charging points.",
+        img: "images/feat_warranty.png",
+        checklist: ["Hybrid inverter conversions", "Lithium battery retrofits", "Panel capacity expansion"]
       }
     ],
-    "right_text": "At Solarfi, our Operations & Maintenance (O&M) services are built to keep your solar system running at optimal capacity. We offer real-time monitoring, preventive maintenance, and remote fault detection to ensure high uptime and maximum ROI. Our support doesn't stop at installation — we stay with you for the long run.",
-    "checklist": [
-      "Live Monitoring & Alerts",
-      "Preventive Site Visits",
-      "Remote Diagnostics",
-      "Annual Maintenance Contracts (AMC)"
-    ],
-    "right_img": "images/feat_app.png",
-    "cards": [
-      {
-        "title": "Remote Performance Tracking",
-        "desc": "Comprehensive monitoring systems with real-time alerts and performance tracking capabilities.",
-        "img": "images/feat_app.png",
-        "checklist": [
-          "Live generation status on mobile/web portal",
-          "Alert system for inverter failures",
-          "Load mismatch notifications"
-        ]
-      },
-      {
-        "title": "Scheduled Maintenance",
-        "desc": "Regular preventive maintenance services to ensure optimal system performance and longevity.",
-        "img": "images/feat_amc.png",
-        "checklist": [
-          "Periodic panel cleaning",
-          "Thermal scanning for hotspots",
-          "Cable and junction box inspections"
-        ]
-      },
-      {
-        "title": "AMC Packages & Upgrades",
-        "desc": "Comprehensive maintenance contracts and upgrade services tailored to your system needs.",
-        "img": "images/feat_warranty.png",
-        "checklist": [
-          "Custom AMC contracts",
-          "Battery health checkups",
-          "System expansions & retrofits support"
-        ]
-      }
+    faqs: [
+      { q: "How often should solar panels be cleaned in Andhra Pradesh?", a: "Due to dry weather and agricultural dust in Rayalaseema, panels should be cleaned every 15-20 days. Clean panels yield up to 15% more power than dusty panels." },
+      { q: "What is included in the free 1st year AMC?", a: "Our free 1st year AMC includes quarterly on-site panel washing, electrical connection checkups, inverter firmware updates, and unlimited emergency diagnostic visits." },
+      { q: "How do I renew my AMC after the first year?", a: "We offer affordable annual AMC renewals starting at low annual rates, ensuring your system remains under certified engineer protection indefinitely." }
     ]
   },
   {
-    "filename": "ev-charging-battery-storage.html",
-    "title": "EV Charging & Battery Storage",
-    "meta_title": "EV Charging & Battery Storage Solutions | Solarfi",
-    "meta_desc": "Future-proof your energy with hybrid solar systems, reliable battery storage, and smart EV charging integration.",
-    "subtitle": "Future-Ready Energy For Homes, Businesses & Mobility",
-    "breadcrumb": "EV Charging & Battery Storage",
-    "info_subtitle": "PROJECTS SUPPLIED AND INSTALLED",
-    "info_title": "Power Today, Store for Tomorrow",
-    "left_image": "images/feat_installation.png",
-    "features": [
+    filename: "ev-charging-battery-storage.html",
+    title: "EV Charging & Battery Storage",
+    meta_title: "EV Charging & Battery Storage Solutions | Solarfi",
+    meta_desc: "Future-proof your home with hybrid solar systems, lithium battery storage, and smart EV charging in Andhra Pradesh. Power day and night.",
+    subtitle: "Complete Energy Independence: Clean Solar Power Day and Night",
+    breadcrumb: "EV Charging & Storage",
+    service_pill: "05 · Future Mobility",
+    header_svg: `<svg viewBox="0 0 540 280" fill="none" class="solar-flow-svg">
+      <rect width="540" height="280" fill="#0d141e" rx="20"/>
+      <!-- Battery icon -->
+      <rect x="140" y="80" width="100" height="120" rx="16" fill="#1e293b" stroke="#22c55e" stroke-width="2"/>
+      <rect x="165" y="65" width="50" height="15" rx="6" fill="#22c55e"/>
+      <rect x="155" y="110" width="70" height="70" rx="8" fill="rgba(34,197,94,0.3)"/>
+      <text x="190" y="152" fill="#22c55e" font-size="18" font-weight="800" text-anchor="middle">LiFePO4</text>
+      <!-- EV Charging connector -->
+      <circle cx="380" cy="140" r="50" fill="#1e293b" stroke="#f97316" stroke-width="2"/>
+      <path d="M375 115 L365 145 L385 145 L375 170" stroke="#f97316" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="270" y="240" fill="#ffffff" font-size="14" font-weight="800" text-anchor="middle">Hybrid Solar · Lithium Storage · Type-2 EV Fast Charge</text>
+    </svg>`,
+    info_title: "Power Your Home Today, Charge Your Vehicle for Free Tomorrow",
+    left_image: "images/hero_family_solar.png",
+    features: [
+      { title: "Hybrid-Ready Architecture", desc: "Seamless transition between solar, battery, and DISCOM grid in under 10ms." },
+      { title: "LiFePO4 Battery Safety", desc: "Safe, non-combustible lithium iron phosphate chemistry with 6,000+ cycles." },
+      { title: "Type-2 Fast EV Charging", desc: "7.4kW and 11kW AC chargers compatible with all Indian 2-wheeler and 4-wheeler EVs." },
+      { title: "10-Year Battery Warranty", desc: "Long-lasting battery packs with intelligent Battery Management Systems (BMS)." }
+    ],
+    right_text: "At Solarfi, we design and install hybrid solar energy systems that combine rooftop solar generation with advanced lithium battery storage and electric vehicle (EV) charging. Whether you want 100% backup during summer outages or free fuel for your electric car, our integrated solutions ensure complete power security.",
+    checklist: [
+      "Hybrid Inverter with Zero-Flicker Backup (< 10ms UPS Transfer)",
+      "High-Cycle LiFePO4 Lithium Batteries with 10-Year Service Life",
+      "Smart EV Wallbox Integration (Type-1 & Type-2 Sockets)",
+      "Automated Time-of-Use Peak Shaving Configuration"
+    ],
+    right_img: "images/savings_solar_home.png",
+    process_steps: [
+      { step: "01", name: "Backup Load Audit", desc: "Calculating critical appliances (refrigerator, lights, fans, AC, EV)." },
+      { step: "02", name: "Hybrid Sizing", desc: "Matching panel wattage to daytime loads and battery storage capacity." },
+      { step: "03", name: "BMS & Charger Wiring", desc: "Installing intelligent battery cabinets and dedicated EV charging breakers." },
+      { step: "04", name: "Smart App Setup", desc: "Configuring auto-switch thresholds and EV charging schedules." }
+    ],
+    cards: [
       {
-        "icon": "<svg viewBox='0 0 24 24' fill='currentColor'><path d='M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z'/></svg>",
-        "title": "Battery-Ready Systems",
-        "desc": "All new installations are upgradeable to hybrid mode when inverters become inoperable."
+        title: "Lithium Battery Energy Storage",
+        desc: "Modular lithium battery packs that charge from excess solar during the day and power your home through the night.",
+        img: "images/feat_app.png",
+        checklist: ["6,000+ deep discharge cycles", "Compact wall-mount design", "Zero maintenance required"]
       },
       {
-        "icon": "<svg viewBox='0 0 24 24' fill='currentColor'><path d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/></svg>",
-        "title": "EV Charging Integration",
-        "desc": "Install EV compatible solar setups with standard Type 2 or fast DC charging options."
+        title: "Home & Commercial EV Charging",
+        desc: "Dedicated Level-2 AC wallbox chargers powering electric cars directly from daytime rooftop sunshine.",
+        img: "images/feat_installation.png",
+        checklist: ["Type-2 universal socket", "RFID authentication & auto-cutoff", "Weatherproof IP65 outdoor casing"]
       },
       {
-        "icon": "<svg viewBox='0 0 24 24' fill='currentColor'><path d='M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z'/></svg>",
-        "title": "Smart Energy Usage",
-        "desc": "Our systems automatically store excess solar and manage power flow during peak hours."
-      },
-      {
-        "icon": "<svg viewBox='0 0 24 24' fill='currentColor'><path d='M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z'/></svg>",
-        "title": "Future-Proof Design",
-        "desc": "Easily scalable systems engineered to accommodate your future extra loads and storages."
+        title: "Smart Hybrid Inverter System",
+        desc: "Bi-directional intelligent inverters managing dynamic power flow between solar, battery, and DISCOM net-metering.",
+        img: "images/feat_amc.png",
+        checklist: ["Seamless UPS backup function", "Excess power export to grid", "Customizable peak-hour priority"]
       }
     ],
-    "right_text": "At Solarfi, we design and install hybrid solar systems that support both battery storage and EV charging. Whether you're powering a home, office, or electric vehicle, our solutions ensure energy independence and uninterrupted power day or night. We integrate lithium batteries, smart charge controllers, and EV-ready wiring right at the power source.",
-    "checklist": [
-      "Hybrid Solar System Design",
-      "EV Charging Point Installation",
-      "Lithium & Lead-Acid Battery Supply",
-      "Backup Power During Outages"
-    ],
-    "right_img": "images/savings_solar_home.png",
-    "cards": [
-      {
-        "title": "Battery Storage Setup",
-        "desc": "Complete battery backup solutions with smart inverter integration for reliable backup power.",
-        "img": "images/feat_app.png",
-        "checklist": [
-          "Lithium-Ion & lead-acid options",
-          "Inverter battery sizing & wiring",
-          "Night-time backup configuration"
-        ]
-      },
-      {
-        "title": "EV Charging Station Installation",
-        "desc": "Professional EV charging station installation with various charging options for all vehicle types.",
-        "img": "images/hero_family_solar.png",
-        "checklist": [
-          "Type 1/Type 2 sockets for 2-wheelers & 4-wheelers",
-          "DC fast charging for commercial spaces",
-          "Wall-mounted and outdoor installations"
-        ]
-      },
-      {
-        "title": "Hybrid System Management",
-        "desc": "Intelligent energy management systems that optimize power flow between solar, battery, and grid.",
-        "img": "images/feat_amc.png",
-        "checklist": [
-          "Load prioritization settings",
-          "Auto-switch between solar, battery & grid",
-          "Monitoring via mobile apps"
-        ]
-      }
+    faqs: [
+      { q: "Can I charge my EV directly with rooftop solar?", a: "Yes! A 3kW to 5kW Solarfi rooftop system generates plenty of excess daytime energy to charge electric two-wheelers and four-wheelers completely free of grid tariffs." },
+      { q: "How long does a lithium battery bank provide backup?", a: "A standard 5kWh lithium battery powers typical residential essential loads (fans, LED lights, Wi-Fi, and refrigerator) for 8 to 12 hours during an outage." },
+      { q: "Can battery storage be added to my existing on-grid solar plant?", a: "Yes. Solarfi installs AC-coupled battery retrofit systems that connect seamlessly to existing on-grid installations without replacing your current panels or inverter." }
     ]
   }
 ];
 
-const html_template = `<!DOCTYPE html>
+function buildFeatures(features) {
+  return features.map(f => `
+    <div class="feature-item">
+      <div class="icon-circle">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      </div>
+      <h4>${f.title}</h4>
+      <p>${f.desc}</p>
+    </div>
+  `).join('');
+}
+
+function buildChecklist(checklist) {
+  return checklist.map(item => `<li>${item}</li>`).join('\n');
+}
+
+function buildProcess(steps) {
+  return `
+    <div class="timeline-grid" style="grid-template-columns: repeat(4, 1fr); margin-top: 32px;">
+      ${steps.map(s => `
+        <div class="timeline-node">
+          <div class="timeline-circle">${s.step}</div>
+          <div>
+            <div class="timeline-title">${s.name}</div>
+            <div class="timeline-desc">${s.desc}</div>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+function buildCards(cards) {
+  return cards.map(c => `
+    <div class="offer-card">
+      <div class="card-header">
+        <h3>${c.title}</h3>
+      </div>
+      <div class="card-middle">
+        <img src="${c.img}" alt="${c.title}" class="card-img" loading="lazy" width="380" height="200" />
+      </div>
+      <div class="card-body">
+        <p>${c.desc}</p>
+        <ul class="card-list">
+          ${c.checklist.map(item => `
+            <li>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+              ${item}
+            </li>
+          `).join('')}
+        </ul>
+      </div>
+    </div>
+  `).join('');
+}
+
+function buildFaqs(faqs) {
+  return faqs.map((f, i) => `
+    <div class="faq-item ${i === 0 ? 'open' : ''}" onclick="toggleFaq(this)">
+      <button type="button" class="faq-q">${f.q} <span class="arrow">&#8964;</span></button>
+      <div class="faq-a"><p>${f.a}</p></div>
+    </div>
+  `).join('');
+}
+
+function renderPage(page) {
+  return `<!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>__META_TITLE__</title>
-  <meta name="description" content="__META_DESC__">
-  <link rel="icon" type="image/png" href="images/favicon.png">
-  <link href="inner.css" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>${page.meta_title}</title>
+  <meta name="description" content="${page.meta_desc}" />
+  <link rel="canonical" href="https://solarfi.in/${page.filename}" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="${page.meta_title}" />
+  <meta property="og:description" content="${page.meta_desc}" />
+  <meta property="og:url" content="https://solarfi.in/${page.filename}" />
+  <meta property="og:image" content="images/logo.png" />
+
+  <link rel="icon" type="image/png" href="images/favicon.png" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="inner.css" />
+  <link rel="stylesheet" href="graphics.css" />
+
+  <!-- Chatbot Integration -->
+  <script src="https://cdn.socket.io/4.5.4/socket.io.min.js" defer></script>
+  <script src="chatbot.js" defer></script>
+
+  <!-- Motion Choreography ES Module -->
+  <script type="module" src="motion.js"></script>
 </head>
+
 <body>
 
-  <!-- HEADER/NAV -->
-  <nav id="navbar">
+  <!-- ── 1. Top Navigation Bar ─────────────────────────────────────────── -->
+  <nav id="navbar" aria-label="Main Navigation">
     <div class="nav-inner">
-      <a href="index.html" class="logo">
-        <img src="images/logo.png" alt="Solarfi Logo" class="logo-icon">
+      <a href="index.html" class="logo" aria-label="Solarfi Home">
+        <img src="images/logo.png" alt="Solarfi Logo" class="logo-icon" width="200" height="66" />
       </a>
+
       <div class="nav-links">
         <a href="index.html#features">Why Solarfi</a>
         <div class="nav-dropdown">
-          <a href="#services">Services ▾</a>
+          <a href="#services" style="color:#ffffff;">Services ▾</a>
           <div class="dropdown-content">
-            <a href="design-engineering.html">Design & Engineering</a>
-            <a href="procurement.html">Procurement Supply</a>    <a href="installation-commissioning.html">Installation & Comm.</a>
-            <a href="operations-maintenance.html">Operations & Maintenance</a>
+            <a href="design-engineering.html">Design &amp; Engineering</a>
+            <a href="procurement.html">Procurement Supply</a>
+            <a href="installation-commissioning.html">Installation &amp; Commissioning</a>
+            <a href="operations-maintenance.html">Operations &amp; Maintenance</a>
             <a href="ev-charging-battery-storage.html">EV Charging Integration</a>
           </div>
         </div>
-        <a href="index.html#savings">Calculator</a>
-        <a href="index.html#process">About Us</a>
+        <a href="index.html#savings">Savings Calculator</a>
+        <a href="about-us.html">About Us</a>
         <a href="contact-us.html">Contact Us</a>
       </div>
-      <a href="contact-us.html" class="nav-cta">Get Free Quote</a>
-      <div class="hamburger" id="hamburger" onclick="this.classList.toggle('open'); document.getElementById('mobileMenu').classList.toggle('open')">
+
+      <div class="nav-actions">
+        <a href="https://wa.me/917358258385?text=Hello%20Solarfi%20Team%2C%20I'm%20interested%20in%20${encodeURIComponent(page.title)}."
+          target="_blank" rel="noopener noreferrer" class="nav-wa-btn" aria-label="WhatsApp Us">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+          </svg>
+          WhatsApp Us
+        </a>
+        <a href="contact-us.html" class="nav-cta">Get Free Quote</a>
+      </div>
+
+      <div class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Toggle navigation menu">
         <span></span><span></span><span></span>
       </div>
     </div>
+
     <div class="mobile-menu" id="mobileMenu">
       <a href="index.html#features">Why Solarfi</a>
       <div class="mobile-dropdown">
         <a href="javascript:void(0)" onclick="this.parentElement.classList.toggle('open')">Services ▾</a>
         <div class="mobile-dropdown-content">
-          <a href="design-engineering.html">Design & Eng.</a>
+          <a href="design-engineering.html">Design &amp; Engineering</a>
           <a href="procurement.html">Procurement Supply</a>
-          <a href="installation-commissioning.html">Installation Setups</a>
-          <a href="operations-maintenance.html">Operations & Maintenance</a>
-          <a href="ev-charging-battery-storage.html">EV Charging</a>
+          <a href="installation-commissioning.html">Installation &amp; Commissioning</a>
+          <a href="operations-maintenance.html">Operations &amp; Maintenance</a>
+          <a href="ev-charging-battery-storage.html">EV Charging Integration</a>
         </div>
       </div>
-      <a href="index.html#savings">Calculator</a>
-      <a href="index.html#process">About Us</a>
+      <a href="index.html#savings">Savings Calculator</a>
+      <a href="about-us.html">About Us</a>
       <a href="contact-us.html">Contact Us</a>
-      <a href="contact-us.html" style="color:#fbbf24;font-weight:700">Get Free Quote →</a>
+      <a href="https://wa.me/917358258385" target="_blank" rel="noopener noreferrer" style="color:#25d366;font-weight:700">💬 Chat on WhatsApp</a>
     </div>
   </nav>
 
-  <!-- BANNER -->
+  <!-- ── 2. Banner ──────────────────────────────────────────────────────── -->
   <div class="inner-banner">
-    <div class="inner-banner-content animate-up">
-      <h1>__TITLE__</h1>
-      <p>__SUBTITLE__</p>
+    <div class="inner-banner-content">
+      <div style="margin-bottom: 12px;"><span class="sec-tag">${page.service_pill}</span></div>
+      <h1 class="motion-mask-title">${page.title}</h1>
+      <p>${page.subtitle}</p>
     </div>
   </div>
 
-  <!-- BREADCRUMB -->
+  <!-- ── 3. Breadcrumb ──────────────────────────────────────────────────── -->
   <div class="breadcrumb">
     <div class="breadcrumb-inner">
       <a href="index.html">
-        <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg> 
+        <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
         Home
-      </a> 
-      <span>/</span> 
-      __BREADCRUMB__
+      </a>
+      <span>/</span>
+      Services
+      <span>/</span>
+      ${page.breadcrumb}
     </div>
   </div>
 
-  <!-- MAIN INFO SECTION -->
+  <!-- ── 4. Main Service Info Section ───────────────────────────────────── -->
   <section class="info-section">
-    <div class="sec-heading-centered animate-up">
-      <div class="yellow-bolt">⚡</div>
-      <span class="sec-tagline">__INFO_SUBTITLE__</span>
-      <h2 class="main-title">__INFO_TITLE__</h2>
-    </div>
-
-    <div class="info-grid">
-      <!-- Left -->
-      <div class="info-left">
-        <div class="info-left-img animate-up">
-          <img src="__LEFT_IMAGE__" alt="__TITLE__ Image">
-        </div>
-        <div class="features-row">
-          __FEATURES_HTML__
-        </div>
+    <div class="section-inner">
+      <div class="section-heading-center">
+        <span class="sec-tag">Service Overview</span>
+        <h2 class="sec-title">${page.info_title}</h2>
       </div>
-      <!-- Right -->
-      <div class="info-right animate-up delay-100">
-        <p>__RIGHT_TEXT__</p>
-        <ul class="green-checklist">
-          __CHECKLIST_HTML__
-        </ul>
-        <div class="info-right-img">
-          <img src="__RIGHT_IMG__" alt="Solar Installation">
+
+      <div class="info-grid">
+        <!-- Left Column -->
+        <div class="info-left">
+          <div class="info-left-img">
+            <img src="${page.left_image}" alt="${page.title} Overview" loading="lazy" width="600" height="380" />
+          </div>
+          <div class="features-row">
+            ${buildFeatures(page.features)}
+          </div>
+        </div>
+
+        <!-- Right Column -->
+        <div class="info-right">
+          <p>${page.right_text}</p>
+          <ul class="green-checklist">
+            ${buildChecklist(page.checklist)}
+          </ul>
+          <div class="info-right-img">
+            <img src="${page.right_img}" alt="${page.title} Execution" loading="lazy" width="600" height="360" />
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- WHAT WE OFFER -->
-  <section class="offer-section">
-    <div class="sec-heading-centered animate-up">
-      <div class="yellow-bolt">⚡</div>
-      <span class="sec-tagline">WHAT WE OFFER</span>
-      <h2 class="main-title">Best Offer For Renewable<br><span>Solar Solutions</span></h2>
-    </div>
+  <!-- ── 5. Distinctive Process Steps ──────────────────────────────────── -->
+  <section class="section" style="background:#f9fafb; border-top:1px solid var(--hairline-light); border-bottom:1px solid var(--hairline-light);">
+    <div class="section-inner">
+      <div class="section-heading-center">
+        <span class="sec-tag">Execution Workflow</span>
+        <h2 class="sec-title">How We Deliver <span>${page.title}</span></h2>
+        <p class="sec-sub">Our standardized engineering protocol guaranteeing safety, durability, and maximum generation in Andhra Pradesh.</p>
+      </div>
 
-    <div class="cards-grid">
-      __CARDS_HTML__
+      ${buildProcess(page.process_steps)}
     </div>
-    
   </section>
-  
-  <!-- FREQUENTLY ASKED QUESTIONS -->
+
+  <!-- ── 6. What We Offer (Service Breakdown Cards) ────────────────────── -->
+  <section class="offer-section" id="services">
+    <div class="section-inner">
+      <div class="section-heading-center">
+        <span class="sec-tag">Specifications &amp; Scope</span>
+        <h2 class="sec-title">What's Included in <span>This Service</span></h2>
+      </div>
+
+      <div class="cards-grid">
+        ${buildCards(page.cards)}
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 7. Service Specific FAQs ──────────────────────────────────────── -->
   <section class="faq-section" id="faq">
-    <div class="faq-layout animate-up">
+    <div class="faq-layout">
       <div class="faq-left">
-        <div class="faq-left-heading">The Answers You Need For A Solar Rooftop System</div>
+        <div class="faq-left-heading">Questions Regarding ${page.title}</div>
         <div class="faq-img-wrap">
-          <img src="images/faq_couple.png" alt="Indian couple consulting about solar" />
+          <img src="images/faq_couple.png" alt="Consulting about ${page.title}" loading="lazy" width="500" height="420" />
           <div class="faq-img-overlay">
-            <h4>Still Have A Question?</h4>
-            <p>Don't worry, we're here for free consultation. Just click the button below.</p>
-            <a href="tel:+91 7358258385" class="faq-cta-btn">📞 Talk to an Expert</a>
+            <h4>Have Specific Site Questions?</h4>
+            <p>Our Pulivendula engineering desk is ready to assist with roof measurements and DISCOM rules.</p>
+            <a href="tel:+917358258385" class="faq-cta-btn">📞 Talk to an Engineer</a>
           </div>
         </div>
       </div>
+
       <div class="faq-right">
-        <h2>Your Questions, Answered</h2>
+        <h2>Expert Answers</h2>
         <div class="faq-list">
-          <div class="faq-item open" onclick="toggleFaq(this)">
-            <button class="faq-q">Who can apply for the rooftop solar subsidy? <span class="arrow">&#8964;</span></button>
-            <div class="faq-a">
-              <p>Any Indian homeowner with a valid electricity connection and rooftop space can apply under the PM Surya Ghar Yojana. Both urban and rural homeowners across all states are eligible.</p>
-            </div>
-          </div>
-          <div class="faq-item" onclick="toggleFaq(this)">
-            <button class="faq-q">How much subsidy do I get for a 3kW system? <span class="arrow">&#8964;</span></button>
-            <div class="faq-a">
-              <p>For a 3kW system, you can receive up to ₹78,000 under PM Surya Ghar — ₹30,000/kW for the first 2kW and ₹18,000/kW for the 3rd kW.</p>
-            </div>
-          </div>
-          <div class="faq-item" onclick="toggleFaq(this)">
-            <button class="faq-q">What documents are needed to apply? <span class="arrow">&#8964;</span></button>
-            <div class="faq-a">
-              <p>You'll need your Aadhaar card, electricity bill (last 3 months), bank passbook, and a recent passport-size photo. Solarfi handles all the paperwork.</p>
-            </div>
-          </div>
-          <div class="faq-item" onclick="toggleFaq(this)">
-            <button class="faq-q">How long does installation take? <span class="arrow">&#8964;</span></button>
-            <div class="faq-a">
-              <p>Once approvals are in place, our certified team completes installation in just 48 hours. The total process from inquiry to live system is typically 7–14 days.</p>
-            </div>
-          </div>
+          ${buildFaqs(page.faqs)}
         </div>
       </div>
     </div>
   </section>
 
-  <!-- CTA BANNER -->
+  <!-- ── 8. CTA Banner ────────────────────────────────────────────────── -->
   <div class="cta-banner" id="getquote">
-    <div style="max-width:850px;margin:auto" class="animate-up">
-      <h2><span class="blue-highlight">Your Solar Plan Is Ready</span> 🌞</h2>
-      <p>Join 50,000+ happy homeowners who are saving big with Solarfi. Book your free site survey today and get your personalised solar proposal within 24 hours.</p>
+    <div style="max-width: 820px; margin: 0 auto; position: relative; z-index: 2;">
+      <h2>Ready to Get Started with ${page.title}? ☀️</h2>
+      <p>Book your free technical site survey today. We will assess your load, roof geometry, and subsidy eligibility in Pulivendula within 24 hours.</p>
       <div class="cta-btns">
-        <a href="tel:+91 7358258385" class="btn-white">📞 Call Us Free</a>
-        <a href="https://wa.me/917358258385" class="btn-outline-w">💬 WhatsApp Us</a>
+        <a href="tel:+917358258385" class="btn-white">📞 Call +91 7358258385</a>
+        <a href="contact-us.html" class="btn-outline-w">Request Technical Quote →</a>
       </div>
     </div>
   </div>
 
-        <!-- FOOTER -->
-  <style>
-    .new-footer { background: var(--dark, #1e1b4b); color: #fff; padding: 60px 0 0; font-family: inherit; position: relative; overflow: hidden; }
-    .fc-container { max-width: 1200px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 10; }
-    .ft-top { display: grid; grid-template-columns: 1.8fr 1fr 1fr; gap: 40px; margin-bottom: 40px; }
-    
-    .fc-title { 
-      font-size: .78rem; 
-      font-weight: 700; 
-      text-transform: uppercase; 
-      letter-spacing: .8px; 
-      color: rgba(255, 255, 255, .6); 
-      margin-bottom: 15px; 
-      position: relative; 
-      display: inline-block; 
-      padding-bottom: 8px; 
-    }
-    .fc-title::after { content: ''; position: absolute; left: 0; bottom: 0; width: 40px; border-bottom: 1px dotted rgba(255,255,255,0.3); }
-    
-    .fc-desc { font-size: .92rem; color: rgba(255, 255, 255, .88); line-height: 1.8; margin-bottom: 20px; }
-    .fc-social { display: flex; gap: 12px; margin-top: 4px; }
-    .fc-social a { width: 36px; height: 36px; border-radius: 50%; border: 1.5px solid rgba(255, 255, 255, .4); display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; transition: .2s; text-decoration: none; font-size: .85rem; }
-    .fc-social a:hover { background: rgba(255, 255, 255, .2); border-color: #fff; }
-    
-    .fc-links { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 12px; }
-    .fc-links li a { color: #fff; text-decoration: none; font-size: 0.92rem; font-weight: 500; transition: 0.2s; }
-    .fc-links li a:hover { color: var(--orange, #fbbf24); }
-    
-    .ft-mid { display: grid; grid-template-columns: 1.5fr 2fr; gap: 40px; padding: 30px 0; border-top: 1px solid rgba(255, 255, 255, .2); border-bottom: 1px solid rgba(255, 255, 255, .2); }
-    .fc-address p { font-size: .92rem; color: #fff; font-weight: 500; line-height: 1.6; margin-top: 10px; }
-    
-    .ft-bottom { padding: 18px 0; text-align: center; color: rgba(255, 255, 255, .7); font-size: .82rem; }
-    .new-footer .footer-watermark { font-size: clamp(5rem, 14vw, 11rem); font-weight: 900; color: rgba(255, 255, 255, .07); text-align: center; position: absolute; bottom: -20px; left: 0; right: 0; pointer-events: none; z-index: 0; text-transform: uppercase; margin: 0; line-height: 1; letter-spacing: -2px; }
-    
-    @media(max-width: 768px) {
-      .ft-top { grid-template-columns: 1fr; gap: 30px; }
-      .ft-mid { grid-template-columns: 1fr; gap: 30px; }
-    }
-  </style>
+  <!-- ── 9. Master Footer ──────────────────────────────────────────────── -->
   <footer class="new-footer">
+    <div class="grain-overlay" aria-hidden="true"></div>
     <div class="fc-container">
       <div class="ft-top">
         <div class="fc">
-          <h4 class="fc-title">About Us</h4>
-          <p class="fc-desc">Discover smart, reliable solar EPC solutions with Solarfi. From AI-powered consultations to certified installations, we help homes, businesses & farms across India save energy and money. Get a free quote today!</p>
+          <h4 class="fc-title">About Solarfi</h4>
+          <p class="fc-desc">Discover smart, reliable rooftop solar EPC solutions with Solarfi. From precision design to certified installations, we empower homes, businesses, and institutions across Andhra Pradesh to generate clean, low-cost power.</p>
           <div class="fc-social">
-            <a href="#">f</a>
-            <a href="#">in</a>
+            <a href="https://www.instagram.com/solarfi_pvt_ltd" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" /></svg>
+            </a>
+            <a href="https://www.facebook.com/share/1B56Nxq1ak/" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            </a>
+            <a href="https://youtube.com/@solarpvsystem?si=Oz05mA4xD6JQelbi" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+            </a>
           </div>
         </div>
+
         <div class="fc">
           <h4 class="fc-title">Quick Links</h4>
           <ul class="fc-links">
             <li><a href="index.html#features">Why Solarfi</a></li>
             <li><a href="index.html#process">How It Works</a></li>
-            <li><a href="index.html#savings">Calculator</a></li>
-            <li><a href="index.html#testimonials">Reviews</a></li>
-            <li><a href="index.html#faq">FAQ</a></li>
-            <li><a href="contact-us.html">Contact Us</a></li>
+            <li><a href="index.html#savings">Savings Calculator</a></li>
+            <li><a href="index.html#testimonials">Customer Reviews</a></li>
+            <li><a href="index.html#faq">Frequently Asked Questions</a></li>
+            <li><a href="contact-us.html">Request Free Quote</a></li>
           </ul>
         </div>
+
         <div class="fc">
-          <h4 class="fc-title">Services</h4>
+          <h4 class="fc-title">Our Services</h4>
           <ul class="fc-links">
-            <li><a href="design-engineering.html">Design & Engineering</a></li>
-            <li><a href="procurement.html">Procurement Supply</a></li>
-            <li><a href="installation-commissioning.html">Installation Setups</a></li>
-            <li><a href="operations-maintenance.html">Operations & Maintenance</a></li>
-            <li><a href="ev-charging-battery-storage.html">EV Charging Integration</a></li>
+            <li><a href="design-engineering.html">Design &amp; Engineering</a></li>
+            <li><a href="procurement.html">Procurement &amp; Supply</a></li>
+            <li><a href="installation-commissioning.html">Installation &amp; Commissioning</a></li>
+            <li><a href="operations-maintenance.html">Operations &amp; Maintenance (AMC)</a></li>
+            <li><a href="ev-charging-battery-storage.html">EV Charging &amp; Battery Storage</a></li>
           </ul>
         </div>
       </div>
-      
+
       <div class="ft-mid">
         <div class="fc-address">
-          <h4 class="fc-title">USA Office</h4>
-          <p>3021 Scanlan Ln NE, Rochester, MN 55906, United States.<br>+1 507-358-1319<br>info@solarfi.in</p>
+          <h4 class="fc-title">INDIA Headquarters</h4>
+          <p>D.no: 3-6, Dr.Somireddy Towers, Guntha Bazar Rd, Pulivendula, Andhra Pradesh 516390, India.<br>
+            <strong>Phone:</strong> <a href="tel:+917358258385" style="color:#22c55e;">+91 7358258385</a><br>
+            <strong>Email:</strong> <a href="mailto:info@solarfi.in" style="color:#ffffff;">info@solarfi.in</a>
+          </p>
         </div>
+
         <div class="fc-address">
-          <h4 class="fc-title">INDIA Office</h4>
-          <p>D.no: 3-6, Dr.Somireddy Towers, Guntha Bazar Rd, Pulivendula, Andhra Pradesh 516390, India.<br>+91 7358258385</p>
+          <h4 class="fc-title">USA Liaison Office</h4>
+          <p>3021 Scanlan Ln NE, Rochester, MN 55906, United States.<br>
+            <strong>Phone:</strong> <a href="tel:+15073581319" style="color:#ffffff;">+1 507-358-1319</a><br>
+            <strong>Email:</strong> <a href="mailto:info@solarfi.in" style="color:#ffffff;">info@solarfi.in</a>
+          </p>
         </div>
       </div>
-      
+
       <div class="ft-bottom">
-        Copyright © 2026 Solarfi. All Rights Reserved.
+        <div>Copyright &copy; 2026 Solarfi. All Rights Reserved.</div>
+        <div style="font-size: 0.8rem; color: rgba(255, 255, 255, 0.45);">PM Surya Ghar Subsidy Partner · MNRE Compliant</div>
       </div>
     </div>
     <div class="footer-watermark">solarfi</div>
   </footer>
 
   <script>
-    // Animate on scroll logic
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('in-view');
-        }
-      });
-    }, { threshold: 0.1 });
-    
-    document.querySelectorAll('.animate-up').forEach(el => observer.observe(el));
-    
-    // FAQ accordion
+    function toggleMenu() {
+      document.getElementById('mobileMenu').classList.toggle('open');
+      document.getElementById('hamburger').classList.toggle('open');
+    }
     function toggleFaq(el) {
       const isOpen = el.classList.contains('open');
       document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
@@ -659,82 +701,13 @@ const html_template = `<!DOCTYPE html>
     }
   </script>
 </body>
-</html>
-`;
 
-function buildFeatures(features) {
-  let html = "";
-  features.forEach((f, idx) => {
-    // Adjust the icon styles for orange SVGs
-    let modIcon = f.icon.replace("<svg ", "<svg style='color:#e27a3c;' ");
-
-    html += `
-        <div class="feature-item animate-up ${idx > 0 && idx % 2 !== 0 ? 'delay-100' : ''}">
-            <div class="icon-circle">
-              ${modIcon}
-            </div>
-            <h4>${f.title}</h4>
-            <p>${f.desc}</p>
-        </div>`;
-  });
-  return html;
+</html>`;
 }
 
-function buildChecklist(checklist) {
-  let html = "";
-  checklist.forEach(item => {
-    html += `<li>${item}</li>\n`;
-  });
-  return html;
-}
-
-function buildCards(cards) {
-  let html = "";
-  cards.forEach((card, idx) => {
-    let delay = idx > 0 ? `delay-${idx + 1}00` : '';
-    let clist = "";
-    card.checklist.forEach(item => {
-      clist += `<li><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>${item}</li>`;
-    });
-    html += `
-      <div class="offer-card animate-up ${delay}">
-        <div class="card-header">
-          <h3>${card.title}</h3>
-        </div>
-        <div class="card-middle">
-          <div class="card-icon-container">
-            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
-          </div>
-          <img src="${card.img}" alt="${card.title}" class="card-img" style="object-fit:cover;">
-        </div>
-        <div class="card-body">
-          <p>${card.desc}</p>
-          <ul class="card-list">
-            ${clist}
-          </ul>
-        </div>
-        <div class="dot-pattern"><span></span><span></span><span></span><span></span><span></span></div>
-      </div>
-        `;
-  });
-  return html;
-}
-
+// Generate all service pages
 pages_data.forEach(page => {
-  let content = html_template
-    .replace(/__META_TITLE__/g, page.meta_title)
-    .replace(/__META_DESC__/g, page.meta_desc)
-    .replace(/__TITLE__/g, page.title)
-    .replace(/__SUBTITLE__/g, page.subtitle)
-    .replace(/__BREADCRUMB__/g, page.breadcrumb)
-    .replace(/__INFO_SUBTITLE__/g, page.info_subtitle)
-    .replace(/__INFO_TITLE__/g, page.info_title)
-    .replace(/__LEFT_IMAGE__/g, page.left_image)
-    .replace(/__FEATURES_HTML__/g, buildFeatures(page.features))
-    .replace(/__RIGHT_TEXT__/g, page.right_text)
-    .replace(/__CHECKLIST_HTML__/g, buildChecklist(page.checklist))
-    .replace(/__RIGHT_IMG__/g, page.right_img)
-    .replace(/__CARDS_HTML__/g, buildCards(page.cards));
-
+  const content = renderPage(page);
   fs.writeFileSync(page.filename, content, 'utf-8');
+  console.log(`Generated: ${page.filename}`);
 });
