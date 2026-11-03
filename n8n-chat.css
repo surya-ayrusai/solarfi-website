@@ -1,0 +1,52 @@
+/* Solarfi theme for the n8n chat widget */
+:root {
+  --chat--color-primary: #1a8c3e;
+  --chat--color-primary-shade-50: #17803a;
+  --chat--color-primary-shade-100: #145f2a;
+  --chat--color-secondary: #f97316;
+  --chat--color-secondary-shade-50: #ea6a0e;
+  --chat--color-white: #ffffff;
+  --chat--color-light: #f3faf5;
+  --chat--color-light-shade-50: #e8f7ed;
+  --chat--color-light-shade-100: #d4ecdc;
+  --chat--color-medium: #d2d4d9;
+  --chat--color-dark: #111827;
+  --chat--color-disabled: #6b7280;
+  --chat--color-typing: #404040;
+  --chat--border-radius: 14px;
+  --chat--spacing: 1rem;
+  --chat--window--width: 400px;
+  --chat--window--height: 600px;
+  --chat--window--bottom: 24px;
+  --chat--window--right: 24px;
+  --chat--window--z-index: 9999;
+  --chat--toggle--size: 60px;
+  --chat--toggle--background: linear-gradient(135deg, #1a8c3e, #145f2a);
+  --chat--toggle--hover--background: linear-gradient(135deg, #22a34a, #1a8c3e);
+  --chat--toggle--active--background: #145f2a;
+  --chat--toggle--color: #fff;
+  --chat--header--background: linear-gradient(135deg, #145f2a, #1a8c3e);
+  --chat--header--color: #fff;
+  --chat--header--padding: 18px 20px;
+  --chat--heading--font-size: 1.25rem;
+  --chat--subtitle--font-size: .85rem;
+  --chat--message--bot--background: #fff;
+  --chat--message--bot--color: #111827;
+  --chat--message--bot--border: 1px solid rgba(17, 24, 39, .12);
+  --chat--message--user--background: #1a8c3e;
+  --chat--message--user--color: #fff;
+  --chat--message--border-radius: 18px;
+  --chat--message-line-height: 1.5;
+  --chat--font-family: Inter, system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+.chat-window-toggle { box-shadow: 0 10px 28px rgba(20, 95, 42, .35); }
+
+@media (max-width: 900px) {
+  :root {
+    --chat--window--bottom: 76px;
+    --chat--window--right: 14px;
+    --chat--window--width: calc(100vw - 28px);
+    --chat--window--height: min(70vh, 560px);
+  }
+}
