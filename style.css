@@ -1381,11 +1381,236 @@ select[data-r="state"] option {
 
 /* ── 10. Process Section (How It Works) ────────────────────────────────── */
 .process {
-  background: #ffffff;
-  padding: var(--space-section) 0;
-  border-top: 1px solid var(--hairline-light);
+  background: radial-gradient(circle at 50% 18%, #092c17 0%, #04190d 50%, #020c06 100%);
+  padding: clamp(68px, 8vw, 104px) 0 clamp(84px, 10vw, 128px);
   position: relative;
+  overflow: hidden;
+  border-top: 1px solid rgba(34, 197, 94, 0.15);
+  border-bottom: 1px solid rgba(34, 197, 94, 0.12);
 }
+
+.process::before {
+  content: "";
+  position: absolute;
+  top: -120px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 960px;
+  height: 520px;
+  background: radial-gradient(circle, rgba(34, 197, 94, 0.18) 0%, rgba(34, 197, 94, 0.04) 55%, transparent 75%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.process-heading-center {
+  text-align: center;
+  max-width: 780px;
+  margin: 0 auto 52px;
+  position: relative;
+  z-index: 2;
+}
+
+.process-tag {
+  display: inline-block;
+  padding: 6px 18px;
+  border-radius: 9999px;
+  background: rgba(34, 197, 94, 0.1);
+  border: 1px solid rgba(34, 197, 94, 0.32);
+  color: #22c55e;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 22px;
+}
+
+.process-title {
+  font-size: clamp(2.1rem, 3.6vw, 3rem);
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1.2;
+  margin-bottom: 16px;
+  letter-spacing: -0.02em;
+}
+
+.process-title-green {
+  color: #22c55e;
+}
+
+.process-sub {
+  font-size: clamp(0.95rem, 1.2vw, 1.05rem);
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.6;
+  max-width: 620px;
+  margin: 0 auto;
+}
+
+.process-track-wrap {
+  position: relative;
+  z-index: 2;
+  padding-top: 16px;
+  padding-bottom: 36px;
+}
+
+.process-connector-line {
+  position: absolute;
+  top: 136px;
+  left: 6%;
+  right: 6%;
+  height: 1.5px;
+  background: rgba(34, 197, 94, 0.28);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.process-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 18px;
+  position: relative;
+  z-index: 1;
+}
+
+.process-card {
+  position: relative;
+  background: rgba(8, 26, 16, 0.78);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(34, 197, 94, 0.18);
+  border-radius: 22px;
+  padding: 34px 20px 26px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 380px;
+  overflow: hidden;
+  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.45);
+  transition: transform 0.28s ease, border-color 0.28s ease, box-shadow 0.28s ease;
+}
+
+@media (min-width: 1025px) {
+  .process-card.process-stagger {
+    transform: translateY(32px);
+  }
+  .process-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(34, 197, 94, 0.45);
+    box-shadow: 0 24px 44px rgba(0, 0, 0, 0.5), 0 0 24px rgba(34, 197, 94, 0.15);
+  }
+  .process-card.process-stagger:hover {
+    transform: translateY(26px);
+  }
+}
+
+.process-card.process-highlight:hover {
+  border-color: rgba(249, 115, 22, 0.5);
+  box-shadow: 0 24px 44px rgba(0, 0, 0, 0.5), 0 0 28px rgba(249, 115, 22, 0.22);
+}
+
+.process-watermark {
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  font-size: 3.4rem;
+  font-weight: 900;
+  line-height: 1;
+  color: rgba(34, 197, 94, 0.08);
+  pointer-events: none;
+  user-select: none;
+  font-family: inherit;
+  letter-spacing: -0.04em;
+}
+
+.process-icon-box {
+  width: 66px;
+  height: 66px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #22c55e 0%, #15803d 70%, #0d5c29 100%);
+  border: 2px solid rgba(74, 222, 128, 0.45);
+  box-shadow: 0 0 24px rgba(34, 197, 94, 0.45), 0 4px 12px rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  margin: 0 auto 22px;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.process-icon-box svg {
+  width: 28px;
+  height: 28px;
+}
+
+.process-icon-box.process-icon-orange {
+  background: radial-gradient(circle at 35% 35%, #fb923c 0%, #ea580c 70%, #c2410c 100%);
+  border: 2px solid rgba(253, 186, 116, 0.6);
+  box-shadow: 0 0 32px rgba(249, 115, 22, 0.6), 0 4px 14px rgba(0, 0, 0, 0.4);
+}
+
+.process-card-title {
+  font-size: 1.08rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 12px;
+  line-height: 1.35;
+}
+
+.process-card-desc {
+  font-size: 0.8125rem;
+  color: rgba(255, 255, 255, 0.68);
+  line-height: 1.58;
+  margin-bottom: 24px;
+  flex-grow: 1;
+}
+
+.process-time-pill {
+  display: inline-block;
+  margin-top: auto;
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: #fb923c;
+  background: rgba(120, 53, 15, 0.45);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  padding: 4px 16px;
+  border-radius: 9999px;
+  letter-spacing: 0.02em;
+}
+
+.process-time-pill.process-pill-live {
+  color: #22c55e;
+  background: rgba(22, 101, 52, 0.42);
+  border: 1px solid rgba(34, 197, 94, 0.45);
+}
+
+@media (max-width: 1024px) {
+  .process-connector-line {
+    display: none;
+  }
+  .process-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .process-card {
+    min-height: auto;
+  }
+  .process-card.process-stagger {
+    transform: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .process-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  .process-card {
+    padding: 24px 20px;
+  }
+}
+
 
 /* ── 11. Savings Section (Calculator + Video Split) ────────────────────── */
 .savings-wrap {
