@@ -40,7 +40,7 @@ try {
         closeButtonTooltip: "Close chat"
       }
     },
-    enableStreaming: false
+    enableStreaming: true
   });
 } catch (err) {
   console.warn("Solarfi chat could not start:", err);
