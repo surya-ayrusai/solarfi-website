@@ -549,6 +549,215 @@
           </div>
         </div>
 
+        <!-- ── Live Bidirectional Net Metering & Telemetry Hub ────────────── -->
+        <div class="live-netmeter-hub" id="netmeterHub" aria-label="Live Electricity Metering and Monitoring">
+          <!-- Header: Status + Scenario Toggle -->
+          <div class="netmeter-header-strip">
+            <div class="netmeter-header-left">
+              <div class="netmeter-live-indicator">
+                <span class="netmeter-live-ping" aria-hidden="true"></span>
+                <span>● Live Telemetry · Bi-Directional Net Metering</span>
+              </div>
+              <h3 class="netmeter-title">Real-Time Electricity Flow &amp; Smart Net Meter</h3>
+              <div class="netmeter-disclaimer">
+                <span>⚠️ Simulated demonstration values · Continuous APSPDCL DISCOM sync</span>
+              </div>
+            </div>
+
+            <!-- Interactive Simulation Scenarios -->
+            <div class="netmeter-scenario-switcher" role="tablist" aria-label="Energy Flow Scenarios">
+              <button type="button" class="scenario-btn active" id="btnSceneExport" onclick="setMeterScenario('export')" role="tab" aria-selected="true">
+                <span>☀️ Afternoon Peak (Export Surplus)</span>
+              </button>
+              <button type="button" class="scenario-btn" id="btnSceneImport" onclick="setMeterScenario('import')" role="tab" aria-selected="false">
+                <span>🌙 Evening Load (Grid Import)</span>
+              </button>
+              <button type="button" class="scenario-btn" id="btnSceneBalanced" onclick="setMeterScenario('balanced')" role="tab" aria-selected="false">
+                <span>⛅ 100% Self-Powered</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- 5 Illustrative Metric Tiles as Required -->
+          <div class="telemetry-metrics-grid">
+            <!-- 1. Solar Generation: 3.2 kW -->
+            <div class="telemetry-metric-tile tile-solar">
+              <div class="tile-top">
+                <span class="tile-label">Solar Generation</span>
+                <span class="tile-icon" aria-hidden="true">☀️</span>
+              </div>
+              <div class="tile-value-wrap">
+                <span class="tile-value" id="valSolarGen">3.2</span>
+                <span class="tile-unit">kW</span>
+              </div>
+              <div class="tile-sub" id="subSolarGen">Active Rooftop Array Output</div>
+            </div>
+
+            <!-- 2. Home Consumption: 1.4 kW -->
+            <div class="telemetry-metric-tile tile-home">
+              <div class="tile-top">
+                <span class="tile-label">Home Consumption</span>
+                <span class="tile-icon" aria-hidden="true">🏡</span>
+              </div>
+              <div class="tile-value-wrap">
+                <span class="tile-value" id="valHomeLoad">1.4</span>
+                <span class="tile-unit">kW</span>
+              </div>
+              <div class="tile-sub" id="subHomeLoad">Fans, AC, Fridge &amp; Lights</div>
+            </div>
+
+            <!-- 3. Grid Export: 1.8 kW -->
+            <div class="telemetry-metric-tile tile-export">
+              <div class="tile-top">
+                <span class="tile-label">Grid Export (Surplus)</span>
+                <span class="tile-icon" aria-hidden="true">⚡⬆️</span>
+              </div>
+              <div class="tile-value-wrap">
+                <span class="tile-value" id="valGridExport">1.8</span>
+                <span class="tile-unit">kW</span>
+              </div>
+              <div class="tile-sub" id="subGridExport">Exported to APSPDCL Grid</div>
+            </div>
+
+            <!-- 4. Grid Import: 0.0 kW -->
+            <div class="telemetry-metric-tile tile-import">
+              <div class="tile-top">
+                <span class="tile-label">Grid Import</span>
+                <span class="tile-icon" aria-hidden="true">🔌⬇️</span>
+              </div>
+              <div class="tile-value-wrap">
+                <span class="tile-value" id="valGridImport">0.0</span>
+                <span class="tile-unit">kW</span>
+              </div>
+              <div class="tile-sub" id="subGridImport">Zero DISCOM Reliance</div>
+            </div>
+
+            <!-- 5. Today's Generation: 18.6 kWh -->
+            <div class="telemetry-metric-tile tile-cumulative">
+              <div class="tile-top">
+                <span class="tile-label">Today's Generation</span>
+                <span class="tile-icon" aria-hidden="true">📊</span>
+              </div>
+              <div class="tile-value-wrap">
+                <span class="tile-value" id="valTodayGen">18.6</span>
+                <span class="tile-unit">kWh</span>
+              </div>
+              <div class="tile-sub">Daily Energy Banked</div>
+            </div>
+          </div>
+
+          <!-- Split Stage: 3D Smart Bi-Directional Meter + Interactive Schematic -->
+          <div class="netmeter-stage-grid">
+            <!-- 3D Digital Smart Meter -->
+            <div class="smart-meter-box" aria-label="Digital Bidirectional Smart Electricity Meter">
+              <div class="meter-top-plate">
+                <span class="meter-brand">APSPDCL SMART METER</span>
+                <span class="meter-hologram">BI-DIRECTIONAL CLASS 1.0</span>
+              </div>
+
+              <!-- High-Contrast Backlit LCD -->
+              <div class="meter-lcd-screen">
+                <div class="lcd-top-status">
+                  <span>[●] NET METER</span>
+                  <span>50.0 Hz · 230.4 V</span>
+                  <span>PF 0.99</span>
+                </div>
+                <div class="lcd-main-readout">
+                  <span class="lcd-number" id="meterLcdVal">18.60</span>
+                  <span class="lcd-unit-badge">kWh NET</span>
+                </div>
+                <div class="lcd-flow-banner exporting" id="meterFlowBanner">
+                  <span id="meterFlowDirectionText">▲ SURPLUS EXPORT: +1.80 kW</span>
+                  <span id="meterFlowChevrons">➔ ➔ ➔ GRID</span>
+                </div>
+              </div>
+
+              <!-- Diagnostic Optical & Operational LEDs -->
+              <div class="meter-led-strip">
+                <div class="meter-led-item">
+                  <span class="meter-led-light pulse-active" id="meterPulseLed" aria-hidden="true"></span>
+                  <span>CAL 3200imp</span>
+                </div>
+                <div class="meter-led-item">
+                  <span class="meter-led-light net-active" aria-hidden="true"></span>
+                  <span>BI-DIR NET</span>
+                </div>
+                <div class="meter-led-item">
+                  <span class="meter-led-light comm-active" aria-hidden="true"></span>
+                  <span>APSPDCL SYNC</span>
+                </div>
+              </div>
+
+              <div class="meter-bottom-info">
+                <span>IS 16444 / 15884 AP-SPEC</span>
+                <span>OPTICAL TEST PORT</span>
+              </div>
+            </div>
+
+            <!-- Interactive Energy Journey & Flow Canvas -->
+            <div class="netmeter-flow-canvas">
+              <div class="flow-direction-summary">
+                <div class="summary-pill" id="flowStatusPill">
+                  <span style="color:#10b981;">●</span>
+                  <span id="flowStatusHeading">SURPLUS SOLAR POWER FLOWING TO DISCOM GRID</span>
+                  <span class="pill-arrow-anim" id="flowStatusArrow">➔</span>
+                </div>
+                <div class="summary-details" id="flowStatusDetail">
+                  Solar produces 3.2 kW · Home consumes 1.4 kW · 1.8 kW credited on your electricity bill
+                </div>
+              </div>
+
+              <!-- Animated SVG Conduits connecting the journey -->
+              <div class="flow-svg-conduit-wrap" aria-hidden="true">
+                <svg class="flow-svg-conduit" viewBox="0 0 700 60" preserveAspectRatio="none">
+                  <!-- Wire 1: Solar to Inverter (Amber) -->
+                  <line x1="85" y1="30" x2="255" y2="30" stroke="#f59e0b" stroke-width="2.5" opacity="0.3" />
+                  <line id="wireSolarToInv" x1="85" y1="30" x2="255" y2="30" stroke="#f59e0b" stroke-width="3" class="flow-pulse-dash" />
+
+                  <!-- Wire 2: Inverter to Home Loads (Cyan) -->
+                  <line x1="265" y1="30" x2="435" y2="30" stroke="#06b6d4" stroke-width="2.5" opacity="0.3" />
+                  <line id="wireInvToLoads" x1="265" y1="30" x2="435" y2="30" stroke="#06b6d4" stroke-width="3" class="flow-pulse-dash" />
+
+                  <!-- Wire 3: Inverter / Loads to Grid through Bi-Dir Net Meter (Emerald or Sky depending on scenario) -->
+                  <line x1="445" y1="30" x2="615" y2="30" stroke="#10b981" stroke-width="2.5" opacity="0.3" id="wireBaseGrid" />
+                  <line id="wireGridConduit" x1="445" y1="30" x2="615" y2="30" stroke="#10b981" stroke-width="3.5" class="flow-pulse-dash" />
+                </svg>
+              </div>
+
+              <!-- 4 Interactive Circuit Nodes -->
+              <div class="flow-circuit-schematic">
+                <!-- Node 1: Solar Rooftop Array -->
+                <div class="circuit-node-card node-panels">
+                  <div class="node-icon-bubble" aria-hidden="true">☀️</div>
+                  <span class="node-title">Solar Array</span>
+                  <span class="node-val" id="nodeValSolar">3.2 kW Gen</span>
+                </div>
+
+                <!-- Node 2: Hybrid Inverter -->
+                <div class="circuit-node-card node-inverter">
+                  <div class="node-icon-bubble" aria-hidden="true">🔄</div>
+                  <span class="node-title">MPPT Inverter</span>
+                  <span class="node-val">98.6% Pure AC</span>
+                </div>
+
+                <!-- Node 3: Home Loads -->
+                <div class="circuit-node-card node-loads">
+                  <div class="node-icon-bubble" aria-hidden="true">🏠</div>
+                  <span class="node-title">Direct Home</span>
+                  <span class="node-val" id="nodeValLoads">1.4 kW Load</span>
+                </div>
+
+                <!-- Node 4: DISCOM Grid via Net Meter -->
+                <div class="circuit-node-card node-grid">
+                  <div class="node-icon-bubble" aria-hidden="true">🌐</div>
+                  <span class="node-title" id="nodeTitleGrid">APSPDCL Grid</span>
+                  <span class="node-val" id="nodeValGrid">+1.8 kW Export</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- Subsidy Benefit Strip Inside Flow Card (Compact & Glossy) -->
         <div style="margin-top: 22px; padding-top: 18px; border-top: 1px solid rgba(255,255,255,0.12);">
           <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px;">
@@ -1281,6 +1490,154 @@
           });
         }, { threshold: 0.35 });
         nums.forEach(n => io.observe(n));
+      }
+    })();
+
+    // ── Smart Net Meter & Live Telemetry Simulation Controller ─────────────
+    (function () {
+      let currentScene = 'export';
+      let fluctuationTimer = null;
+
+      window.setMeterScenario = function (scene) {
+        currentScene = scene;
+        const btnExp = document.getElementById('btnSceneExport');
+        const btnImp = document.getElementById('btnSceneImport');
+        const btnBal = document.getElementById('btnSceneBalanced');
+
+        if (btnExp) {
+          btnExp.classList.toggle('active', scene === 'export');
+          btnExp.setAttribute('aria-selected', scene === 'export');
+        }
+        if (btnImp) {
+          btnImp.classList.toggle('active', scene === 'import');
+          btnImp.setAttribute('aria-selected', scene === 'import');
+        }
+        if (btnBal) {
+          btnBal.classList.toggle('active', scene === 'balanced');
+          btnBal.setAttribute('aria-selected', scene === 'balanced');
+        }
+
+        const valSolar = document.getElementById('valSolarGen');
+        const valHome = document.getElementById('valHomeLoad');
+        const valExport = document.getElementById('valGridExport');
+        const valImport = document.getElementById('valGridImport');
+        const valToday = document.getElementById('valTodayGen');
+        const meterLcd = document.getElementById('meterLcdVal');
+        const flowBanner = document.getElementById('meterFlowBanner');
+        const flowDirText = document.getElementById('meterFlowDirectionText');
+        const flowChevrons = document.getElementById('meterFlowChevrons');
+        const heading = document.getElementById('flowStatusHeading');
+        const detail = document.getElementById('flowStatusDetail');
+        const arrow = document.getElementById('flowStatusArrow');
+        const wireGrid = document.getElementById('wireGridConduit');
+        const wireBaseGrid = document.getElementById('wireBaseGrid');
+        const wireSolar = document.getElementById('wireSolarToInv');
+        const nodeSolar = document.getElementById('nodeValSolar');
+        const nodeLoads = document.getElementById('nodeValLoads');
+        const nodeGrid = document.getElementById('nodeValGrid');
+
+        if (scene === 'export') {
+          // Daytime Peak: 3.2 kW solar, 1.4 kW home, 1.8 kW export, 0.0 kW import, 18.6 kWh today
+          if (valSolar) valSolar.textContent = '3.2';
+          if (valHome) valHome.textContent = '1.4';
+          if (valExport) valExport.textContent = '1.8';
+          if (valImport) valImport.textContent = '0.0';
+          if (valToday) valToday.textContent = '18.6';
+          if (meterLcd) meterLcd.textContent = '18.60';
+          if (flowBanner) {
+            flowBanner.className = 'lcd-flow-banner exporting';
+            if (flowDirText) flowDirText.textContent = '▲ SURPLUS EXPORT: +1.80 kW';
+            if (flowChevrons) flowChevrons.textContent = '➔ ➔ ➔ GRID';
+          }
+          if (heading) heading.textContent = 'SURPLUS SOLAR POWER FLOWING TO DISCOM GRID';
+          if (detail) detail.textContent = 'Solar produces 3.2 kW · Home consumes 1.4 kW · 1.8 kW credited on your electricity bill';
+          if (arrow) { arrow.textContent = '➔'; arrow.style.color = '#10b981'; }
+          if (wireSolar) { wireSolar.style.display = 'block'; wireSolar.setAttribute('class', 'flow-pulse-dash'); }
+          if (wireGrid) {
+            wireGrid.setAttribute('stroke', '#10b981');
+            wireGrid.setAttribute('class', 'flow-pulse-dash');
+          }
+          if (wireBaseGrid) wireBaseGrid.setAttribute('stroke', '#10b981');
+          if (nodeSolar) nodeSolar.textContent = '3.2 kW Gen';
+          if (nodeLoads) nodeLoads.textContent = '1.4 kW Load';
+          if (nodeGrid) nodeGrid.textContent = '+1.8 kW Export';
+        } else if (scene === 'import') {
+          // Night / Low Sun: 0.0 kW solar, 1.6 kW home, 0.0 kW export, 1.6 kW import, 18.6 kWh today
+          if (valSolar) valSolar.textContent = '0.0';
+          if (valHome) valHome.textContent = '1.6';
+          if (valExport) valExport.textContent = '0.0';
+          if (valImport) valImport.textContent = '1.6';
+          if (valToday) valToday.textContent = '18.6';
+          if (meterLcd) meterLcd.textContent = '18.60';
+          if (flowBanner) {
+            flowBanner.className = 'lcd-flow-banner importing';
+            if (flowDirText) flowDirText.textContent = '▼ GRID IMPORT: -1.60 kW';
+            if (flowChevrons) flowChevrons.textContent = '⬅ ⬅ ⬅ DISCOM';
+          }
+          if (heading) heading.textContent = 'ZERO SOLAR AT NIGHT: DRAWING ELECTRICITY FROM GRID';
+          if (detail) detail.textContent = 'Solar idle (0 kW) · Home appliances draw 1.6 kW safely from APSPDCL grid';
+          if (arrow) { arrow.textContent = '⬅'; arrow.style.color = '#38bdf8'; }
+          if (wireSolar) { wireSolar.style.display = 'none'; }
+          if (wireGrid) {
+            wireGrid.setAttribute('stroke', '#38bdf8');
+            wireGrid.setAttribute('class', 'flow-pulse-dash-reverse');
+          }
+          if (wireBaseGrid) wireBaseGrid.setAttribute('stroke', '#38bdf8');
+          if (nodeSolar) nodeSolar.textContent = '0.0 kW (Night)';
+          if (nodeLoads) nodeLoads.textContent = '1.6 kW Load';
+          if (nodeGrid) nodeGrid.textContent = '-1.6 kW Import';
+        } else if (scene === 'balanced') {
+          // 100% Self Powered: 2.2 kW solar, 2.2 kW home, 0.0 kW export, 0.0 kW import, 18.6 kWh today
+          if (valSolar) valSolar.textContent = '2.2';
+          if (valHome) valHome.textContent = '2.2';
+          if (valExport) valExport.textContent = '0.0';
+          if (valImport) valImport.textContent = '0.0';
+          if (valToday) valToday.textContent = '18.6';
+          if (meterLcd) meterLcd.textContent = '18.60';
+          if (flowBanner) {
+            flowBanner.className = 'lcd-flow-banner balanced';
+            if (flowDirText) flowDirText.textContent = '● SELF-BALANCED: NET ZERO';
+            if (flowChevrons) flowChevrons.textContent = '100% SOLAR';
+          }
+          if (heading) heading.textContent = '100% SELF-POWERED: ZERO GRID DRAW OR EXPORT';
+          if (detail) detail.textContent = 'Solar generation (2.2 kW) exactly equals home load (2.2 kW) · Perfect balance';
+          if (arrow) { arrow.textContent = '●'; arrow.style.color = '#a855f7'; }
+          if (wireSolar) { wireSolar.style.display = 'block'; wireSolar.setAttribute('class', 'flow-pulse-dash'); }
+          if (wireGrid) {
+            wireGrid.setAttribute('stroke', '#475569');
+            wireGrid.removeAttribute('class');
+          }
+          if (wireBaseGrid) wireBaseGrid.setAttribute('stroke', '#334155');
+          if (nodeSolar) nodeSolar.textContent = '2.2 kW Gen';
+          if (nodeLoads) nodeLoads.textContent = '2.2 kW Load';
+          if (nodeGrid) nodeGrid.textContent = '0.0 kW (Idle)';
+        }
+      };
+
+      // Periodic subtle lifelike telemetry heartbeat
+      const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!reduceMotion) {
+        fluctuationTimer = setInterval(function () {
+          if (currentScene !== 'export') return;
+          const valSolar = document.getElementById('valSolarGen');
+          const valExport = document.getElementById('valGridExport');
+          const flowDirText = document.getElementById('meterFlowDirectionText');
+          const nodeSolar = document.getElementById('nodeValSolar');
+          const nodeGrid = document.getElementById('nodeValGrid');
+          
+          // Subtle realistic fluctuation between 3.20 and 3.26 kW
+          const deltas = [0, 0.04, -0.02, 0.05, 0.02];
+          const d = deltas[Math.floor(Math.random() * deltas.length)];
+          const s = (3.2 + d).toFixed(1);
+          const exp = (1.8 + d).toFixed(1);
+          const expDetailed = (1.80 + d).toFixed(2);
+
+          if (valSolar) valSolar.textContent = s;
+          if (valExport) valExport.textContent = exp;
+          if (flowDirText) flowDirText.textContent = '▲ SURPLUS EXPORT: +' + expDetailed + ' kW';
+          if (nodeSolar) nodeSolar.textContent = s + ' kW Gen';
+          if (nodeGrid) nodeGrid.textContent = '+' + exp + ' kW Export';
+        }, 4000);
       }
     })();
   </script>
