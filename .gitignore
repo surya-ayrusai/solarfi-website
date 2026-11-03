@@ -9,3 +9,10 @@ coverage/
 .aistudio/
 public/assets/
 bun.lock
+
+# Node / Vite scaffolding from AI Studio
+node_modules/
+dist/
+.env
+.env.local
+solarfi070526.zip
