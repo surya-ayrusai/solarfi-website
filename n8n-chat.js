@@ -142,8 +142,22 @@ function pickVoice(lang) {
   const family = voices.filter(v => norm(v).startsWith(base));
   const pool = exact.length ? exact : family;
   if (!pool.length) return null;
-  const rank = v => (/(natural|neural|google|online)/i.test(v.name) ? 0 : 1) + (v.localService ? 0 : 0);
-  return pool.slice().sort((a, b) => rank(a) - rank(b))[0];
+  // Higher-quality voices first: Apple "Premium"/"Enhanced", Microsoft/Google
+  // "Natural"/"Neural"/"Online"/"Google". Basic compact voices sound robotic.
+  const rank = v => {
+    const n = v.name || "";
+    if (/premium/i.test(n)) return 0;
+    if (/enhanced/i.test(n)) return 1;
+    if (/(natural|neural)/i.test(n)) return 2;
+    if (/(google|online)/i.test(n)) return 3;
+    return 4;
+  };
+  const chosen = pool.slice().sort((a, b) => rank(a) - rank(b))[0];
+  if (chosen && state.loggedVoice !== chosen.name) {
+    state.loggedVoice = chosen.name;
+    console.info(`[Solarfi chat] voice for ${lang}: ${chosen.name} (${chosen.lang})`);
+  }
+  return chosen;
 }
 
 function cleanForSpeech(text) {
@@ -251,6 +265,12 @@ function browserName() {
   if (/OPR\//.test(navigator.userAgent)) return "Opera";
   return "";
 }
+function langUnsupportedMessage() {
+  const lang = LANGS.find(l => l.code === state.prefs.lang) || LANGS[0];
+  if (lang.code === "en-IN") return "This browser's speech service is turned off. Enable Dictation/Siri in system settings, or type your question.";
+  return `${lang.name} voice input isn't supported by this browser's speech service. You can type in ${lang.name}, or use Chrome on Android for ${lang.name} voice.`;
+}
+
 function networkMessage() {
   const name = browserName();
   return name
@@ -290,11 +310,11 @@ function startListening() {
     if (token !== state.token) return;
     const msg = {
       "not-allowed": "Microphone access is blocked. Allow the microphone for this site in your browser settings.",
-      "service-not-allowed": "Microphone access is blocked. Allow the microphone for this site in your browser settings.",
+      "service-not-allowed": langUnsupportedMessage(),
       "no-speech": "I didn't hear anything. Tap the mic and try again.",
       "audio-capture": "No microphone was found on this device.",
       "network": networkMessage(),
-      "language-not-supported": "This language isn't supported for voice input here. Try English or type your question."
+      "language-not-supported": langUnsupportedMessage()
     }[ev.error];
     state.listening = false;
     renderMic();
