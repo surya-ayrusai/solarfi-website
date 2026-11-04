@@ -240,6 +240,24 @@ function stopListening() {
   renderVoiceBar();
 }
 
+// Chrome's speech recognition sends audio to Google. Chromium browsers
+// without Google's speech service (Arc, Brave, Opera, some Edge builds)
+// always fail with "network", so name the browser and suggest one that works.
+function browserName() {
+  try {
+    if (getComputedStyle(document.documentElement).getPropertyValue("--arc-palette-title").trim()) return "Arc";
+  } catch (e) { /* ignore */ }
+  if (navigator.brave) return "Brave";
+  if (/OPR\//.test(navigator.userAgent)) return "Opera";
+  return "";
+}
+function networkMessage() {
+  const name = browserName();
+  return name
+    ? `Voice input isn't available in ${name}. Please use Chrome, Edge or Safari, or type your question.`
+    : "Voice input couldn't reach the speech service. Check your internet connection, or type your question.";
+}
+
 function startListening() {
   if (!SpeechRec) {
     setStatus("error", "Voice input works in Chrome, Edge and Safari. Please type your question here.", 6000);
@@ -275,7 +293,7 @@ function startListening() {
       "service-not-allowed": "Microphone access is blocked. Allow the microphone for this site in your browser settings.",
       "no-speech": "I didn't hear anything. Tap the mic and try again.",
       "audio-capture": "No microphone was found on this device.",
-      "network": "The speech service is unreachable. Please type your question.",
+      "network": networkMessage(),
       "language-not-supported": "This language isn't supported for voice input here. Try English or type your question."
     }[ev.error];
     state.listening = false;
