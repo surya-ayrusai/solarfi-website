@@ -848,9 +848,10 @@ nav#navbar {
 
 .calc-card-hero,
 .calc-glassmorphic {
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0.05) 55%, rgba(20, 95, 42, 0.16) 100%);
-  backdrop-filter: blur(28px) saturate(190%);
-  -webkit-backdrop-filter: blur(28px) saturate(190%);
+  /* clear glass: light tint + gentle blur so the hero animation shows through */
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 55%, rgba(10, 50, 25, 0.08) 100%);
+  backdrop-filter: blur(3px) saturate(125%);
+  -webkit-backdrop-filter: blur(3px) saturate(125%);
   border: 1px solid rgba(255, 255, 255, 0.24);
   border-top: 1.5px solid rgba(255, 255, 255, 0.5);
   border-left: 1px solid rgba(255, 255, 255, 0.35);
@@ -1125,6 +1126,19 @@ select[data-r="state"] option {
   -webkit-backdrop-filter: blur(10px);
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.2);
   transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+/* hero calculator: lighter frost inside the clear-glass card */
+.calc-card-hero .cr-live-cell,
+.calc-card-hero .cr-glass-tile {
+  background-color: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+}
+.calc-card-hero .calc-select {
+  background-color: rgba(8, 28, 16, 0.45);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
 }
 
 .cr-glass-tile:hover,
