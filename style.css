@@ -2750,15 +2750,6 @@ select[data-r="state"] option {
   -webkit-mask-image: radial-gradient(120% 90% at 70% 30%, #000 0%, rgba(0, 0, 0, 0.45) 45%, transparent 80%);
   mask-image: radial-gradient(120% 90% at 70% 30%, #000 0%, rgba(0, 0, 0, 0.45) 45%, transparent 80%);
 }
-/* soft sun rays from the upper right */
-.ws-rays {
-  position: absolute; width: 1400px; height: 1400px; right: -560px; top: -760px;
-  background: repeating-conic-gradient(from 200deg, rgba(255, 220, 160, 0) 0deg, rgba(255, 220, 160, 0.07) 3deg, rgba(255, 220, 160, 0) 7deg 16deg);
-  -webkit-mask-image: radial-gradient(closest-side, #000 10%, transparent 70%);
-  mask-image: radial-gradient(closest-side, #000 10%, transparent 70%);
-  animation: wsRays 160s linear infinite;
-  will-change: transform;
-}
 /* light motes drifting upward */
 .ws-mote {
   position: absolute; bottom: -10px; width: 4px; height: 4px; border-radius: 50%;
@@ -2826,17 +2817,35 @@ select[data-r="state"] option {
 .ws-btn:focus-visible { outline: 3px solid #fcd34d; outline-offset: 3px; }
 
 /* ---------- 3D solar composition ---------- */
-.ws-art { position: relative; height: 380px; }
+.ws-art {
+  position: relative; height: 380px;
+  /* sun geometry: rays and beams are positioned from these, so they always start at the sun's centre */
+  --sun-s: 150px; --sun-r: 4%; --sun-t: -6px;
+  --sun-cx: calc(var(--sun-r) + var(--sun-s) / 2);  /* centre, measured from the right edge */
+  --sun-cy: calc(var(--sun-t) + var(--sun-s) / 2);  /* centre, measured from the top edge */
+}
+/* soft rays radiating from the sun's centre */
+.ws-sun-rays {
+  position: absolute; width: 1100px; height: 1100px;
+  right: calc(var(--sun-cx) - 550px); top: calc(var(--sun-cy) - 550px);
+  border-radius: 50%; pointer-events: none;
+  background: repeating-conic-gradient(from 0deg, rgba(255, 220, 160, 0) 0deg, rgba(255, 220, 160, 0.10) 3deg, rgba(255, 220, 160, 0) 7deg 16deg);
+  -webkit-mask-image: radial-gradient(closest-side, transparent 11%, #000 15%, rgba(0, 0, 0, 0.45) 42%, transparent 78%);
+  mask-image: radial-gradient(closest-side, transparent 11%, #000 15%, rgba(0, 0, 0, 0.45) 42%, transparent 78%);
+  animation: wsRays 160s linear infinite;
+  will-change: transform;
+}
 .ws-sun {
-  position: absolute; right: 4%; top: -6px; width: 150px; height: 150px; border-radius: 50%;
+  position: absolute; right: var(--sun-r); top: var(--sun-t); width: var(--sun-s); height: var(--sun-s); border-radius: 50%;
   background: radial-gradient(circle at 45% 42%, #fff6e6 0%, #ffd9a3 26%, #ffb76a 48%, rgba(255, 168, 96, 0.35) 62%, rgba(255, 168, 96, 0) 74%);
   filter: drop-shadow(0 0 30px rgba(255, 190, 120, 0.45));
   animation: wsSun 9s ease-in-out infinite alternate;
 }
 @keyframes wsSun { from { transform: scale(1); opacity: 0.9; } to { transform: scale(1.05); opacity: 1; } }
 .ws-beam {
-  position: absolute; right: 13%; top: 60px; width: 3px; height: 300px; transform-origin: top center;
-  background: linear-gradient(180deg, rgba(255, 214, 160, 0.55), rgba(255, 214, 160, 0));
+  position: absolute; right: calc(var(--sun-cx) - 1.5px); top: var(--sun-cy); width: 3px; height: 300px; transform-origin: top center;
+  /* starts at the sun's rim, fades with distance */
+  background: linear-gradient(180deg, rgba(255, 214, 160, 0) 0, rgba(255, 214, 160, 0) 70px, rgba(255, 214, 160, 0.55) 86px, rgba(255, 214, 160, 0) 100%);
   filter: blur(1px); opacity: 0.5; animation: wsBeam 7s ease-in-out infinite alternate;
 }
 .ws-beam.b1 { rotate: 38deg; }
@@ -2971,7 +2980,8 @@ select[data-r="state"] option {
   .ws-arr-back { left: 46%; top: 40px; }
   .ws-arr-main { left: 2%; top: 74px; }
   .ws-arr-front { display: none; }
-  .ws-sun { width: 110px; height: 110px; right: 2%; }
+  .ws-art { --sun-s: 110px; --sun-r: 2%; }
+  .ws-sun-rays { width: 760px; height: 760px; right: calc(var(--sun-cx) - 380px); top: calc(var(--sun-cy) - 380px); }
   .ws-beam { display: none; }
   .ws-chip-b { display: none; }
   .ws-chip-a { right: 0; top: auto; bottom: 6px; font-size: 0.74rem; }
