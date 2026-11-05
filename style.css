@@ -180,21 +180,31 @@ nav#navbar {
 .logo {
   display: flex;
   align-items: center;
-  gap: 12px;
   flex-shrink: 0;
+  /* white card so the orange/navy logo reads clearly on the green bar */
+  background: #ffffff;
+  padding: 7px 16px;
+  border-radius: 16px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.logo:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
 }
 
 .logo-icon {
-  height: clamp(56px, 5.5vw, 68px);
+  height: clamp(46px, 4.4vw, 58px);
   width: auto;
-  max-width: 240px;
+  max-width: none;
   object-fit: contain;
   display: block;
-  transition: transform 0.2s ease;
 }
 
-.logo-icon:hover {
-  transform: scale(1.04);
+@media (max-width: 480px) {
+  .logo { padding: 6px 12px; border-radius: 14px; }
+  .logo-icon { height: 42px; }
 }
 
 /* Zone 2: Navigation Links */
@@ -2465,4 +2475,17 @@ select[data-r="state"] option {
   .mobile-sticky-bar {
     display: flex;
   }
+}
+
+/* ── Header sizing for the larger logo (kept last so it wins the cascade) ── */
+/* Laptop/tablet widths: keep the bigger logo without pushing the bar off-screen */
+@media (max-width: 1180px) {
+  .nav-inner { gap: 20px; }
+  .nav-links { gap: 18px; font-size: 0.86rem; }
+  .nav-wa-btn { font-size: 0; gap: 0; padding: 9px 11px; }
+  .nav-wa-btn svg { width: 18px; height: 18px; }
+}
+@media (max-width: 1024px) {
+  .nav-links, .nav-actions { display: none; }
+  .hamburger { display: flex; }
 }
