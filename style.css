@@ -596,35 +596,81 @@ nav#navbar {
   100% { transform: scale(1.018); opacity: 0.95; }
 }
 
-/* Animated Floating 3D Solar Panels */
-.sp {
+/* Animated Floating 3D Solar Panels
+   One panel "skin" shared by the hero panels (.sp) and the panel arrays used
+   across the homepage (.spa > i): mono-PERC cells with silver busbars, an
+   aluminium frame with visible edge thickness, a drifting pool of sunlight
+   over the cells (::before) and a glass reflection that glides across and
+   then rests (::after). Only transform/opacity animate. */
+.sp,
+.spa > i {
+  --cw: 44px;  /* cell width  */
+  --ch: 40px;  /* cell height */
   position: absolute;
-  width: 260px;
-  height: 160px;
   border-radius: 6px;
   overflow: hidden;
-  border: 2px solid rgba(255, 255, 255, 0.38);
+  border: 2px solid rgba(226, 234, 242, var(--sp-frame, 0.7));
   background:
-    repeating-linear-gradient(90deg, transparent 0 42px, rgba(255, 255, 255, 0.30) 42px 44px),
-    repeating-linear-gradient(0deg, transparent 0 38px, rgba(255, 255, 255, 0.30) 38px 40px),
-    linear-gradient(135deg, rgba(12, 48, 92, 0.62), rgba(34, 110, 160, 0.38));
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.25);
+    /* two silver busbars per cell column */
+    repeating-linear-gradient(90deg,
+      transparent 0 calc(var(--cw) / 3 - 0.5px),
+      rgba(214, 226, 240, 0.24) calc(var(--cw) / 3 - 0.5px) calc(var(--cw) / 3 + 0.5px),
+      transparent calc(var(--cw) / 3 + 0.5px) calc(var(--cw) * 2 / 3 - 0.5px),
+      rgba(214, 226, 240, 0.24) calc(var(--cw) * 2 / 3 - 0.5px) calc(var(--cw) * 2 / 3 + 0.5px),
+      transparent calc(var(--cw) * 2 / 3 + 0.5px) var(--cw)),
+    /* cell gaps */
+    repeating-linear-gradient(90deg, transparent 0 calc(var(--cw) - 2px), rgba(236, 243, 250, 0.5) calc(var(--cw) - 2px) var(--cw)),
+    repeating-linear-gradient(0deg, transparent 0 calc(var(--ch) - 2px), rgba(236, 243, 250, 0.5) calc(var(--ch) - 2px) var(--ch)),
+    /* crystalline sheen inside every cell */
+    radial-gradient(120% 120% at 28% 22%, rgba(122, 176, 240, 0.36), rgba(122, 176, 240, 0) 62%) 0 0 / var(--cw) var(--ch),
+    /* deep blue silicon */
+    linear-gradient(160deg, rgba(30, 70, 140, var(--sp-a1, 0.74)), rgba(12, 36, 80, var(--sp-a2, 0.6)) 55%, rgba(8, 24, 58, var(--sp-a2, 0.6)));
+  box-shadow:
+    inset 0 0 0 1px rgba(0, 0, 0, 0.28),
+    0 4px 0 -1px rgba(170, 186, 204, var(--sp-edge, 0.5)),
+    0 20px 40px rgba(0, 0, 0, var(--sp-shadow, 0.26));
+}
+
+.sp {
+  width: 260px;
+  height: 160px;
   transform: perspective(800px) rotateX(58deg) rotateZ(var(--rz, -22deg));
   animation: spBob var(--dur, 9s) ease-in-out infinite;
   animation-delay: var(--delay, 0s);
 }
 
-.sp::after {
+/* drifting pool of sunlight over the cells */
+.sp::before,
+.spa > i::before {
   content: '';
   position: absolute;
-  top: -60%;
-  bottom: -60%;
-  left: -60%;
-  width: 38%;
-  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.55), transparent);
-  transform: skewX(-20deg);
-  animation: spSheen var(--sheen, 6s) ease-in-out infinite;
+  inset: -45%;
+  background: radial-gradient(38% 34% at 50% 50%, rgba(255, 232, 196, 0.24), rgba(255, 232, 196, 0) 72%);
+  mix-blend-mode: screen;
+  animation: spLight var(--light, 17s) ease-in-out infinite alternate;
   animation-delay: var(--delay, 0s);
+}
+
+/* glass reflection: glides across, then rests */
+.sp::after,
+.spa > i::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  bottom: -50%;
+  left: 0;
+  width: 55%;
+  background: linear-gradient(100deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.08) 34%,
+    rgba(255, 255, 255, 0.42) 49%,
+    rgba(255, 255, 255, 0.08) 63%,
+    rgba(255, 255, 255, 0) 100%);
+  mix-blend-mode: screen;
+  opacity: 0;
+  transform: translateX(-130%) skewX(-18deg);
+  animation: spSheen var(--sheen, 9s) cubic-bezier(0.45, 0.05, 0.25, 1) infinite;
+  animation-delay: calc(var(--delay, 0s) - 1.5s);
 }
 
 @keyframes spBob {
@@ -632,16 +678,24 @@ nav#navbar {
   50% { translate: 18px -22px; }
 }
 
-@keyframes spSheen {
-  0% { left: -60%; }
-  55%, 100% { left: 130%; }
+@keyframes spLight {
+  0%   { transform: translate(-22%, -14%); }
+  45%  { transform: translate(4%, 6%); }
+  100% { transform: translate(24%, 16%); }
 }
 
-.sp-1 { left: -50px; bottom: 8%; width: 340px; height: 210px; --rz: -24deg; --dur: 11s; opacity: 0.85; }
-.sp-2 { left: 26%; bottom: -4%; width: 300px; height: 180px; --rz: -18deg; --dur: 9s; --delay: -3s; --sheen: 7s; opacity: 0.75; }
-.sp-3 { left: 6%; top: 8%; width: 200px; height: 124px; --rz: -30deg; --dur: 13s; --delay: -6s; opacity: 0.55; }
-.sp-4 { right: 30%; top: 4%; width: 230px; height: 140px; --rz: -16deg; --dur: 10s; --delay: -2s; --sheen: 8s; opacity: 0.5; }
-.sp-5 { right: -60px; bottom: 6%; width: 320px; height: 200px; --rz: -26deg; --dur: 12s; --delay: -5s; opacity: 0.7; }
+@keyframes spSheen {
+  0%       { transform: translateX(-130%) skewX(-18deg); opacity: 0; }
+  6%       { opacity: 1; }
+  40%      { transform: translateX(260%) skewX(-18deg); opacity: 1; }
+  45%, 100% { transform: translateX(260%) skewX(-18deg); opacity: 0; }
+}
+
+.sp-1 { left: -50px; bottom: 8%; width: 340px; height: 210px; --rz: -24deg; --dur: 11s; --sheen: 10s; --light: 19s; opacity: 0.85; }
+.sp-2 { left: 26%; bottom: -4%; width: 300px; height: 180px; --rz: -18deg; --dur: 9s; --delay: -3s; --sheen: 12s; --light: 16s; opacity: 0.75; }
+.sp-3 { left: 6%; top: 8%; width: 200px; height: 124px; --rz: -30deg; --dur: 13s; --delay: -6s; --sheen: 11s; --light: 21s; opacity: 0.55; }
+.sp-4 { right: 30%; top: 4%; width: 230px; height: 140px; --rz: -16deg; --dur: 10s; --delay: -2s; --sheen: 13s; --light: 18s; opacity: 0.5; }
+.sp-5 { right: -60px; bottom: 6%; width: 320px; height: 200px; --rz: -26deg; --dur: 12s; --delay: -5s; --sheen: 9.5s; --light: 20s; opacity: 0.7; }
 
 /* Solar Energy Rising Sparks */
 .spark {
@@ -677,7 +731,7 @@ nav#navbar {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero-sun, .hero-sun::before, .hero-sun::after, .hero-sun-rays, .sp, .sp::after, .spark { animation: none; }
+  .hero-sun, .hero-sun::before, .hero-sun::after, .hero-sun-rays, .sp, .sp::before, .sp::after, .spark { animation: none; }
   .spark { display: none; }
 }
 
@@ -2560,4 +2614,95 @@ select[data-r="state"] option {
 @media (max-width: 1024px) {
   .nav-links, .nav-actions { display: none; }
   .hamburger { display: flex; }
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   Solar panel motif across the homepage
+   .sp-layer sits between a section's background and its content
+   (section gets isolation + z-index:-1 layer), so backgrounds and text are
+   untouched. Panels reuse the hero skin above. Placement per section.
+   ══════════════════════════════════════════════════════════════════════ */
+.sp-host { position: relative; isolation: isolate; }
+.sp-layer {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* panel array: panels side by side on one tilted rack */
+.spa {
+  position: absolute;
+  display: flex;
+  gap: var(--gap, 6px);
+  transform: perspective(900px) rotateX(var(--rx, 56deg)) rotateZ(var(--rz, -20deg));
+  animation: spBob var(--dur, 12s) ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+  opacity: var(--o, 0.6);
+}
+.spa > i {
+  position: relative;
+  display: block;
+  flex: none;
+  width: var(--pw, 150px);
+  height: var(--ph, 92px);
+  --cw: var(--acw, 25px);
+  --ch: var(--ach, 23px);
+}
+/* reflection travels along the rack, panel by panel */
+.spa > i:nth-child(2)::after { animation-delay: calc(var(--delay, 0s) - 1.15s); }
+.spa > i:nth-child(3)::after { animation-delay: calc(var(--delay, 0s) - 0.8s); }
+.spa > i:nth-child(2)::before { animation-delay: calc(var(--delay, 0s) - 4s); }
+.spa > i:nth-child(3)::before { animation-delay: calc(var(--delay, 0s) - 8s); }
+
+/* on light sections: opaque, crisp panels with a soft daylight shadow */
+.spa.sp--solid > i {
+  --sp-a1: 0.97;
+  --sp-a2: 0.95;
+  --sp-frame: 1;
+  --sp-edge: 0.9;
+  --sp-shadow: 0.14;
+  border-color: #d5dde6;
+}
+
+/* placements (desktop) */
+.spd-trust-l   { left: -36px; top: 34%;    --pw: 150px; --ph: 92px;  --rz: -22deg; --o: 0.85; --dur: 13s; --delay: -2s; --sheen: 11s; }
+.spd-trust-r   { right: -84px; bottom: 4px; --pw: 118px; --ph: 72px; --rz: -14deg; --o: 0.85; --dur: 11s; --delay: -6s; --sheen: 12s; }
+.spd-feat-tr   { right: 3%; top: 92px;     --pw: 122px; --ph: 76px;  --rz: -18deg; --o: 0.9; --dur: 14s; --delay: -4s; --sheen: 10s; }
+.spd-feat-bl   { left: -54px; bottom: 34px; --pw: 168px; --ph: 104px; --rz: -26deg; --o: 0.8; --dur: 12s; --delay: -8s; --sheen: 13s; }
+.spd-how-l     { left: 6%; top: 64px;      --pw: 112px; --ph: 70px;  --rz: -24deg; --o: 0.85; --dur: 12s; --delay: -1s; --sheen: 11s; }
+.spd-how-r     { right: 7%; top: 46px;     --pw: 132px; --ph: 82px;  --rz: -14deg; --o: 0.85; --dur: 14s; --delay: -7s; --sheen: 12.5s; }
+.spd-proc-bl   { left: -70px; bottom: -36px; --pw: 250px; --ph: 154px; --rz: -24deg; --o: 0.5; --dur: 13s; --delay: -3s; --sheen: 10.5s; --acw: 40px; --ach: 36px; }
+.spd-proc-tr   { right: 4%; top: 58px;     --pw: 140px; --ph: 86px;  --rz: -18deg; --o: 0.42; --dur: 11s; --delay: -6s; --sheen: 12s; }
+.spd-sav-l     { left: 3%; top: 76px;      --pw: 104px; --ph: 64px;  --rz: -20deg; --o: 0.85; --dur: 13s; --delay: -5s; --sheen: 11.5s; }
+.spd-sav-r     { right: 5%; top: 120px;    --pw: 128px; --ph: 80px;  --rz: -26deg; --o: 0.85; --dur: 12s; --delay: -9s; --sheen: 10s; }
+.spd-imp-l     { left: -72px; bottom: -22px; --pw: 200px; --ph: 124px; --rz: -22deg; --o: 0.32; --dur: 12s; --delay: -2s; --sheen: 11s; --acw: 36px; --ach: 32px; }
+.spd-imp-r     { right: -34px; top: 18px;  --pw: 130px; --ph: 80px;  --rz: -16deg; --o: 0.28; --dur: 14s; --delay: -6s; --sheen: 12.5s; }
+.spd-test-l    { left: 2.5%; top: 36px;     --pw: 112px; --ph: 70px;  --rz: -20deg; --o: 0.85; --dur: 12s; --delay: -3s; --sheen: 10.5s; }
+.spd-test-r    { right: 3.5%; top: 40px;    --pw: 134px; --ph: 82px;  --rz: -26deg; --o: 0.85; --dur: 13s; --delay: -8s; --sheen: 12s; }
+.spd-faq-tl    { left: -92px; top: 4px;    --pw: 160px; --ph: 98px;  --rz: -18deg; --o: 0.8; --dur: 13s; --delay: -5s; --sheen: 11s; }
+.spd-cta-l     { left: -56px; bottom: -34px; --pw: 250px; --ph: 154px; --rz: -24deg; --o: 0.45; --dur: 12s; --delay: -4s; --sheen: 10s; --acw: 40px; --ach: 36px; }
+.spd-cta-r     { right: -44px; top: -18px; --pw: 158px; --ph: 98px;  --rz: -16deg; --o: 0.4; --dur: 14s; --delay: -9s; --sheen: 12s; }
+.spd-foot-br   { right: -40px; bottom: 28px; --pw: 140px; --ph: 86px; --rz: -20deg; --o: 0.16; --dur: 15s; --delay: -6s; --sheen: 13s; }
+
+/* tablets: drop the panels that flank headings (no side margins left) */
+@media (max-width: 1200px) {
+  .sp-layer .spd-flank { display: none; }
+  .spa { scale: 0.85; transform-origin: center; }
+}
+
+/* phones: keep only the dark-section panels, quieter */
+@media (max-width: 760px) {
+  .sp-layer .spd-light { display: none; }
+  .spa { scale: 0.7; opacity: calc(var(--o, 0.6) * 0.7); }
+}
+
+/* paused while the section is off-screen (set by a small observer in index.html) */
+.sp-layer.is-paused .spa,
+.sp-layer.is-paused .spa > i::before,
+.sp-layer.is-paused .spa > i::after { animation-play-state: paused; }
+
+@media (prefers-reduced-motion: reduce) {
+  .spa, .spa > i::before, .spa > i::after { animation: none; }
 }
