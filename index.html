@@ -305,55 +305,100 @@
   </section>
 
   <!-- ── 3. Trust Band (Auto-sliding Carousel) ─────────────────────────── -->
-  <section class="sp-host trust-band" aria-label="Why customers trust Solarfi">
-    <div class="sp-layer" aria-hidden="true"><div class="spa sp--solid spd-trust-l spd-light"><i></i></div><div class="spa sp--solid spd-trust-r spd-light"><i></i><i></i></div></div>
-    <div class="trust-inner trust-carousel" role="region" aria-roledescription="carousel" aria-label="Solarfi highlights">
-      <div class="tc-head">
-        <div>
-          <div class="tc-kicker">Why Solarfi</div>
-          <h2 class="tc-heading">Trusted. Certified. Subsidy-ready.</h2>
+  <section class="why-solarfi" id="why-solarfi" aria-labelledby="wsHeading">
+    <!-- background: layered depth, cell-grid texture, light rays, particles -->
+    <div class="ws-bg" aria-hidden="true">
+      <div class="ws-glow ws-glow-a"></div>
+      <div class="ws-glow ws-glow-b"></div>
+      <div class="ws-grid"></div>
+      <div class="ws-rays"></div>
+      <span class="ws-mote m1"></span><span class="ws-mote m2"></span><span class="ws-mote m3"></span>
+      <span class="ws-mote m4"></span><span class="ws-mote m5"></span><span class="ws-mote m6"></span>
+      <div class="grain-overlay"></div>
+    </div>
+
+    <div class="ws-inner">
+      <div class="ws-top">
+        <div class="ws-copy ws-reveal">
+          <div class="ws-kicker"><span class="ws-kicker-dot" aria-hidden="true"></span>Why Solarfi</div>
+          <h2 id="wsHeading" class="ws-heading">Why Homeowners &amp; Businesses <span>Choose Solarfi</span></h2>
+          <p class="ws-lead">From certified components to installation and subsidy assistance, we make your transition to solar simple, reliable, and rewarding.</p>
+          <ul class="ws-proof" aria-label="Track record">
+            <li><strong>100+</strong> projects delivered</li>
+            <li><strong>16+</strong> years in solar EPC</li>
+            <li><strong>AP &amp; Telangana</strong> empanelled vendor</li>
+          </ul>
+          <div class="ws-ctas">
+            <a href="#how-it-works-visual" class="ws-btn ws-btn-primary">
+              Explore Solar Solutions
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+            <a href="contact-us.html" class="ws-btn ws-btn-ghost">Get a Free Solar Consultation</a>
+          </div>
+        </div>
+
+        <!-- 3D solar composition -->
+        <div class="ws-art ws-reveal" aria-hidden="true">
+          <div class="ws-sun"></div>
+          <div class="ws-beam b1"></div><div class="ws-beam b2"></div><div class="ws-beam b3"></div>
+          <div class="spa sp--solid ws-arr-back"><i></i><i></i></div>
+          <div class="spa sp--solid ws-arr-main"><i></i><i></i><i></i></div>
+          <div class="spa sp--solid ws-arr-front"><i></i></div>
+          <svg class="ws-flow" viewBox="0 0 520 360" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="wsFlowG" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#fcd34d"/><stop offset="1" stop-color="#4ade80"/>
+              </linearGradient>
+            </defs>
+            <path class="ws-flow-track" d="M300 205 C 250 270, 160 290, 40 352"/>
+            <path class="ws-flow-track" d="M360 220 C 340 290, 300 320, 250 356"/>
+            <path class="ws-flow-track" d="M420 200 C 450 270, 470 310, 492 356"/>
+            <path class="ws-flow-dots f1" d="M300 205 C 250 270, 160 290, 40 352"/>
+            <path class="ws-flow-dots f2" d="M360 220 C 340 290, 300 320, 250 356"/>
+            <path class="ws-flow-dots f3" d="M420 200 C 450 270, 470 310, 492 356"/>
+          </svg>
+          <div class="ws-chip ws-chip-a"><span class="ws-chip-dot"></span>PM Surya Ghar subsidy support</div>
+          <div class="ws-chip ws-chip-b"><span class="ws-chip-dot gold"></span>DISCOM &amp; net-metering handled</div>
         </div>
       </div>
-      <div class="tc-viewport">
-        <div class="tc-track" tabindex="0" aria-live="off">
-          <article class="trust-item" role="group" aria-roledescription="slide" aria-label="1 of 5">
-            <span class="tc-num">01</span>
-            <div class="tc-icon"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg></div>
-            <div class="tc-eyebrow">Certified</div>
-            <div class="tc-title">MNRE Approved Vendor</div>
-            <div class="tc-sub">APSPDCL Authorized</div>
-          </article>
-          <article class="trust-item" role="group" aria-roledescription="slide" aria-label="2 of 5">
-            <span class="tc-num">02</span>
-            <div class="tc-icon"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg></div>
-            <div class="tc-eyebrow">Quality</div>
-            <div class="tc-title">BIS Certified Panels</div>
-            <div class="tc-sub">Tier-1 Components Only</div>
-          </article>
-          <article class="trust-item" role="group" aria-roledescription="slide" aria-label="3 of 5">
-            <span class="tc-num">03</span>
-            <div class="tc-icon"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg></div>
-            <div class="tc-eyebrow">Reputation</div>
-            <div class="tc-title">4.9★ Google Rating</div>
-            <div class="tc-sub">12,000+ Reviews</div>
-          </article>
-          <article class="trust-item" role="group" aria-roledescription="slide" aria-label="4 of 5">
-            <span class="tc-num">04</span>
-            <div class="tc-icon"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 10V3L4 14h7v7l9-11h-7z" /></svg></div>
-            <div class="tc-eyebrow">Speed</div>
-            <div class="tc-title">48-hr Installation</div>
-            <div class="tc-sub">Fast-Track Approvals</div>
-          </article>
-          <article class="trust-item" role="group" aria-roledescription="slide" aria-label="5 of 5">
-            <span class="tc-num">05</span>
-            <div class="tc-icon"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" /></svg></div>
-            <div class="tc-eyebrow">Savings</div>
-            <div class="tc-title">Subsidy Assistance</div>
-            <div class="tc-sub">Direct Account Credit</div>
-          </article>
-        </div>
-      </div>
-      <div class="tc-dots" role="tablist" aria-label="Choose slide"></div>
+
+      <ul class="ws-cards" aria-label="Solarfi credentials">
+        <li class="ws-card ws-reveal" style="--i:0">
+          <span class="ws-num" aria-hidden="true">01</span>
+          <span class="ws-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path class="ws-draw" d="M12 2.8 4.5 6v5.6c0 4.7 3.2 8.3 7.5 9.6 4.3-1.3 7.5-4.9 7.5-9.6V6z"/><path class="ws-draw" d="m8.6 12.1 2.4 2.4 4.4-5"/></svg></span>
+          <span class="ws-eyebrow">Certified</span>
+          <span class="ws-title">MNRE Approved Vendor</span>
+          <span class="ws-sub">APSPDCL Authorized</span>
+        </li>
+        <li class="ws-card ws-reveal" style="--i:1">
+          <span class="ws-num" aria-hidden="true">02</span>
+          <span class="ws-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path class="ws-draw" d="M4.5 6h15l-2 11h-11z"/><path class="ws-draw" d="M9.5 6 8.6 17M14.5 6l.9 11M5.4 11.5h13.2"/><path class="ws-draw" d="M10 20.5h4M12 17v3.5"/></svg></span>
+          <span class="ws-eyebrow">Quality</span>
+          <span class="ws-title">BIS Certified Panels</span>
+          <span class="ws-sub">Tier-1 Components Only</span>
+        </li>
+        <li class="ws-card ws-reveal" style="--i:2">
+          <span class="ws-num" aria-hidden="true">03</span>
+          <span class="ws-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path class="ws-draw" d="m12 3.2 2.6 5.4 5.9.8-4.3 4.1 1.1 5.8L12 16.5l-5.3 2.8 1.1-5.8-4.3-4.1 5.9-.8z"/></svg></span>
+          <span class="ws-eyebrow">Reputation</span>
+          <span class="ws-title">4.9★ Google Rating</span>
+          <span class="ws-sub">12,000+ Reviews</span>
+        </li>
+        <li class="ws-card ws-reveal" style="--i:3">
+          <span class="ws-num" aria-hidden="true">04</span>
+          <span class="ws-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path class="ws-draw" d="M13 2.5 4.5 13.5h6.5l-1 8 8.5-11h-6.5z"/></svg></span>
+          <span class="ws-eyebrow">Speed</span>
+          <span class="ws-title">48-hr Installation</span>
+          <span class="ws-sub">Fast-Track Approvals</span>
+        </li>
+        <li class="ws-card ws-reveal" style="--i:4">
+          <span class="ws-num" aria-hidden="true">05</span>
+          <span class="ws-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle class="ws-draw" cx="12" cy="12" r="9"/><path class="ws-draw" d="M8.6 7.8h6.8M8.6 11h6.8M10.2 7.8c3.4 0 3.4 5.2 0 5.2H8.8l5.2 4"/></svg></span>
+          <span class="ws-eyebrow">Savings</span>
+          <span class="ws-title">Subsidy Assistance</span>
+          <span class="ws-sub">Direct Account Credit</span>
+        </li>
+      </ul>
     </div>
   </section>
 
@@ -1659,6 +1704,26 @@
       entries.forEach(function (e) { e.target.classList.toggle('is-paused', !e.isIntersecting); });
     }, { rootMargin: '120px 0px' });
     layers.forEach(function (l) { io.observe(l); });
+  })();
+  </script>
+  <script>
+  /* Why Solarfi: entrance once in view, pause animations when off-screen */
+  (function () {
+    var s = document.getElementById('why-solarfi');
+    if (!s || !('IntersectionObserver' in window)) return;
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!reduce) {
+      // apply the hidden start state instantly (no fade-out), then allow transitions
+      s.classList.add('ws-instant', 'ws-ready');
+      void s.offsetWidth;
+      requestAnimationFrame(function () { s.classList.remove('ws-instant'); });
+    }
+    new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        s.classList.toggle('ws-paused', !e.isIntersecting);
+        if (e.isIntersecting && e.intersectionRatio > 0.1) s.classList.add('ws-in');
+      });
+    }, { threshold: [0, 0.1, 0.25] }).observe(s);
   })();
   </script>
 </body>

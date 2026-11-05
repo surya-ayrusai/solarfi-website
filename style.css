@@ -2706,3 +2706,287 @@ select[data-r="state"] option {
 @media (prefers-reduced-motion: reduce) {
   .spa, .spa > i::before, .spa > i::after { animation: none; }
 }
+
+/* ══════════════════════════════════════════════════════════════════════
+   WHY SOLARFI: signature trust section
+   Deep navy + green depth, cell-grid texture, light rays, floating PV racks
+   (reusing the .spa panel skin), energy-flow lines and five glass cards.
+   Only transform / opacity / stroke-dashoffset animate; paused off-screen.
+   ══════════════════════════════════════════════════════════════════════ */
+.why-solarfi {
+  --ws-ink: #eaf4ee;
+  --ws-soft: rgba(234, 244, 238, 0.72);
+  --ws-green: #34c05f;
+  --ws-green-2: #1a8c3e;
+  --ws-gold: #fbbf24;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: linear-gradient(165deg, #0b1729 0%, #0a1f22 45%, #0b2a1a 100%);
+  color: var(--ws-ink);
+  padding: clamp(72px, 8vw, 112px) 0 clamp(72px, 8vw, 104px);
+  border: 0;
+}
+
+/* ---------- background layers ---------- */
+.ws-bg { position: absolute; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
+.ws-glow { position: absolute; border-radius: 50%; will-change: transform, opacity; }
+.ws-glow-a {
+  width: 760px; height: 760px; left: -220px; top: -300px;
+  background: radial-gradient(closest-side, rgba(52, 192, 95, 0.30), rgba(52, 192, 95, 0) 72%);
+  animation: wsDrift 22s ease-in-out infinite alternate;
+}
+.ws-glow-b {
+  width: 640px; height: 640px; right: -180px; top: -260px;
+  background: radial-gradient(closest-side, rgba(251, 191, 36, 0.20), rgba(251, 146, 60, 0.06) 55%, rgba(251, 146, 60, 0) 75%);
+  animation: wsDrift 26s ease-in-out infinite alternate-reverse;
+}
+/* faint photovoltaic cell grid, fading toward the edges */
+.ws-grid {
+  position: absolute; inset: 0;
+  background:
+    repeating-linear-gradient(90deg, rgba(160, 220, 190, 0.07) 0 1px, transparent 1px 56px),
+    repeating-linear-gradient(0deg, rgba(160, 220, 190, 0.07) 0 1px, transparent 1px 52px);
+  -webkit-mask-image: radial-gradient(120% 90% at 70% 30%, #000 0%, rgba(0, 0, 0, 0.45) 45%, transparent 80%);
+  mask-image: radial-gradient(120% 90% at 70% 30%, #000 0%, rgba(0, 0, 0, 0.45) 45%, transparent 80%);
+}
+/* soft sun rays from the upper right */
+.ws-rays {
+  position: absolute; width: 1400px; height: 1400px; right: -560px; top: -760px;
+  background: repeating-conic-gradient(from 200deg, rgba(255, 220, 160, 0) 0deg, rgba(255, 220, 160, 0.07) 3deg, rgba(255, 220, 160, 0) 7deg 16deg);
+  -webkit-mask-image: radial-gradient(closest-side, #000 10%, transparent 70%);
+  mask-image: radial-gradient(closest-side, #000 10%, transparent 70%);
+  animation: wsRays 160s linear infinite;
+  will-change: transform;
+}
+/* light motes drifting upward */
+.ws-mote {
+  position: absolute; bottom: -10px; width: 4px; height: 4px; border-radius: 50%;
+  background: #fde68a; box-shadow: 0 0 10px 3px rgba(253, 230, 138, 0.45);
+  opacity: 0; animation: wsMote 14s linear infinite;
+}
+.ws-mote.m1 { left: 8%;  animation-delay: -1s; }
+.ws-mote.m2 { left: 23%; animation-delay: -6s; animation-duration: 17s; }
+.ws-mote.m3 { left: 41%; animation-delay: -10s; background: #bbf7d0; box-shadow: 0 0 10px 3px rgba(74, 222, 128, 0.4); }
+.ws-mote.m4 { left: 58%; animation-delay: -3s; animation-duration: 16s; }
+.ws-mote.m5 { left: 76%; animation-delay: -12s; background: #bbf7d0; box-shadow: 0 0 10px 3px rgba(74, 222, 128, 0.4); }
+.ws-mote.m6 { left: 91%; animation-delay: -8s; animation-duration: 19s; }
+.why-solarfi .grain-overlay { z-index: 0; opacity: 0.05; }
+
+@keyframes wsDrift { from { transform: translate(0, 0) scale(1); opacity: 0.85; } to { transform: translate(60px, 40px) scale(1.08); opacity: 1; } }
+@keyframes wsRays { to { transform: rotate(360deg); } }
+@keyframes wsMote {
+  0% { transform: translateY(0); opacity: 0; }
+  12% { opacity: 0.8; }
+  85% { opacity: 0.5; }
+  100% { transform: translateY(-640px); opacity: 0; }
+}
+
+/* ---------- layout ---------- */
+.ws-inner { max-width: var(--container-max, 1200px); margin: 0 auto; padding: 0 24px; position: relative; }
+.ws-top { display: grid; grid-template-columns: 1.02fr 0.98fr; gap: 40px; align-items: center; }
+
+.ws-kicker {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-size: 0.78rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;
+  color: #86efac; padding: 7px 14px; border-radius: 999px;
+  border: 1px solid rgba(134, 239, 172, 0.28); background: rgba(52, 192, 95, 0.10);
+}
+.ws-kicker-dot { width: 7px; height: 7px; border-radius: 50%; background: #4ade80; box-shadow: 0 0 0 4px rgba(74, 222, 128, 0.18); }
+.ws-heading {
+  margin: 18px 0 16px; color: #fff;
+  font-size: clamp(2rem, 3.6vw, 3.1rem); line-height: 1.08; letter-spacing: -0.02em; font-weight: 800;
+}
+.ws-heading span {
+  background: linear-gradient(100deg, #4ade80 0%, #a7f3d0 45%, #fcd34d 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-fill-color: transparent;
+}
+.ws-lead { color: var(--ws-soft); font-size: clamp(1rem, 1.25vw, 1.12rem); line-height: 1.65; max-width: 540px; margin: 0 0 22px; }
+
+.ws-proof { list-style: none; margin: 0 0 28px; padding: 0; display: flex; flex-wrap: wrap; gap: 10px; }
+.ws-proof li {
+  font-size: 0.86rem; color: var(--ws-soft); padding: 8px 14px; border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.12); background: rgba(255, 255, 255, 0.04);
+}
+.ws-proof strong { color: #fff; font-weight: 700; margin-right: 3px; }
+
+.ws-ctas { display: flex; flex-wrap: wrap; gap: 12px; }
+.ws-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  min-height: 50px; padding: 0 24px; border-radius: 999px;
+  font-weight: 700; font-size: 0.95rem; text-decoration: none; white-space: nowrap;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease, border-color 0.25s ease;
+}
+.ws-btn svg { width: 18px; height: 18px; transition: transform 0.25s ease; }
+.ws-btn-primary { color: #fff; background: linear-gradient(135deg, #f97316, #ea580c); box-shadow: 0 12px 28px -10px rgba(249, 115, 22, 0.7); }
+.ws-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 18px 34px -10px rgba(249, 115, 22, 0.8); }
+.ws-btn-primary:hover svg { transform: translateX(3px); }
+.ws-btn-ghost { color: #fff; border: 1px solid rgba(255, 255, 255, 0.28); background: rgba(255, 255, 255, 0.06); }
+.ws-btn-ghost:hover { border-color: #4ade80; background: rgba(74, 222, 128, 0.10); transform: translateY(-2px); }
+.ws-btn:focus-visible { outline: 3px solid #fcd34d; outline-offset: 3px; }
+
+/* ---------- 3D solar composition ---------- */
+.ws-art { position: relative; height: 380px; }
+.ws-sun {
+  position: absolute; right: 4%; top: -6px; width: 150px; height: 150px; border-radius: 50%;
+  background: radial-gradient(circle at 45% 42%, #fff6e6 0%, #ffd9a3 26%, #ffb76a 48%, rgba(255, 168, 96, 0.35) 62%, rgba(255, 168, 96, 0) 74%);
+  filter: drop-shadow(0 0 30px rgba(255, 190, 120, 0.45));
+  animation: wsSun 9s ease-in-out infinite alternate;
+}
+@keyframes wsSun { from { transform: scale(1); opacity: 0.9; } to { transform: scale(1.05); opacity: 1; } }
+.ws-beam {
+  position: absolute; right: 13%; top: 60px; width: 3px; height: 300px; transform-origin: top center;
+  background: linear-gradient(180deg, rgba(255, 214, 160, 0.55), rgba(255, 214, 160, 0));
+  filter: blur(1px); opacity: 0.5; animation: wsBeam 7s ease-in-out infinite alternate;
+}
+.ws-beam.b1 { rotate: 38deg; }
+.ws-beam.b2 { rotate: 52deg; height: 360px; animation-delay: -2.5s; }
+.ws-beam.b3 { rotate: 66deg; height: 330px; animation-delay: -5s; }
+@keyframes wsBeam { from { opacity: 0.18; } to { opacity: 0.55; } }
+
+/* reuse the homepage .spa panel racks, sized for this composition */
+.why-solarfi .spa > i { box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.3), 0 5px 0 -1px rgba(170, 186, 204, 0.85), 0 26px 40px rgba(0, 0, 0, 0.45); }
+.ws-arr-main  { left: 6%;  top: 120px; --pw: 150px; --ph: 94px; --acw: 30px; --ach: 27px; --gap: 8px; --rz: -20deg; --rx: 54deg; --o: 1; --dur: 11s; --sheen: 8.5s; --light: 15s; }
+.ws-arr-back  { left: 40%; top: 46px;  --pw: 108px; --ph: 68px; --acw: 24px; --ach: 22px; --rz: -16deg; --rx: 58deg; --o: 0.55; --dur: 13s; --delay: -5s; --sheen: 11s; }
+.ws-arr-front { left: -4%; top: 238px; --pw: 168px; --ph: 104px; --acw: 33px; --ach: 30px; --rz: -26deg; --rx: 52deg; --o: 0.95; --dur: 12s; --delay: -3s; --sheen: 10s; }
+
+.ws-flow { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.ws-flow-track { fill: none; stroke: rgba(134, 239, 172, 0.12); stroke-width: 1.5; }
+.ws-flow-dots {
+  fill: none; stroke: url(#wsFlowG); stroke-width: 2.5; stroke-linecap: round;
+  stroke-dasharray: 2 16; opacity: 0.8; animation: wsFlow 3.4s linear infinite;
+}
+.ws-flow-dots.f2 { animation-duration: 4.2s; }
+.ws-flow-dots.f3 { animation-duration: 3.8s; animation-direction: normal; }
+@keyframes wsFlow { to { stroke-dashoffset: -72; } }
+
+.ws-chip {
+  position: absolute; display: inline-flex; align-items: center; gap: 8px;
+  font-size: 0.78rem; font-weight: 600; color: #fff; white-space: nowrap;
+  padding: 8px 14px; border-radius: 999px;
+  background: rgba(10, 25, 30, 0.72); border: 1px solid rgba(255, 255, 255, 0.14);
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  box-shadow: 0 10px 24px -10px rgba(0, 0, 0, 0.6);
+  animation: wsFloat 8s ease-in-out infinite alternate;
+}
+.ws-chip-a { right: 0; top: 300px; }
+.ws-chip-b { left: 30%; top: 8px; animation-delay: -4s; }
+.ws-chip-dot { width: 8px; height: 8px; border-radius: 50%; background: #4ade80; box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.2); }
+.ws-chip-dot.gold { background: #fbbf24; box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.2); }
+@keyframes wsFloat { from { translate: 0 0; } to { translate: 0 -8px; } }
+
+/* ---------- five trust cards ---------- */
+.ws-cards {
+  list-style: none; margin: clamp(36px, 4vw, 56px) 0 0; padding: 0;
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px;
+}
+.ws-card {
+  position: relative; overflow: hidden;
+  display: flex; flex-direction: column; gap: 4px;
+  padding: 22px 20px 22px;
+  border-radius: 22px;
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.03));
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.10), 0 18px 40px -24px rgba(0, 0, 0, 0.8);
+  -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.35s ease, box-shadow 0.35s ease, background 0.35s ease;
+}
+/* top highlight line + light sweep on hover */
+.ws-card::before {
+  content: ''; position: absolute; left: 18px; right: 18px; top: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(134, 239, 172, 0.7), transparent);
+  opacity: 0.5; transition: opacity 0.35s ease;
+}
+.ws-card::after {
+  content: ''; position: absolute; top: -40%; bottom: -40%; left: 0; width: 45%;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.10), transparent);
+  transform: translateX(-160%) skewX(-16deg); transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+}
+.ws-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(74, 222, 128, 0.45);
+  background: linear-gradient(160deg, rgba(74, 222, 128, 0.12), rgba(255, 255, 255, 0.04));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 26px 50px -24px rgba(26, 140, 62, 0.65);
+}
+.ws-card:hover::before { opacity: 1; }
+.ws-card:hover::after { transform: translateX(360%) skewX(-16deg); }
+
+.ws-num { position: absolute; top: 16px; right: 18px; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; color: rgba(234, 244, 238, 0.32); }
+.ws-icon {
+  width: 48px; height: 48px; margin-bottom: 14px; border-radius: 15px;
+  display: grid; place-items: center; color: #86efac;
+  background: radial-gradient(circle at 30% 25%, rgba(74, 222, 128, 0.28), rgba(26, 140, 62, 0.12) 70%);
+  border: 1px solid rgba(134, 239, 172, 0.3);
+  box-shadow: 0 0 0 4px rgba(74, 222, 128, 0.05), 0 10px 22px -12px rgba(74, 222, 128, 0.7);
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), color 0.35s ease;
+}
+.ws-icon svg { width: 24px; height: 24px; }
+.ws-card:hover .ws-icon { transform: translateY(-2px) rotate(-6deg) scale(1.06); color: #fde68a; }
+.ws-eyebrow { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(234, 244, 238, 0.55); }
+.ws-title { font-size: 1.04rem; font-weight: 750; color: #fff; line-height: 1.3; letter-spacing: -0.01em; }
+.ws-sub { font-size: 0.88rem; font-weight: 600; color: #4ade80; }
+
+/* ---------- entrance (JS adds .ws-ready, then .ws-in when visible) ---------- */
+.why-solarfi.ws-ready .ws-reveal { opacity: 0; transform: translateY(26px); }
+.why-solarfi.ws-ready .ws-card.ws-reveal { transition: opacity 0.7s ease, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.35s ease, box-shadow 0.35s ease, background 0.35s ease; transition-delay: calc(var(--i, 0) * 90ms + 200ms); }
+.why-solarfi.ws-ready .ws-copy, .why-solarfi.ws-ready .ws-art { transition: opacity 0.8s ease, transform 0.9s cubic-bezier(0.22, 1, 0.36, 1); }
+.why-solarfi.ws-ready .ws-art { transition-delay: 120ms; }
+.why-solarfi.ws-in .ws-reveal { opacity: 1; transform: none; }
+.why-solarfi.ws-in .ws-card.ws-reveal:hover { transform: translateY(-6px); transition-delay: 0s; }
+/* icons draw themselves in as the cards arrive */
+.why-solarfi.ws-ready .ws-draw { stroke-dasharray: 80; stroke-dashoffset: 80; }
+.why-solarfi.ws-in .ws-draw { stroke-dashoffset: 0; transition: stroke-dashoffset 1.2s cubic-bezier(0.22, 1, 0.36, 1); transition-delay: calc(var(--i, 0) * 90ms + 450ms); }
+
+/* keep this section's racks at full strength (the global .spa phone rule dims them) */
+.why-solarfi .spa { opacity: var(--o, 1); }
+
+.why-solarfi.ws-instant, .why-solarfi.ws-instant * { transition: none !important; }
+
+/* paused when off-screen */
+.why-solarfi.ws-paused *, .why-solarfi.ws-paused *::before, .why-solarfi.ws-paused *::after { animation-play-state: paused !important; }
+
+/* ---------- responsive ---------- */
+@media (max-width: 1100px) {
+  .ws-cards { grid-template-columns: repeat(6, 1fr); }
+  .ws-card { grid-column: span 2; }
+  .ws-card:nth-child(4) { grid-column: 2 / span 2; }
+  .ws-card:nth-child(5) { grid-column: 4 / span 2; }
+}
+@media (max-width: 900px) {
+  .ws-top { grid-template-columns: 1fr; gap: 8px; }
+  .ws-copy { text-align: left; }
+  .ws-art { height: 300px; max-width: 560px; width: 100%; margin: 0 auto; }
+  .ws-arr-main { left: 4%; top: 96px; }
+  .ws-arr-front { left: -6%; top: 190px; }
+  .ws-chip-a { top: 238px; }
+}
+@media (max-width: 640px) {
+  .why-solarfi { padding: 64px 0 56px; }
+  .ws-btn { width: 100%; }
+  .ws-proof { gap: 8px; }
+  .ws-proof li { font-size: 0.78rem; padding: 6px 11px; }
+  .ws-art { height: 230px; }
+  .ws-art .spa { scale: 0.72; transform-origin: left top; }
+  .ws-arr-back { left: 46%; top: 40px; }
+  .ws-arr-main { left: 2%; top: 74px; }
+  .ws-arr-front { display: none; }
+  .ws-sun { width: 110px; height: 110px; right: 2%; }
+  .ws-beam { display: none; }
+  .ws-chip-b { display: none; }
+  .ws-chip-a { right: 0; top: auto; bottom: 6px; font-size: 0.74rem; }
+  /* cards: swipeable row with the next card peeking in */
+  .ws-cards {
+    display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory;
+    margin-left: -24px; margin-right: -24px; padding: 4px 24px 12px; scrollbar-width: none;
+  }
+  .ws-cards::-webkit-scrollbar { display: none; }
+  .ws-card { flex: 0 0 74%; scroll-snap-align: start; grid-column: auto !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .why-solarfi *, .why-solarfi *::before, .why-solarfi *::after { animation: none !important; transition: none !important; }
+  .why-solarfi.ws-ready .ws-reveal { opacity: 1; transform: none; }
+  .why-solarfi.ws-ready .ws-draw { stroke-dashoffset: 0; }
+  .ws-mote { display: none; }
+}
