@@ -1501,3 +1501,264 @@
     width: 290px;
   }
 }
+
+/* ═══ Solarfi Energy Guide: narrated walkthrough of the telemetry hub ═══════ */
+.scenario-btn:focus-visible,
+.sfg-btn:focus-visible,
+.sfg-play:focus-visible,
+.sfg-dot:focus-visible {
+  outline: 2px solid #fcd34d;
+  outline-offset: 2px;
+}
+
+.sf-guide {
+  position: relative;
+  margin: -4px 0 18px;
+  padding: 14px 16px 12px;
+  border-radius: 16px;
+  background:
+    radial-gradient(120% 140% at 0% 0%, rgba(245, 158, 11, 0.10) 0%, rgba(245, 158, 11, 0) 46%),
+    linear-gradient(135deg, rgba(16, 185, 129, 0.10) 0%, rgba(6, 182, 212, 0.06) 100%),
+    rgba(9, 18, 33, 0.72);
+  border: 1px solid rgba(52, 211, 153, 0.22);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.sf-guide.is-active {
+  border-color: rgba(52, 211, 153, 0.45);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 0 0 1px rgba(52, 211, 153, 0.08), 0 10px 30px rgba(16, 185, 129, 0.10);
+}
+
+.sfg-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.sfg-id {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  flex-wrap: wrap;
+}
+
+/* voice level bars: still at rest, moving while the guide speaks */
+.sfg-wave {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  height: 18px;
+  width: 22px;
+}
+.sfg-wave i {
+  width: 3px;
+  height: 5px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, #fcd34d, #34d399);
+  opacity: 0.7;
+  transition: height 0.2s ease;
+}
+.sf-guide.is-speaking .sfg-wave i { animation: sfgWave 1s ease-in-out infinite; opacity: 1; }
+.sf-guide.is-speaking .sfg-wave i:nth-child(2) { animation-delay: -0.8s; }
+.sf-guide.is-speaking .sfg-wave i:nth-child(3) { animation-delay: -0.45s; }
+.sf-guide.is-speaking .sfg-wave i:nth-child(4) { animation-delay: -0.65s; }
+.sf-guide.is-speaking .sfg-wave i:nth-child(5) { animation-delay: -0.2s; }
+@keyframes sfgWave {
+  0%, 100% { height: 4px; }
+  50% { height: 17px; }
+}
+
+.sfg-kicker {
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #fcd34d;
+}
+.sfg-scene {
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #a7f3d0;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(52, 211, 153, 0.28);
+  white-space: nowrap;
+}
+
+.sfg-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.sfg-btn,
+.sfg-play {
+  font: inherit;
+  color: #e2e8f0;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, opacity 0.2s ease;
+}
+.sfg-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+.sfg-btn svg,
+.sfg-play svg { width: 16px; height: 16px; display: block; }
+.sfg-btn:hover:not(:disabled),
+.sfg-play:hover {
+  background: rgba(52, 211, 153, 0.16);
+  border-color: rgba(52, 211, 153, 0.45);
+  color: #fff;
+}
+.sfg-btn:disabled { opacity: 0.35; cursor: default; }
+.sfg-btn[aria-pressed="true"] { color: #fca5a5; border-color: rgba(248, 113, 113, 0.4); }
+
+.sfg-play {
+  height: 34px;
+  padding: 0 14px 0 10px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.76rem;
+  font-weight: 800;
+  color: #052e1b;
+  background: linear-gradient(135deg, #fcd34d 0%, #34d399 100%);
+  border-color: transparent;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.25);
+  white-space: nowrap;
+}
+.sfg-play:hover { color: #052e1b; background: linear-gradient(135deg, #fde68a 0%, #6ee7b7 100%); }
+.sfg-play.is-playing {
+  color: #e2e8f0;
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(52, 211, 153, 0.45);
+  box-shadow: none;
+}
+.sfg-play-ico { display: inline-flex; }
+
+.sfg-text {
+  margin: 10px 0 0;
+  min-height: 2.9em;
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: #e2e8f0;
+  max-width: 78ch;
+}
+.sfg-text.sfg-swap { animation: sfgIn 0.35s ease; }
+@keyframes sfgIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: none; }
+}
+.sfg-note {
+  margin: 6px 0 0;
+  font-size: 0.72rem;
+  color: #fcd34d;
+}
+
+.sfg-progress {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+.sfg-dots {
+  display: flex;
+  gap: 4px;
+  flex: 1 1 auto;
+  max-width: 260px;
+}
+.sfg-dot {
+  flex: 1 1 0;
+  height: 14px;
+  padding: 5px 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  position: relative;
+}
+.sfg-dot::before {
+  content: '';
+  position: absolute;
+  inset: 5px 0;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.14);
+  transition: background 0.3s ease;
+}
+.sfg-dot.is-done::before { background: rgba(52, 211, 153, 0.6); }
+.sfg-dot.is-current::before { background: linear-gradient(90deg, #fcd34d, #34d399); box-shadow: 0 0 10px rgba(52, 211, 153, 0.5); }
+.sfg-step {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #94a3b8;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Highlights: the narrated element glows, the rest of the hub steps back */
+#netmeterHub .telemetry-metric-tile,
+#netmeterHub .smart-meter-box,
+#netmeterHub .circuit-node-card {
+  transition: opacity 0.35s ease, filter 0.35s ease, transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+}
+#netmeterHub.sf-guiding .telemetry-metric-tile:not(.sf-hl),
+#netmeterHub.sf-guiding .smart-meter-box:not(.sf-hl),
+#netmeterHub.sf-guiding .circuit-node-card:not(.sf-hl) {
+  opacity: 0.42;
+  filter: saturate(0.55);
+}
+#netmeterHub .sf-hl {
+  border-color: rgba(252, 211, 77, 0.75) !important;
+  box-shadow: 0 0 0 1px rgba(252, 211, 77, 0.35), 0 0 26px rgba(52, 211, 153, 0.28), 0 10px 26px rgba(0, 0, 0, 0.35);
+  transform: translateY(-3px);
+}
+#netmeterHub .telemetry-metric-tile.sf-hl .tile-value { animation: sfgPop 0.6s ease; }
+@keyframes sfgPop {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.12); }
+  100% { transform: scale(1); }
+}
+#netmeterHub .tile-value { transform-origin: left bottom; }
+
+/* inactive equipment (panels at night, grid when balanced) */
+#netmeterHub .circuit-node-card.sf-inactive:not(.sf-hl) { opacity: 0.5; filter: grayscale(0.7); }
+#netmeterHub .circuit-node-card.sf-inactive.sf-hl { filter: grayscale(0.5); }
+
+/* wires */
+.flow-svg-conduit line { transition: opacity 0.3s ease, stroke-width 0.3s ease; }
+.flow-svg-conduit .sf-wire-off { stroke-dasharray: 2 10; opacity: 0.18; animation: none; }
+.flow-svg-conduit .sf-wire-hl { stroke-width: 5; filter: drop-shadow(0 0 4px rgba(252, 211, 77, 0.8)); }
+
+@media (max-width: 640px) {
+  .sf-guide { padding: 12px 12px 10px; }
+  .sfg-row { flex-direction: column; align-items: stretch; }
+  .sfg-controls { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
+  .sfg-play { grid-column: 1 / -1; order: -1; height: 44px; justify-content: center; }
+  .sfg-btn { width: auto; height: 44px; }
+  .sfg-text { font-size: 0.88rem; min-height: 4.5em; }
+  .sfg-dots { max-width: none; }
+  .sfg-dot { height: 22px; padding: 9px 0; }
+  .sfg-dot::before { inset: 9px 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sf-guide.is-speaking .sfg-wave i { animation: none; height: 12px; }
+  .sfg-text.sfg-swap,
+  #netmeterHub .telemetry-metric-tile.sf-hl .tile-value { animation: none; }
+  #netmeterHub .sf-hl { transform: none; }
+  #netmeterHub .telemetry-metric-tile,
+  #netmeterHub .smart-meter-box,
+  #netmeterHub .circuit-node-card { transition: none; }
+}
