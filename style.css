@@ -505,6 +505,10 @@ nav#navbar {
   pointer-events: none;
 }
 
+/* Hero sun: warm light-orange sun built in layers on the same element.
+   ::before = main rays (slow spin), .hero-sun-rays = softer counter-rays,
+   ::after  = core + corona + ambient glow (gentle "breathing").
+   Only transform/opacity animate, so it stays cheap on phones. */
 .hero-sun {
   position: absolute;
   top: -180px;
@@ -512,16 +516,84 @@ nav#navbar {
   width: 520px;
   height: 520px;
   border-radius: 50%;
+  pointer-events: none;
+  mix-blend-mode: screen; /* light adds to the green instead of muddying it */
+}
+
+.hero-sun::before,
+.hero-sun::after,
+.hero-sun-rays {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+}
+
+/* Main rays: soft-edged beams in peach / amber, fading with distance */
+.hero-sun::before {
+  background: repeating-conic-gradient(from 3deg,
+    rgba(255, 214, 168, 0) 0deg,
+    rgba(255, 207, 150, 0.30) 2.5deg,
+    rgba(255, 186, 120, 0.12) 5deg,
+    rgba(255, 214, 168, 0) 8deg 15deg);
+  -webkit-mask-image: radial-gradient(closest-side, transparent 22%, #000 30%, rgba(0, 0, 0, 0.55) 55%, transparent 94%);
+  mask-image: radial-gradient(closest-side, transparent 22%, #000 30%, rgba(0, 0, 0, 0.55) 55%, transparent 94%);
+  animation: heroSunSpin 120s linear infinite;
+  will-change: transform;
+}
+
+/* Counter-rays: wider, fainter, shorter; turning the other way makes the
+   light shimmer naturally instead of looking like a spinning wheel */
+.hero-sun-rays {
+  background: repeating-conic-gradient(from 11deg,
+    rgba(255, 196, 140, 0) 0deg,
+    rgba(255, 196, 140, 0.16) 5deg,
+    rgba(255, 196, 140, 0) 10deg 26deg);
+  -webkit-mask-image: radial-gradient(closest-side, transparent 20%, #000 28%, transparent 72%);
+  mask-image: radial-gradient(closest-side, transparent 20%, #000 28%, transparent 72%);
+  animation: heroSunSpinBack 190s linear infinite;
+  will-change: transform;
+}
+
+/* Core (soft highlight, peach to amber with slightly deeper rim),
+   corona and wide ambient glow */
+.hero-sun::after {
   background:
-    radial-gradient(circle, rgba(255, 214, 102, 0.55) 0 18%, rgba(255, 184, 0, 0.18) 19% 38%, transparent 62%),
-    repeating-conic-gradient(rgba(255, 214, 102, 0.22) 0 5deg, transparent 5deg 15deg);
-  -webkit-mask-image: radial-gradient(circle, #000 25%, transparent 68%);
-  mask-image: radial-gradient(circle, #000 25%, transparent 68%);
-  animation: heroSunSpin 70s linear infinite;
+    radial-gradient(circle at 45% 43%, rgba(255, 251, 242, 0.95) 0, rgba(255, 238, 214, 0.75) 5%, rgba(255, 238, 214, 0) 12%),
+    radial-gradient(closest-side,
+      #fff0db 0%,
+      #ffdcab 10%,
+      #ffc684 18%,
+      #ffb066 24%,
+      rgba(255, 168, 96, 0.62) 26.5%,
+      rgba(255, 178, 112, 0.34) 32%,
+      rgba(255, 190, 130, 0.16) 46%,
+      rgba(255, 200, 150, 0.06) 62%,
+      rgba(255, 200, 150, 0) 78%);
+  animation: heroSunBreathe 11s ease-in-out infinite alternate;
+  will-change: transform, opacity;
 }
 
 @keyframes heroSunSpin {
   to { transform: rotate(360deg); }
+}
+
+@keyframes heroSunSpinBack {
+  to { transform: rotate(-360deg); }
+}
+
+/* On phones the sun sits behind the headline: soften it so text stays crisp */
+@media (max-width: 600px) {
+  .hero-sun { opacity: 0.62; }
+}
+
+/* Uneven steps so the glow feels organic rather than a metronome */
+@keyframes heroSunBreathe {
+  0%   { transform: scale(1);     opacity: 0.88; }
+  30%  { transform: scale(1.022); opacity: 0.97; }
+  55%  { transform: scale(1.01);  opacity: 0.92; }
+  80%  { transform: scale(1.034); opacity: 1; }
+  100% { transform: scale(1.018); opacity: 0.95; }
 }
 
 /* Animated Floating 3D Solar Panels */
@@ -605,7 +677,7 @@ nav#navbar {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero-sun, .sp, .sp::after, .spark { animation: none; }
+  .hero-sun, .hero-sun::before, .hero-sun::after, .hero-sun-rays, .sp, .sp::after, .spark { animation: none; }
   .spark { display: none; }
 }
 
