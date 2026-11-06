@@ -58,7 +58,7 @@ After importing the export into another n8n instance, select these credentials o
 
 - It is generated locally into `.env.local` (gitignored) as `SOLARFI_FORM_KEY`, with its hash as `SOLARFI_FORM_KEY_SHA256`.
 - **It is visible to every visitor's browser**, because the browser has to send it. Treat it as a spam filter, not a secret. The real protection is the server-side validation, the origin allowlist, the rate limit and the honeypot.
-- **Before deploying**, `lead-form-config.js` must contain the real key in place of `REPLACE_WITH_FORM_KEY`. This repo has no build step (Vercel serves the folder as-is), so the value has to be in the deployed file. Decide whether that is a commit, or a Vercel build step that writes the file.
+- **The key is committed in `lead-form-config.js`** (decided 2026-11-06). This repo has no build step (Vercel serves the folder as-is), so the value has to be in the deployed file, and it is public either way.
 - **To rotate the key:** generate a new one, put its SHA-256 in Intake Config → `FORM_KEY_SHA256`, and deploy the new key in `lead-form-config.js` at the same time.
 
 ```bash
