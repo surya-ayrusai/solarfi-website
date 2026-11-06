@@ -2,18 +2,20 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
 
 const wf = JSON.parse(readFileSync(new URL('../n8n/solarfi-inquiry-intake.json', import.meta.url), 'utf8'));
 const src = (name) => wf.nodes.find((n) => n.name === name).parameters.jsCode;
 const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor;
-const vars = { SOLARFI_FORM_KEY: 'test-key', SOLARFI_ALLOWED_ORIGINS: 'https://solarfi.in,https://www.solarfi.in', UNITS_PER_KW_PER_MONTH: '120' };
+const config = { FORM_KEY_SHA256: createHash('sha256').update('test-key').digest('hex'), ALLOWED_ORIGINS: 'https://solarfi.in,https://www.solarfi.in', UNITS_PER_KW_PER_MONTH: 120, RATE_LIMIT_PER_HOUR: 5 };
 
 async function run(name, input, { nodes = {}, staticData = {}, binary = null } = {}) {
   const item = { json: input, binary };
   const ctx = { helpers: { getBinaryDataBuffer: async () => Buffer.from(binary.__raw) } };
-  const fn = new AsyncFunction('$input', '$vars', '$getWorkflowStaticData', '$', '$node', '$execution', src(name));
-  return fn.call(ctx, { first: () => item, all: () => [item] }, vars, () => staticData,
-    (n) => ({ first: () => ({ json: nodes[n] }) }), { name }, { id: 'test' });
+  const fn = new AsyncFunction('$input', '$getWorkflowStaticData', '$', '$node', '$execution', src(name));
+  const all = { 'Intake Config': config, ...nodes };
+  return fn.call(ctx, { first: () => item, all: () => [item] }, () => staticData,
+    (n) => ({ first: () => { if (!(n in all)) throw new Error('node not run: ' + n); return { json: all[n] }; } }), { name }, { id: 'test' });
 }
 const lead = { name: 'Ramesh Reddy', mobile: '09876543210', email: '', city_area: 'Kadapa', property_type: 'commercial',
   monthly_units_kwh: 400, consent: true, honeypot: '', client_request_id: '3f2b8c1e-9a4d-4e2f-8b1a-0c9d8e7f6a5b' };
@@ -67,6 +69,15 @@ test('derive: estimate, flags, ids', async () => {
   assert.match(d.json.lead_id, /^[0-9a-f-]{36}$/);
   [d] = await run('Derive Lead Fields', { lead_id: 'x' }, { nodes: { 'Validate & Normalise': v.json } });
   assert.equal(d.json.is_duplicate, true);
+});
+
+test('gate sha256 matches node crypto for long and unicode keys', async () => {
+  for (const k of ['x', 'a'.repeat(55), 'b'.repeat(56), 'c'.repeat(64), 'kéy-ü-' + 'z'.repeat(70)]) {
+    config.FORM_KEY_SHA256 = createHash('sha256').update(k).digest('hex');
+    const [r] = await run('Security Gate', { headers: hdr({ 'x-solarfi-key': k, 'x-forwarded-for': Math.random().toString() }), body: lead });
+    assert.equal(r.json._respond, false, `key of length ${k.length} should pass`);
+  }
+  config.FORM_KEY_SHA256 = createHash('sha256').update('test-key').digest('hex');
 });
 
 test('alert text masks mobile', async () => {

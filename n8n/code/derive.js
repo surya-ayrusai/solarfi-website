@@ -17,7 +17,7 @@ return [{ json: {
   monthly_units_kwh: data.monthly_units_kwh,
   monthly_bill_inr: data.monthly_bill_inr,
   roof_area_sqft: data.roof_area_sqft,
-  estimated_kw: V.estimateKw(data.monthly_units_kwh, $vars.UNITS_PER_KW_PER_MONTH),
+  estimated_kw: V.estimateKw(data.monthly_units_kwh, $('Intake Config').first().json.UNITS_PER_KW_PER_MONTH),
   estimate_method: 'units_div_120',
   message: data.message,
   source: 'website-contact',

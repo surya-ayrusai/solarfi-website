@@ -10,7 +10,7 @@ const validation = read('../lead-validation.js');
 const code = (f) => read(`code/${f}`).replace(/\/\*__LEAD_VALIDATION__\*\//g, () => validation);
 
 const SUPABASE = 'https://csikpgbacngeivttoejo.supabase.co';
-const TABLE = 'quote-chase-board';
+const TABLE = 'leads';
 const REST = `${SUPABASE}/rest/v1/${TABLE}`;
 
 // Same columns, same order, in Supabase and in the "Leads" sheet tab.
@@ -22,9 +22,11 @@ export const COLUMNS = [
 ];
 const INSERT_COLUMNS = COLUMNS.filter((c) => c !== 'id');
 
-const supabaseCred = { supabaseApi: { id: '', name: 'Solarfi Supabase (service role)' } };
-const sheetsCred = { googleSheetsOAuth2Api: { id: '', name: 'Solarfi Google Sheets' } };
-const gmailCred = { gmailOAuth2: { id: '', name: 'Solarfi Gmail alerts' } };
+// Import-time overrides (never committed): set by the person importing.
+const env = process.env;
+const supabaseCred = { supabaseApi: { id: env.N8N_SUPABASE_CRED_ID || '', name: 'Solarfi Supabase (service role)' } };
+const sheetsCred = { googleSheetsOAuth2Api: { id: env.N8N_SHEETS_CRED_ID || '', name: 'Google Sheets account' } };
+const gmailCred = { gmailOAuth2: { id: env.N8N_GMAIL_CRED_ID || '', name: 'Gmail account' } };
 
 let x = 0;
 const pos = (col, row) => [col * 240, row * 200];
@@ -60,13 +62,29 @@ const ifTrue = (name, p, left, operator, right) => add({
 // ---- Nodes -----------------------------------------------------------------
 add({
   name: 'Inquiry Webhook', type: 'n8n-nodes-base.webhook', typeVersion: 2, position: pos(0, 2),
-  webhookId: 'solarfi-inquiry',
+  webhookId: '6f1d2c3a-5b7e-4c8d-9a0b-1e2f3a4b5c6d',
   parameters: {
     httpMethod: 'POST', path: 'solarfi-inquiry', responseMode: 'responseNode',
     options: {
       rawBody: true,
-      allowedOrigins: 'https://solarfi.in,https://www.solarfi.in,https://solarfi-website.vercel.app',
+      allowedOrigins: env.SOLARFI_ALLOWED_ORIGINS || 'https://solarfi.in,https://www.solarfi.in,https://solarfi-website.vercel.app',
     },
+  },
+});
+// Settings (no secrets). n8n Starter has no Variables, so they live here.
+add({
+  name: 'Intake Config', type: 'n8n-nodes-base.set', typeVersion: 3.4, position: pos(1, 0),
+  parameters: {
+    mode: 'manual', includeOtherFields: true, include: 'all',
+    assignments: { assignments: [
+      { id: 'u', name: 'UNITS_PER_KW_PER_MONTH', value: 120, type: 'number' },
+      { id: 'o', name: 'ALLOWED_ORIGINS', value: env.SOLARFI_ALLOWED_ORIGINS || 'https://solarfi.in,https://www.solarfi.in,https://solarfi-website.vercel.app', type: 'string' },
+      { id: 'r', name: 'RATE_LIMIT_PER_HOUR', value: 5, type: 'number' },
+      { id: 'a', name: 'ALERT_EMAIL', value: 'info@solarfi.in', type: 'string' },
+      { id: 's', name: 'LEADS_SHEET_ID', value: '125ZB4f2EQjjQ6USLUKRT9VNuK4AIOfXzQtU0rSYzK-s', type: 'string' },
+      { id: 'k', name: 'FORM_KEY_SHA256', value: env.SOLARFI_FORM_KEY_SHA256 || 'SET_SHA256_OF_FORM_KEY', type: 'string' },
+    ] },
+    options: {},
   },
 });
 add({ name: 'Security Gate', type: 'n8n-nodes-base.code', typeVersion: 2, position: pos(1, 2),
@@ -148,7 +166,7 @@ add({
   credentials: sheetsCred, onError: 'continueErrorOutput',
   parameters: {
     operation: 'append',
-    documentId: { __rl: true, mode: 'id', value: '={{ $vars.SOLARFI_LEADS_SHEET_ID }}' },
+    documentId: { __rl: true, mode: 'id', value: "={{ $('Intake Config').first().json.LEADS_SHEET_ID }}" },
     sheetName: { __rl: true, mode: 'name', value: 'Leads' },
     columns: {
       mappingMode: 'defineBelow',
@@ -186,7 +204,7 @@ const gmail = (name, p) => add({
   name, type: 'n8n-nodes-base.gmail', typeVersion: 2.1, position: p, credentials: gmailCred,
   onError: 'continueRegularOutput',
   parameters: {
-    sendTo: '={{ $vars.SOLARFI_ALERT_EMAIL }}', subject: '={{ $json.subject }}',
+    sendTo: "={{ $('Intake Config').first().json.ALERT_EMAIL }}", subject: '={{ $json.subject }}',
     emailType: 'text', message: '={{ $json.text }}', options: { appendAttribution: false },
   },
 });
@@ -225,7 +243,8 @@ const link = (from, to, out = 0, input = 0) => {
   while (connections[from].main.length <= out) connections[from].main.push([]);
   connections[from].main[out].push({ node: to, type: 'main', index: input });
 };
-link('Inquiry Webhook', 'Security Gate');
+link('Inquiry Webhook', 'Intake Config');
+link('Intake Config', 'Security Gate');
 link('Security Gate', 'Gate Says Respond?');
 link('Gate Says Respond?', 'Respond Early', 0);
 link('Gate Says Respond?', 'Validate & Normalise', 1);
@@ -266,7 +285,7 @@ const workflow = {
   meta: { templateCredsSetupCompleted: false },
 };
 
-const out = new URL('solarfi-inquiry-intake.json', here);
+const out = env.OUT ? new URL(`file://${env.OUT}`) : new URL('solarfi-inquiry-intake.json', here);
 writeFileSync(out, JSON.stringify(workflow, null, 2) + '\n');
 
 // Guard: never ship a secret in the export.
