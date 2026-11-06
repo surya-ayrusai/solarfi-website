@@ -35,12 +35,30 @@
       h('div', { class: 'kpi' }, h('div', { class: 'kpi-label' }, 'Pipeline size'), h('div', { class: 'kpi-value' }, (Math.round(kw * 10) / 10) + ' kW'),
         h('div', { class: 'kpi-sub' }, 'Estimated, across ' + D.plural(open.length, 'open lead'))),
       h('div', { class: 'kpi' }, h('div', { class: 'kpi-label' }, 'Delivered'), h('div', { class: 'kpi-value' }, String(delivered)),
-        h('div', { class: 'kpi-sub' }, lost ? D.plural(lost, 'lead') + ' marked lost' : 'No leads marked lost'))
+        h('div', { class: 'kpi-sub' }, lost ? D.plural(lost, 'lead') + ' marked lost' : 'No leads marked lost')),
+      stagePanel()
     );
     document.getElementById('listTitle').textContent = 'Website leads';
     document.getElementById('listSub').textContent = open.length + ' open · ' + chase + ' need chasing · ' + leads.length + ' in total';
     var pill = document.getElementById('chasePill');
     pill.hidden = !chase; pill.replaceChildren(D.icon('warn'), chase + ' need chasing');
+  }
+
+  // One panel with every stage, its colour and its count. Clicking a stage filters the list to it.
+  function stagePanel() {
+    var counts = {};
+    leads.forEach(function (l) { counts[l.status] = (counts[l.status] || 0) + 1; });
+    return h('div', { class: 'kpi kpi-stages' },
+      h('div', { class: 'kpi-label' }, 'Leads by stage'),
+      h('div', { class: 'stage-grid' }, STAGES.map(function (s) {
+        var n = counts[s[0]] || 0;
+        return h('button', {
+          type: 'button', class: 'stage-chip stage-' + s[0] + (n ? '' : ' is-zero') + (filter.value === s[0] ? ' is-active' : ''),
+          'aria-pressed': filter.value === s[0] ? 'true' : 'false',
+          'aria-label': s[1] + ': ' + D.plural(n, 'lead') + '. Show these leads.',
+          onclick: function () { filter.value = filter.value === s[0] ? 'all' : s[0]; render(); },
+        }, h('span', { class: 'stage-count' }, String(n)), h('span', { class: 'stage-name' }, h('span', { class: 'stage-dot', 'aria-hidden': 'true' }), s[1]));
+      })));
   }
 
   function visible() {
