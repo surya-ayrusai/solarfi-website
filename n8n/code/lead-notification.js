@@ -34,7 +34,13 @@ return [{ json: {
   to: String(cfg.NOTIFY_EMAILS || '').split(',').map((s) => s.trim()).filter(Boolean).join(','),
   subject: `New solar lead: ${lead.name} - ${lead.property_type} - ${lead.city_area} [${queue}]${lead.is_duplicate ? ' [REPEAT]' : ''}`,
   text: lines.join('\n'),
-  // Short form for WhatsApp (used once a WhatsApp sender is connected).
+  // Values for the approved Meta template "new_lead_alert" ({{1}}..{{7}}).
+  // Meta rejects newlines, tabs and 4+ spaces inside a parameter.
+  whatsapp_params: [
+    lead.name, lead.mobile, lead.property_type, lead.city_area,
+    String(lead.monthly_units_kwh), String(lead.estimated_kw), `${queue}${lead.is_duplicate ? ' (repeat lead)' : ''} - ref ${ref}`,
+  ].map((v) => String(v === null || v === undefined || v === '' ? '-' : v).replace(/[\r\n\t]+/g, ' ').replace(/ {2,}/g, ' ').slice(0, 200)),
+  // Plain-text version (handy for logs or a free-form reply).
   whatsapp_text: [
     `*New Solarfi lead*${lead.is_duplicate ? ' (repeat)' : ''}`,
     `${lead.name} - ${lead.mobile}`,
