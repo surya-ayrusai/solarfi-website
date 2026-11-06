@@ -48,6 +48,11 @@ test('gate: 6th request from one IP in an hour is 429', async () => {
   const [other] = await run('Security Gate', { headers: hdr({ 'x-forwarded-for': '8.8.8.8' }), body: lead }, { staticData });
   assert.equal(other.json._respond, false);
   assert.ok(!JSON.stringify(staticData).includes('9.9.9.9'), 'raw IP must not be stored');
+  // Changing RATE_LIMIT_EPOCH resets every IP
+  config.RATE_LIMIT_EPOCH = '2';
+  const [reset] = await run('Security Gate', { headers: hdr({ 'x-forwarded-for': '9.9.9.9' }), body: lead }, { staticData });
+  assert.equal(reset.json._respond, false, 'new epoch should start from zero');
+  delete config.RATE_LIMIT_EPOCH;
 });
 
 test('validate: 422 with field errors, else cleaned data', async () => {

@@ -79,7 +79,9 @@ for (const k of Object.keys(store.rl)) {
   store.rl[k] = store.rl[k].filter(t => now - t < HOUR);
   if (!store.rl[k].length) delete store.rl[k];
 }
-const ipHash = fnv1a(ip);
+// RATE_LIMIT_EPOCH is part of the key: changing it in Intake Config starts
+// every IP from zero (old entries no longer match and are pruned within an hour).
+const ipHash = fnv1a(String(cfg.RATE_LIMIT_EPOCH || '1') + ':' + ip);
 const hits = store.rl[ipHash] || [];
 if (hits.length >= limit) {
   return respond(429, { ok: false, error: 'rate_limited', message: 'You’ve sent several requests in the last hour. Please wait a little and try again, or call us on +91 73582 58385.' });
