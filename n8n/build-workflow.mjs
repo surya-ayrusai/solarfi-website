@@ -80,6 +80,7 @@ add({
       { id: 'u', name: 'UNITS_PER_KW_PER_MONTH', value: 120, type: 'number' },
       { id: 'o', name: 'ALLOWED_ORIGINS', value: env.SOLARFI_ALLOWED_ORIGINS || 'https://solarfi.in,https://www.solarfi.in,https://solarfi-website.vercel.app', type: 'string' },
       { id: 'r', name: 'RATE_LIMIT_PER_HOUR', value: 5, type: 'number' },
+      { id: 'e', name: 'RATE_LIMIT_EPOCH', value: '2', type: 'string' },
       { id: 'a', name: 'ALERT_EMAIL', value: 'info@solarfi.in', type: 'string' },
       { id: 's', name: 'LEADS_SHEET_ID', value: '125ZB4f2EQjjQ6USLUKRT9VNuK4AIOfXzQtU0rSYzK-s', type: 'string' },
       { id: 'k', name: 'FORM_KEY_SHA256', value: env.SOLARFI_FORM_KEY_SHA256 || 'SET_SHA256_OF_FORM_KEY', type: 'string' },

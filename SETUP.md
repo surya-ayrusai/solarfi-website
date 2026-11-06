@@ -40,6 +40,7 @@ n8n Starter has no Variables, so settings live in the first node of the workflow
 | `UNITS_PER_KW_PER_MONTH` | `120` | `estimated_kw = round_to_0.5(monthly_units_kwh / 120)`, stored with `estimate_method = units_div_120` |
 | `ALLOWED_ORIGINS` | `https://solarfi.in,https://www.solarfi.in,https://solarfi-website.vercel.app` | Also set in the webhook node's *Allowed Origins (CORS)* option. Keep both in step. |
 | `RATE_LIMIT_PER_HOUR` | `5` | Per client IP (Cloudflare `cf-connecting-ip`), rolling hour. Only a hash of the IP is kept, in workflow static data. |
+| `RATE_LIMIT_EPOCH` | `2` | Part of the rate-limit key. **Change it (e.g. to `3`) to reset every IP's count at once**, for example after testing from the office network. |
 | `ALERT_EMAIL` | `info@solarfi.in` | |
 | `LEADS_SHEET_ID` | `125ZB4f2…zK-s` | |
 | `FORM_KEY_SHA256` | SHA-256 (hex) of the form key | The key itself is not stored in n8n |
@@ -84,7 +85,7 @@ set -a; . ./.env.local; set +a; tests/e2e/api-tests.sh
 
 - The first runs the offline tests: validation rules and the n8n Code nodes, in a stand-in for n8n's runtime.
 - The second runs the live API tests (statuses, routing, honeypot, duplicates, idempotency). Its test leads use names starting with `Etest` and mobiles `+91 90000 000xx`.
-- **Rate limit:** the e2e script makes more than 5 calls. To run it, set `RATE_LIMIT_PER_HOUR` to 100 in Intake Config first, and back to 5 afterwards. Counts from the last hour stay in workflow static data.
+- **Rate limit:** the e2e script makes more than 5 calls. To run it, set `RATE_LIMIT_PER_HOUR` to 100 in Intake Config first. Afterwards, set it back to 5 **and bump `RATE_LIMIT_EPOCH`**. Otherwise anyone sharing your internet connection (office Wi-Fi) is blocked for up to an hour.
 - **Forced failures (T9/T10):** set `LEADS_SHEET_ID` to a wrong value (Sheet failure), or point `Insert Lead (Supabase)` at `/rest/v1/leads_FORCED_FAILURE` (Supabase failure), submit once, then restore.
 - **Browser test locally:** serve the folder on `http://localhost:3000` with the key filled in, and temporarily add `http://localhost:3000` to **both** origin settings. Remove it afterwards.
 
