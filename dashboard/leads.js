@@ -2,11 +2,8 @@
 (function () {
   'use strict';
   var D = window.SolarfiDash, h = D.h;
-  var STAGES = [
-    ['new', 'New'], ['call', 'Call'], ['site_visit', 'Site visit'], ['quotation_sent', 'Quotation sent'],
-    ['installation', 'Installation'], ['delivery', 'Delivery'], ['delivered', 'Delivered'], ['lost', 'Lost'],
-  ];
-  var LABEL = Object.fromEntries(STAGES);
+  var STAGES = D.STAGES;
+  var LABEL = D.STAGE_LABEL;
   var CLOSED = ['delivered', 'lost'];
   var CHASE_AFTER_DAYS = 1; // a 'new' lead with no call after this many days needs a chase
   var PROPERTY = { home: 'Home', shop: 'Shop', commercial: 'Commercial', industrial: 'Industrial', government: 'Government', other: 'Other' };
@@ -20,6 +17,9 @@
   [['open', 'Open leads'], ['chase', 'Needs chase'], ['all', 'All leads']].concat(STAGES.map(function (s) { return [s[0], 'Stage: ' + s[1]]; }))
     .forEach(function (o) { filter.append(h('option', { value: o[0] }, o[1])); });
   var search = document.getElementById('search');
+  // Opened from "Leads to customers" with ?q=<mobile>: show that lead whatever its stage.
+  var q0 = new URLSearchParams(location.search).get('q');
+  if (q0) { search.value = q0.slice(0, 40); filter.value = 'all'; }
 
   function kpis() {
     var open = leads.filter(isOpen);
@@ -78,6 +78,7 @@
     STAGES.forEach(function (s) { var o = h('option', { value: s[0] }, s[1]); if (s[0] === l.status) o.selected = true; sel.append(o); });
     sel.addEventListener('change', async function () {
       var prev = l.status, next = sel.value;
+      sel.setAttribute('data-stage', next);
       sel.disabled = true; sel.classList.add('is-saving'); note.textContent = 'Saving…';
       try {
         var res = await D.api({ action: 'set_status', lead_id: l.lead_id, status: next });
@@ -86,7 +87,7 @@
         render();
       } catch (e) {
         if (e.status === 401) return gate.onUnauthorized();
-        sel.value = prev; sel.disabled = false; sel.classList.remove('is-saving'); note.textContent = '';
+        sel.value = prev; sel.setAttribute('data-stage', prev); sel.disabled = false; sel.classList.remove('is-saving'); note.textContent = '';
         D.toast('Not saved: ' + D.friendlyError(e), true);
       }
     });

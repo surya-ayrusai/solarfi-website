@@ -1,0 +1,517 @@
+{
+  "name": "Solarfi Customer Sheet Sync",
+  "nodes": [
+    {
+      "id": "s1",
+      "name": "New Row in Customer Sheet",
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        400
+      ],
+      "credentials": {
+        "googleSheetsTriggerOAuth2Api": {
+          "id": "",
+          "name": "Google Sheets Trigger account"
+        }
+      },
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "1gW2TNCZT9XpOJSbbo3pnxIGNlbp8fjp8ARVf88sDLaU"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "id",
+          "value": "0"
+        },
+        "event": "rowAdded",
+        "options": {}
+      }
+    },
+    {
+      "id": "s2",
+      "name": "Sync Config",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        240,
+        400
+      ],
+      "executeOnce": true,
+      "parameters": {
+        "mode": "manual",
+        "includeOtherFields": false,
+        "assignments": {
+          "assignments": [
+            {
+              "id": "k1",
+              "name": "SHEET_ID",
+              "value": "1gW2TNCZT9XpOJSbbo3pnxIGNlbp8fjp8ARVf88sDLaU",
+              "type": "string"
+            },
+            {
+              "id": "k2",
+              "name": "SHEET_RANGE",
+              "value": "Sheet1",
+              "type": "string"
+            },
+            {
+              "id": "k3",
+              "name": "ALERT_EMAIL",
+              "value": "info@solarfi.in",
+              "type": "string"
+            },
+            {
+              "id": "k4",
+              "name": "DRY_RUN",
+              "value": false,
+              "type": "boolean"
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "s3",
+      "name": "Read Customer Sheet",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        480,
+        400
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "",
+          "name": "Google Sheets account"
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 5000,
+      "parameters": {
+        "method": "GET",
+        "url": "=https://sheets.googleapis.com/v4/spreadsheets/{{ $json.SHEET_ID }}/values/{{ encodeURIComponent($json.SHEET_RANGE) }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "googleSheetsOAuth2Api",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "valueRenderOption",
+              "value": "FORMATTED_VALUE"
+            },
+            {
+              "name": "dateTimeRenderOption",
+              "value": "FORMATTED_STRING"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 20000
+        }
+      }
+    },
+    {
+      "id": "s4",
+      "name": "Get Existing Customers",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        720,
+        400
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "",
+          "name": "Supabase account"
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 2000,
+      "executeOnce": true,
+      "alwaysOutputData": true,
+      "parameters": {
+        "method": "GET",
+        "url": "https://csikpgbacngeivttoejo.supabase.co/rest/v1/customer_data",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "supabaseApi",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "select",
+              "value": "name,mobile"
+            },
+            {
+              "name": "limit",
+              "value": "20000"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 20000
+        }
+      }
+    },
+    {
+      "id": "s5",
+      "name": "Find New Customers",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        960,
+        400
+      ],
+      "parameters": {
+        "jsCode": "// Find customers in the sheet that are not yet in public.customer_data.\n// Inputs: 'Sync Config', 'Read Customer Sheet' (Sheets API values), 'Get Existing Customers' (name, mobile).\n// Output (one item): { rows: [...to insert], invalid: [...all bad rows], alert: [...bad rows not reported before], scanned, existing }\n//\n// A customer counts as \"already there\" when the same name (case and spacing ignored) and the\n// same mobile (or both blank) exist in the table. Row order in the sheet does not matter, so\n// sorting or inserting rows in the middle never creates duplicates.\nconst cfg = $('Sync Config').first().json;\nconst sheet = $('Read Customer Sheet').first().json;\nconst existing = $('Get Existing Customers').all().map((i) => i.json).filter((r) => r && r.name);\nconst values = Array.isArray(sheet.values) ? sheet.values : [];\n\n// Sheet header -> table column. Headers are matched ignoring case, so columns can be reordered.\nconst HEAD = {\n  'enquiry date': 'enquiry_date', 'name': 'name', 'billing address': 'billing_address', 'mobile': 'mobile',\n  'installed_date': 'installed_date', 'kw system': 'kw_system', 'company name': 'company_name', 'gstin': 'gstin',\n  'closing balance': 'closing_balance_inr', 'net balance as of today': 'net_balance_inr', 'tags': 'tags',\n  'pan no.': 'pan_no', 'group': 'customer_group',\n};\nif (!values.length) return [{ json: { rows: [], invalid: [], alert: [], scanned: 0, existing: existing.length } }];\nconst header = values[0].map((h) => String(h || '').trim().toLowerCase());\nconst col = {};\nfor (const [label, field] of Object.entries(HEAD)) { const i = header.indexOf(label); if (i >= 0) col[field] = i; }\nif (col.name === undefined) throw new Error('The customer sheet has no \"Name\" column in row 1');\n\nconst text = (v) => { const s = String(v === undefined || v === null ? '' : v).replace(/\\s+/g, ' ').trim(); return s === '' ? null : s; };\nconst mobile = (v) => {\n  let s = String(v || '').replace(/[\\s\\-().]/g, '');\n  if (s.startsWith('+91')) s = s.slice(3); else if (/^91\\d{10}$/.test(s)) s = s.slice(2); else if (/^0\\d{10}$/.test(s)) s = s.slice(1);\n  return /^[6-9]\\d{9}$/.test(s) ? '+91' + s : null;\n};\nconst money = (v) => {\n  const s = text(v); if (s === null) return null;\n  const n = Number(s.replace(/[\u20b9,\\s]/g, '').replace(/^\\((.*)\\)$/, '-$1'));\n  if (!Number.isFinite(n)) throw new Error(`not a number: \"${s}\"`);\n  return Math.round(n * 100) / 100;\n};\nconst MONTHS = { jan: 1, feb: 2, mar: 3, apr: 4, may: 5, jun: 6, jul: 7, aug: 8, sep: 9, oct: 10, nov: 11, dec: 12 };\nconst date = (v) => {\n  const s = text(v); if (s === null) return null;\n  let y, m, d, x;\n  if ((x = s.match(/^(\\d{4})-(\\d{1,2})-(\\d{1,2})$/))) [y, m, d] = [+x[1], +x[2], +x[3]];\n  else if ((x = s.match(/^(\\d{1,2})[\\/.\\-](\\d{1,2})[\\/.\\-](\\d{4})$/))) [d, m, y] = [+x[1], +x[2], +x[3]]; // Indian order: day first\n  else if ((x = s.match(/^(\\d{1,2})[\\s\\-]([A-Za-z]{3})[A-Za-z]*[\\s\\-,]+(\\d{4})$/)) && MONTHS[x[2].toLowerCase()]) [d, m, y] = [+x[1], MONTHS[x[2].toLowerCase()], +x[3]];\n  else throw new Error(`not a date: \"${s}\"`);\n  const dt = new Date(Date.UTC(y, m - 1, d));\n  if (dt.getUTCFullYear() !== y || dt.getUTCMonth() !== m - 1 || dt.getUTCDate() !== d) throw new Error(`not a real date: \"${s}\"`);\n  return dt.toISOString().slice(0, 10);\n};\nconst keyOf = (name, mob) => String(name || '').replace(/\\s+/g, ' ').trim().toLowerCase() + '|' + (mob || '');\n\nconst known = new Set(existing.map((r) => keyOf(r.name, r.mobile)));\nconst rows = [], invalid = [];\nfor (let i = 1; i < values.length; i++) {\n  const r = values[i] || [];\n  const get = (f) => (col[f] === undefined ? undefined : r[col[f]]);\n  if (!r.some((c) => text(c) !== null)) continue; // blank line\n  const sheetRow = i + 1;\n  try {\n    const name = text(get('name'));\n    if (!name) throw new Error('Name is empty');\n    if (name.length > 120) throw new Error('Name is longer than 120 characters');\n    const gstin = text(get('gstin')); const pan = text(get('pan_no'));\n    if (gstin && !/^[0-9]{2}[A-Z0-9]{13}$/.test(gstin.toUpperCase())) throw new Error(`GSTIN \"${gstin}\" is not 15 characters in the usual format`);\n    if (pan && !/^[A-Z]{5}[0-9]{4}[A-Z]$/.test(pan.toUpperCase())) throw new Error(`PAN \"${pan}\" is not in the usual format`);\n    const kw = money(get('kw_system'));\n    if (kw !== null && !(kw > 0)) throw new Error('KW SYSTEM must be more than 0');\n    const row = {\n      name, billing_address: text(get('billing_address')), mobile: mobile(get('mobile')),\n      enquiry_date: date(get('enquiry_date')), installed_date: date(get('installed_date')), kw_system: kw,\n      company_name: text(get('company_name')), gstin: gstin ? gstin.toUpperCase() : null,\n      closing_balance_inr: money(get('closing_balance_inr')), net_balance_inr: money(get('net_balance_inr')),\n      tags: text(get('tags')), pan_no: pan ? pan.toUpperCase() : null, customer_group: text(get('customer_group')),\n      source: 'sheet-sync', source_row: sheetRow,\n    };\n    const key = keyOf(row.name, row.mobile);\n    if (known.has(key)) continue; // already in the table (or earlier in this sheet)\n    known.add(key);\n    rows.push(row);\n  } catch (e) {\n    invalid.push({ row: sheetRow, name: text(get('name')) || '(no name)', problem: e.message });\n  }\n}\n\n// Report each bad row once, not every run (remembered in workflow static data; production runs only).\nconst store = $getWorkflowStaticData('global');\nstore.reported = store.reported || {};\nconst alert = invalid.filter((b) => !store.reported[b.row + '|' + b.problem]);\nif (String(cfg.DRY_RUN) !== 'true') alert.forEach((b) => { store.reported[b.row + '|' + b.problem] = Date.now(); });\n\nreturn [{ json: { rows, invalid, alert, scanned: values.length - 1, existing: existing.length, dryRun: String(cfg.DRY_RUN) === 'true' } }];\n"
+      }
+    },
+    {
+      "id": "s6",
+      "name": "New Rows To Insert?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1200,
+        200
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "c50",
+              "rightValue": 0,
+              "leftValue": "={{ $json.rows.length }}",
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            },
+            {
+              "id": "c51",
+              "rightValue": "",
+              "leftValue": "={{ $json.dryRun }}",
+              "operator": {
+                "type": "boolean",
+                "operation": "false",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "s7",
+      "name": "Insert New Customers",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1440,
+        200
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "",
+          "name": "Supabase account"
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 2000,
+      "onError": "continueErrorOutput",
+      "parameters": {
+        "method": "POST",
+        "url": "https://csikpgbacngeivttoejo.supabase.co/rest/v1/customer_data",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "supabaseApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Prefer",
+              "value": "return=minimal"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json.rows) }}",
+        "options": {
+          "timeout": 20000
+        }
+      }
+    },
+    {
+      "id": "s8",
+      "name": "Build Insert Failure Email",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1680,
+        400
+      ],
+      "parameters": {
+        "jsCode": "// The insert is all-or-nothing, so nothing was added. The next added row starts a new run, which tries again.\nconst found = $('Find New Customers').first().json;\nconst err = $json.error ? (typeof $json.error === 'string' ? $json.error : ($json.error.message || JSON.stringify($json.error))) : 'unknown error';\nreturn [{ json: {\n  subject: `Customer sheet sync failed: ${found.rows.length} new row(s) not saved`,\n  text: [`The copy from the customer Google Sheet to the database failed. Nothing was saved. It tries again the next time a row is added to the sheet.`, '',\n    `Rows waiting: ${found.rows.map((r) => 'row ' + r.source_row + ' (' + r.name + ')').join(', ')}`, '', `Error: ${String(err).slice(0, 500)}`].join('\\n'),\n} }];"
+      }
+    },
+    {
+      "id": "s9",
+      "name": "Email: Sync Failed",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1920,
+        400
+      ],
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "",
+          "name": "Gmail account 3"
+        }
+      },
+      "onError": "continueRegularOutput",
+      "parameters": {
+        "sendTo": "={{ $('Sync Config').first().json.ALERT_EMAIL }}",
+        "subject": "={{ $json.subject }}",
+        "emailType": "text",
+        "message": "={{ $json.text }}",
+        "options": {
+          "appendAttribution": false
+        }
+      }
+    },
+    {
+      "id": "s10",
+      "name": "Rows To Report?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1200,
+        600
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "c90",
+              "rightValue": 0,
+              "leftValue": "={{ $json.alert.length }}",
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            },
+            {
+              "id": "c91",
+              "rightValue": "",
+              "leftValue": "={{ $json.dryRun }}",
+              "operator": {
+                "type": "boolean",
+                "operation": "false",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "s11",
+      "name": "Build Bad Rows Email",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1440,
+        600
+      ],
+      "parameters": {
+        "jsCode": "// Each bad row is reported once. Fix it in the sheet and the next run copies it in.\nconst list = $json.alert;\nreturn [{ json: {\n  subject: `Customer sheet: ${list.length} row(s) could not be copied`,\n  text: ['These rows in the customer Google Sheet were skipped. Fix them in the sheet; they are copied the next time a row is added.', '',\n    ...list.map((b) => `Row ${b.row} (${b.name}): ${b.problem}`)].join('\\n'),\n} }];"
+      }
+    },
+    {
+      "id": "s12",
+      "name": "Email: Rows Skipped",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1680,
+        600
+      ],
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "",
+          "name": "Gmail account 3"
+        }
+      },
+      "onError": "continueRegularOutput",
+      "parameters": {
+        "sendTo": "={{ $('Sync Config').first().json.ALERT_EMAIL }}",
+        "subject": "={{ $json.subject }}",
+        "emailType": "text",
+        "message": "={{ $json.text }}",
+        "options": {
+          "appendAttribution": false
+        }
+      }
+    }
+  ],
+  "connections": {
+    "New Row in Customer Sheet": {
+      "main": [
+        [
+          {
+            "node": "Sync Config",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sync Config": {
+      "main": [
+        [
+          {
+            "node": "Read Customer Sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Customer Sheet": {
+      "main": [
+        [
+          {
+            "node": "Get Existing Customers",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Existing Customers": {
+      "main": [
+        [
+          {
+            "node": "Find New Customers",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Find New Customers": {
+      "main": [
+        [
+          {
+            "node": "New Rows To Insert?",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Rows To Report?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "New Rows To Insert?": {
+      "main": [
+        [
+          {
+            "node": "Insert New Customers",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert New Customers": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Build Insert Failure Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Insert Failure Email": {
+      "main": [
+        [
+          {
+            "node": "Email: Sync Failed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Rows To Report?": {
+      "main": [
+        [
+          {
+            "node": "Build Bad Rows Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Bad Rows Email": {
+      "main": [
+        [
+          {
+            "node": "Email: Rows Skipped",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "Asia/Kolkata",
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": false
+  }
+}

@@ -115,10 +115,7 @@
   function callButtons(mobile) {
     var d = String(mobile || '').replace(/^\+/, '');
     if (!/^91\d{10}$/.test(d)) return h('span', { class: 'meta' }, 'No mobile');
-    return [
-      h('a', { class: 'btn', href: 'tel:+' + d, 'aria-label': 'Call ' + phone(mobile) }, icon('phone'), 'Call'),
-      h('a', { class: 'btn btn-amber', href: 'https://wa.me/' + d, target: '_blank', rel: 'noopener', 'aria-label': 'WhatsApp ' + phone(mobile) }, icon('chat'), 'WhatsApp'),
-    ];
+    return h('a', { class: 'btn btn-amber', href: 'https://wa.me/' + d, target: '_blank', rel: 'noopener', 'aria-label': 'WhatsApp ' + phone(mobile) }, icon('chat'), 'WhatsApp');
   }
 
   var toastTimer;
@@ -128,6 +125,12 @@
     clearTimeout(toastTimer); toastTimer = setTimeout(function () { el.hidden = true; }, isError ? 6000 : 3000);
   }
 
-  window.SolarfiDash = { api: api, requireKey: requireKey, friendlyError: friendlyError, money: money, moneySigned: moneySigned, phone: phone,
+  // Lead pipeline stages, in order. Same values as the leads_status_check constraint.
+  var STAGES = [
+    ['new', 'New'], ['call', 'Call'], ['site_visit', 'Site visit'], ['quotation_sent', 'Quotation sent'],
+    ['installation', 'Installation'], ['delivery', 'Delivery'], ['delivered', 'Delivered'], ['lost', 'Lost'],
+  ];
+
+  window.SolarfiDash = { STAGES: STAGES, STAGE_LABEL: Object.fromEntries(STAGES), api: api, requireKey: requireKey, friendlyError: friendlyError, money: money, moneySigned: moneySigned, phone: phone,
     shortDate: shortDate, daysSince: daysSince, plural: plural, h: h, icon: icon, callButtons: callButtons, toast: toast };
 })();
