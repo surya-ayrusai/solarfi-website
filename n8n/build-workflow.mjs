@@ -26,6 +26,7 @@ const INSERT_COLUMNS = COLUMNS.filter((c) => c !== 'id');
 const env = process.env;
 const supabaseCred = { supabaseApi: { id: env.N8N_SUPABASE_CRED_ID || '', name: 'Supabase account' } };
 const sheetsCred = { googleSheetsOAuth2Api: { id: env.N8N_SHEETS_CRED_ID || '', name: 'Google Sheets account' } };
+const whatsappCred = { whatsAppApi: { id: env.N8N_WHATSAPP_CRED_ID || '', name: 'Solarfi WhatsApp' } };
 const gmailCred = { gmailOAuth2: { id: env.N8N_GMAIL_CRED_ID || '', name: 'Gmail account 2' } };
 
 let x = 0;
@@ -82,6 +83,14 @@ add({
       { id: 'r', name: 'RATE_LIMIT_PER_HOUR', value: 5, type: 'number' },
       { id: 'e', name: 'RATE_LIMIT_EPOCH', value: '2', type: 'string' },
       { id: 'a', name: 'ALERT_EMAIL', value: 'info@solarfi.in', type: 'string' },
+      { id: 'n', name: 'NOTIFY_EMAILS', value: 'uday@solarfi.in,surya@ayrusai.com', type: 'string' },
+      // WhatsApp (Meta Cloud API). Off until the Meta app, template and credential exist.
+      { id: 'w1', name: 'WHATSAPP_ENABLED', value: false, type: 'boolean' },
+      { id: 'w2', name: 'WHATSAPP_TO', value: '917358258385', type: 'string' },
+      { id: 'w3', name: 'WHATSAPP_PHONE_NUMBER_ID', value: 'SET_FROM_META', type: 'string' },
+      { id: 'w4', name: 'WHATSAPP_TEMPLATE', value: 'new_lead_alert', type: 'string' },
+      { id: 'w5', name: 'WHATSAPP_TEMPLATE_LANG', value: 'en', type: 'string' },
+      { id: 'w6', name: 'GRAPH_API_VERSION', value: 'v23.0', type: 'string' },
       { id: 's', name: 'LEADS_SHEET_ID', value: '125ZB4f2EQjjQ6USLUKRT9VNuK4AIOfXzQtU0rSYzK-s', type: 'string' },
       { id: 'k', name: 'FORM_KEY_SHA256', value: env.SOLARFI_FORM_KEY_SHA256 || 'SET_SHA256_OF_FORM_KEY', type: 'string' },
     ] },
@@ -198,6 +207,42 @@ add({
   },
 });
 
+// New-lead notification: runs after Respond Success, so the visitor is never kept waiting.
+add({ name: 'Build Lead Notification', type: 'n8n-nodes-base.code', typeVersion: 2, position: pos(16, 5),
+  onError: 'continueRegularOutput',
+  parameters: { jsCode: code('lead-notification.js') } });
+add({
+  name: 'Email Team: New Lead', type: 'n8n-nodes-base.gmail', typeVersion: 2.1, position: pos(17, 5), credentials: gmailCred,
+  onError: 'continueRegularOutput',
+  parameters: { sendTo: '={{ $json.to }}', subject: '={{ $json.subject }}', emailType: 'text', message: '={{ $json.text }}', options: { appendAttribution: false } },
+});
+
+// WhatsApp alert to Uday via an approved Meta template (runs alongside the email).
+add({
+  name: 'WhatsApp Enabled?', type: 'n8n-nodes-base.if', typeVersion: 2.2, position: pos(17, 4),
+  parameters: {
+    conditions: {
+      options: { caseSensitive: true, leftValue: '', typeValidation: 'loose', version: 2 },
+      conditions: [{ id: 'wa', leftValue: "={{ $('Intake Config').first().json.WHATSAPP_ENABLED }}", rightValue: '',
+        operator: { type: 'boolean', operation: 'true', singleValue: true } }],
+      combinator: 'and',
+    },
+    options: {},
+  },
+});
+add({
+  name: 'WhatsApp Uday: New Lead', type: 'n8n-nodes-base.httpRequest', typeVersion: 4.2, position: pos(18, 4),
+  credentials: whatsappCred, onError: 'continueRegularOutput', retryOnFail: true, maxTries: 2, waitBetweenTries: 2000,
+  parameters: {
+    method: 'POST',
+    url: "=https://graph.facebook.com/{{ $('Intake Config').first().json.GRAPH_API_VERSION }}/{{ $('Intake Config').first().json.WHATSAPP_PHONE_NUMBER_ID }}/messages",
+    authentication: 'predefinedCredentialType', nodeCredentialType: 'whatsAppApi',
+    sendBody: true, specifyBody: 'json',
+    jsonBody: "={{ JSON.stringify({ messaging_product: 'whatsapp', to: $('Intake Config').first().json.WHATSAPP_TO, type: 'template', template: { name: $('Intake Config').first().json.WHATSAPP_TEMPLATE, language: { code: $('Intake Config').first().json.WHATSAPP_TEMPLATE_LANG }, components: [{ type: 'body', parameters: $json.whatsapp_params.map(t => ({ type: 'text', text: t })) }] } }) }}",
+    options: { timeout: 15000 },
+  },
+});
+
 // Sheet failure: lead stays in Supabase, alert the team, still answer 200.
 add({ name: 'Build Sheet Alert', type: 'n8n-nodes-base.code', typeVersion: 2, position: pos(14, 6),
   parameters: { jsCode: code('alert-text.js').replace('__STAGE__', 'Google Sheet append') } });
@@ -271,6 +316,10 @@ link('Append Enquiry to Sheet', 'Respond Success', 0);
 link('Append Enquiry to Sheet', 'Build Sheet Alert', 1);
 link('Build Sheet Alert', 'Alert Team: Sheet Failed');
 link('Alert Team: Sheet Failed', 'Respond Success');
+link('Respond Success', 'Build Lead Notification');
+link('Build Lead Notification', 'Email Team: New Lead');
+link('Build Lead Notification', 'WhatsApp Enabled?');
+link('WhatsApp Enabled?', 'WhatsApp Uday: New Lead', 0);
 link('Recheck Request ID', 'Already Saved?');
 link('Already Saved?', 'Original Lead Response', 0);
 link('Already Saved?', 'Build Supabase Alert', 1);

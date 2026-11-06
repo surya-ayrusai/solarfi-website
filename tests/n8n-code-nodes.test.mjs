@@ -86,6 +86,26 @@ test('gate sha256 matches node crypto for long and unicode keys', async () => {
   config.FORM_KEY_SHA256 = createHash('sha256').update('test-key').digest('hex');
 });
 
+test('new-lead notification has full contact details and recipients', async () => {
+  const row = { lead_id: '7c6e1997-aaaa-4bbb-8ccc-000000000000', created_at: '2026-11-06T09:00:00Z', name: 'Ramesh Reddy',
+    mobile: '+919494948000', email: 'r@example.com', city_area: 'Hyderabad', property_type: 'commercial', monthly_units_kwh: 220,
+    monthly_bill_inr: 2000, roof_area_sqft: null, estimated_kw: 2, routing_queue: 'site_visit', message: null, is_duplicate: true };
+  config.NOTIFY_EMAILS = 'uday@solarfi.in, surya@ayrusai.com';
+  const [r] = await run('Build Lead Notification', {}, { nodes: { 'Insert Lead (Supabase)': row } });
+  delete config.NOTIFY_EMAILS;
+  assert.equal(r.json.to, 'uday@solarfi.in,surya@ayrusai.com');
+  assert.match(r.json.subject, /Ramesh Reddy - commercial - Hyderabad \[SITE VISIT\] \[REPEAT\]/);
+  assert.match(r.json.text, /Mobile: +\+919494948000/);
+  assert.match(r.json.text, /wa\.me\/919494948000/);
+  assert.match(r.json.text, /Roof area: +-/);
+  assert.match(r.json.text, /Reference: +7C6E1997/);
+  assert.match(r.json.text, /2:30 pm IST|2:30 PM IST/i);
+  assert.match(r.json.whatsapp_text, /Ref 7C6E1997/);
+  assert.deepEqual(r.json.whatsapp_params, ['Ramesh Reddy', '+919494948000', 'commercial', 'Hyderabad', '220', '2', 'SITE VISIT (repeat lead) - ref 7C6E1997']);
+  const [m] = await run('Build Lead Notification', {}, { nodes: { 'Insert Lead (Supabase)': { ...row, message: 'a\nb', name: 'A  B\tC' } } });
+  assert.ok(m.json.whatsapp_params.every((p) => !/[\n\t]| {2}/.test(p)), 'no newlines/tabs/double spaces for Meta');
+});
+
 test('alert text masks mobile', async () => {
   const [r] = await run('Build Sheet Alert', { error: { message: 'quota' } },
     { nodes: { 'Merge Enquiry Queues': { lead_id: 'L1', name: 'R', mobile: '+919876543210', routing_queue: 'call' } } });
