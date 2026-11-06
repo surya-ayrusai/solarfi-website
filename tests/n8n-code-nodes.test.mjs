@@ -15,7 +15,8 @@ async function run(name, input, { nodes = {}, staticData = {}, binary = null } =
   const fn = new AsyncFunction('$input', '$getWorkflowStaticData', '$', '$node', '$execution', src(name));
   const all = { 'Intake Config': config, ...nodes };
   return fn.call(ctx, { first: () => item, all: () => [item] }, () => staticData,
-    (n) => ({ first: () => { if (!(n in all)) throw new Error('node not run: ' + n); return { json: all[n] }; } }), { name }, { id: 'test' });
+    (n) => ({ first: () => { if (!(n in all)) throw new Error('node not run: ' + n); return { json: all[n] }; } }),
+    new Proxy({}, { get: (_, k) => { throw new Error(`Referenced node doesn't exist: ${String(k)}`); } }), { id: 'test' });
 }
 const lead = { name: 'Ramesh Reddy', mobile: '09876543210', email: '', city_area: 'Kadapa', property_type: 'commercial',
   monthly_units_kwh: 400, consent: true, honeypot: '', client_request_id: '3f2b8c1e-9a4d-4e2f-8b1a-0c9d8e7f6a5b' };
@@ -82,8 +83,13 @@ test('gate sha256 matches node crypto for long and unicode keys', async () => {
 
 test('alert text masks mobile', async () => {
   const [r] = await run('Build Sheet Alert', { error: { message: 'quota' } },
-    { nodes: { 'Derive Lead Fields': { lead_id: 'L1', name: 'R', mobile: '+919876543210' } } });
+    { nodes: { 'Merge Enquiry Queues': { lead_id: 'L1', name: 'R', mobile: '+919876543210', routing_queue: 'call' } } });
   assert.match(r.json.text, /\+9198XXXX3210/);
+  assert.match(r.json.text, /Queue: call/);
+  assert.match(r.json.text, /lead IS saved/);
+  const [s2] = await run('Build Supabase Alert', { error: { message: 'timeout' } }, { nodes: {} });
+  assert.match(s2.json.subject, /Supabase/);
+  assert.match(s2.json.text, /NOT saved/);
   assert.ok(!r.json.text.includes('9876543210'));
   assert.match(r.json.subject, /Sheet/);
 });

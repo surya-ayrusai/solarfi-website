@@ -24,9 +24,9 @@ const INSERT_COLUMNS = COLUMNS.filter((c) => c !== 'id');
 
 // Import-time overrides (never committed): set by the person importing.
 const env = process.env;
-const supabaseCred = { supabaseApi: { id: env.N8N_SUPABASE_CRED_ID || '', name: 'Solarfi Supabase (service role)' } };
+const supabaseCred = { supabaseApi: { id: env.N8N_SUPABASE_CRED_ID || '', name: 'Supabase account' } };
 const sheetsCred = { googleSheetsOAuth2Api: { id: env.N8N_SHEETS_CRED_ID || '', name: 'Google Sheets account' } };
-const gmailCred = { gmailOAuth2: { id: env.N8N_GMAIL_CRED_ID || '', name: 'Gmail account' } };
+const gmailCred = { gmailOAuth2: { id: env.N8N_GMAIL_CRED_ID || '', name: 'Gmail account 2' } };
 
 let x = 0;
 const pos = (col, row) => [col * 240, row * 200];
@@ -199,7 +199,7 @@ add({
 
 // Sheet failure: lead stays in Supabase, alert the team, still answer 200.
 add({ name: 'Build Sheet Alert', type: 'n8n-nodes-base.code', typeVersion: 2, position: pos(14, 6),
-  parameters: { jsCode: code('alert-text.js') } });
+  parameters: { jsCode: code('alert-text.js').replace('__STAGE__', 'Google Sheet append') } });
 const gmail = (name, p) => add({
   name, type: 'n8n-nodes-base.gmail', typeVersion: 2.1, position: p, credentials: gmailCred,
   onError: 'continueRegularOutput',
@@ -225,7 +225,7 @@ http('Recheck Request ID', pos(13, 7), {
 });
 ifTrue('Already Saved?', pos(14, 7), '={{ $json.lead_id }}', { type: 'string', operation: 'exists', singleValue: true });
 add({ name: 'Build Supabase Alert', type: 'n8n-nodes-base.code', typeVersion: 2, position: pos(15, 8),
-  parameters: { jsCode: code('alert-text.js') } });
+  parameters: { jsCode: code('alert-text.js').replace('__STAGE__', 'Supabase') } });
 gmail('Alert Team: Supabase Failed', pos(16, 8));
 add({
   name: 'Respond 500', type: 'n8n-nodes-base.respondToWebhook', typeVersion: 1.1, position: pos(17, 8),
@@ -286,7 +286,8 @@ const workflow = {
 };
 
 const out = env.OUT ? new URL(`file://${env.OUT}`) : new URL('solarfi-inquiry-intake.json', here);
-writeFileSync(out, JSON.stringify(workflow, null, 2) + '\n');
+// ASCII-only output (\uXXXX escapes): survives clipboard/encoding round-trips on import.
+writeFileSync(out, JSON.stringify(workflow, null, 2).replace(/[\u007f-\uffff]/g, (c) => '\\u' + c.charCodeAt(0).toString(16).padStart(4, '0')) + '\n');
 
 // Guard: never ship a secret in the export.
 const text = readFileSync(out, 'utf8');
