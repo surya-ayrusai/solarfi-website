@@ -27,7 +27,7 @@ const env = process.env;
 const supabaseCred = { supabaseApi: { id: env.N8N_SUPABASE_CRED_ID || '', name: 'Supabase account' } };
 const sheetsCred = { googleSheetsOAuth2Api: { id: env.N8N_SHEETS_CRED_ID || '', name: 'Google Sheets account' } };
 const whatsappCred = { whatsAppApi: { id: env.N8N_WHATSAPP_CRED_ID || '', name: 'Solarfi WhatsApp' } };
-const gmailCred = { gmailOAuth2: { id: env.N8N_GMAIL_CRED_ID || '', name: 'Gmail account 2' } };
+const gmailCred = { gmailOAuth2: { id: env.N8N_GMAIL_CRED_ID || '', name: 'Gmail account 3' } };
 
 let x = 0;
 const pos = (col, row) => [col * 240, row * 200];

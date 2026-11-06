@@ -30,7 +30,7 @@ n8n "Solarfi Inquiry Intake" (webhook /webhook/solarfi-inquiry)
 | Migration | `supabase/migrations/20261106_create_leads.sql` |
 | Existing-schema report | `supabase/EXISTING-SCHEMA-REPORT.md` |
 | Google Sheet | **Solarfi Leads**, tab **Leads**, ID **`125ZB4f2EQjjQ6USLUKRT9VNuK4AIOfXzQtU0rSYzK-s`** |
-| Alerts | Failures: email to `ALERT_EMAIL` (`info@solarfi.in`). New leads: email to `NOTIFY_EMAILS`. Both via the **Gmail account 2** credential |
+| Alerts | Failures: email to `ALERT_EMAIL` (`info@solarfi.in`). New leads: email to `NOTIFY_EMAILS`. Both sent from **surya@ayrusai.com** via the **Gmail account 3** credential |
 
 ### Settings: the "Intake Config" node
 
@@ -54,7 +54,7 @@ n8n Starter has no Variables, so settings live in the first node of the workflow
 |---|---|---|---|
 | **Supabase account** | Supabase API | Request Already Seen?, Same Mobile in 24h?, Insert Lead, Recheck Request ID | Host `https://csikpgbacngeivttoejo.supabase.co` + the **service_role** key. It exists only here. |
 | **Google Sheets account** | Google Sheets OAuth2 | Append Enquiry to Sheet | The Google account that owns "Solarfi Leads" |
-| **Gmail account 2** | Gmail OAuth2 | Alert Team: Sheet Failed / Supabase Failed, Email Team: New Lead | ("Gmail account" returned *Forbidden* when sending) |
+| **Gmail account 3** | Gmail OAuth2 (signed in as **surya@ayrusai.com**) | Alert Team: Sheet Failed / Supabase Failed, Email Team: New Lead | The sender address. To send from another mailbox, connect a new Gmail credential as that account and select it on these 3 nodes. |
 
 After importing the export into another n8n instance, select these credentials on the listed nodes. The export carries only their names.
 
