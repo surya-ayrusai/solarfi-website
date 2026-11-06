@@ -838,7 +838,7 @@
       "credentials": {
         "gmailOAuth2": {
           "id": "",
-          "name": "Gmail account 2"
+          "name": "Gmail account 3"
         }
       },
       "onError": "continueRegularOutput",
@@ -943,7 +943,7 @@
       "credentials": {
         "gmailOAuth2": {
           "id": "",
-          "name": "Gmail account 2"
+          "name": "Gmail account 3"
         }
       },
       "onError": "continueRegularOutput",
@@ -1063,7 +1063,7 @@
       "credentials": {
         "gmailOAuth2": {
           "id": "",
-          "name": "Gmail account 2"
+          "name": "Gmail account 3"
         }
       },
       "onError": "continueRegularOutput",
