@@ -97,3 +97,14 @@ set -a; . ./.env.local; set +a; tests/e2e/api-tests.sh
 1. **Malformed JSON returns 422, not 400.** n8n Cloud rejects unparseable JSON bodies itself (`422 "Failed to parse request body"`) before the workflow runs, so nothing is written. It can't be changed from inside the workflow.
 2. **Variables become a config node.** The n8n Starter plan has no Variables (limit 0), so `UNITS_PER_KW_PER_MONTH` and the other settings are in **Intake Config**. Upgrading the plan would allow moving them to `$vars`.
 3. **New table, not `"quote-chase-board"`.** `"quote-chase-board"` is the Supabase project name. Its only table, `quotes`, conflicts with the lead model, so leads go to a new `public.leads` table. This was approved on 2026-11-06.
+
+## Dashboard (Phase 2)
+
+Staff dashboard at `/dashboard/` (leads) and `/dashboard/customers.html` (current customers). There is no login: staff type the shared access key once per browser. "Forget key on this device" removes it.
+
+- **Access key:** `SOLARFI_DASH_KEY` in `.env.local`. Share it only with staff, never in the repo or chat.
+- **n8n workflow:** "Solarfi Dashboard API", built with `node n8n/build-dashboard-workflow.mjs`. After import, set `DASH_KEY_SHA256` in its **Dashboard Config** node to the SHA-256 of the key (`SOLARFI_DASH_KEY_SHA256` in `.env.local`) and select the "Supabase account" credential on the three Supabase nodes.
+- **Changing the key:** generate a new one (`openssl rand -hex 24`), put its SHA-256 in Dashboard Config, and give staff the new key. Old browsers then see the key prompt again.
+- **Allowed sites:** solarfi.in, www.solarfi.in, solarfi-website.vercel.app (the webhook's allowed origins and `ALLOWED_ORIGINS` in Dashboard Config).
+
+Tables, status values and how every number is worked out: see `PHASE2-DATA.md`.
