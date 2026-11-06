@@ -36,7 +36,8 @@
         h('div', { class: 'kpi-sub' }, D.plural(adv.length, 'customer') + ' paid ahead'))
     );
     document.getElementById('listTitle').textContent = 'Customer balances';
-    document.getElementById('listSub').textContent = customers.length + ' customers · ' + owing.length + ' need chasing';
+    var settledCount = customers.filter(function (c) { return bal(c) === 0; }).length;
+    document.getElementById('listSub').textContent = customers.length + ' customers · ' + owing.length + ' need chasing · ' + settledCount + ' settled';
     var pill = document.getElementById('chasePill');
     pill.hidden = !owing.length; pill.replaceChildren(D.icon('warn'), owing.length + ' need chasing');
   }
@@ -54,19 +55,20 @@
   }
 
   function row(c) {
-    var b = bal(c), chase = b > 0, addr = tidyAddress(c.billing_address);
-    return h('tr', { class: chase ? 'is-chase' : null },
+    var b = bal(c), chase = b > 0, settled = b === 0, addr = tidyAddress(c.billing_address);
+    return h('tr', { class: chase ? 'is-chase' : settled ? 'is-settled' : null },
       h('td', { 'data-label': 'Customer' },
         h('div', { class: 'who' }, c.name,
           chase && h('span', { class: 'badge badge-chase' }, D.icon('warn'), 'Needs chase'),
-          b < 0 && h('span', { class: 'badge badge-advance' }, 'Advance')),
+          b < 0 && h('span', { class: 'badge badge-advance' }, 'Advance'),
+          settled && h('span', { class: 'badge badge-settled' }, 'Settled')),
         h('div', { class: 'meta' }, D.phone(c.mobile) || 'No mobile on file')),
       h('td', { 'data-label': 'Business' },
         h('div', { class: 'big' }, c.company_name || 'Individual'),
         h('div', { class: 'meta' }, c.gstin ? 'GSTIN ' + c.gstin : ' ')),
       h('td', { 'data-label': 'Location' }, h('div', { class: 'meta', title: c.billing_address || '' }, addr.length > 70 ? addr.slice(0, 68) + '…' : (addr || 'No address'))),
       h('td', { 'data-label': 'Balance' },
-        h('div', { class: 'serif-num ' + (chase ? 'money-due' : b < 0 ? 'money-adv' : '') }, D.money(Math.abs(b))),
+        h('div', { class: 'serif-num ' + (chase ? 'money-due' : b < 0 ? 'money-adv' : 'money-settled') }, D.money(Math.abs(b))),
         h('div', { class: 'meta' }, chase ? 'Owes us' : b < 0 ? 'Advance paid' : 'Settled')),
       h('td', { class: 'right', 'data-label': 'Actions' }, h('div', { class: 'actions' }, D.callButtons(c.mobile)))
     );
@@ -80,7 +82,7 @@
     box.replaceChildren(h('table', { class: 'worklist' },
       h('thead', null, h('tr', null, ['Customer', 'Business', 'Location', 'Balance'].map(function (t) { return h('th', { scope: 'col' }, t); }), h('th', { scope: 'col', class: 'right' }, 'Actions'))),
       h('tbody', null, list.map(row))));
-    document.getElementById('note').textContent = 'Balances come from the accounts sheet (closing balance). A positive balance means the customer owes Solarfi and needs a chase. The opening balance is the net of every account.';
+    document.getElementById('note').textContent = 'Balances come from the accounts sheet (closing balance). Red: the customer owes Solarfi and needs a chase. Green: settled, zero balance. The opening balance is the net of every account.';
   }
 
   async function load() {

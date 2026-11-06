@@ -40,13 +40,20 @@
       </svg>
       <div class="wrap">
         <div class="topbar">
-          <a class="brand" href="./"><img src="../images/logo-horizontal.png" alt="Solarfi" /><span>Dashboard</span></a>
-          <nav class="tabs" aria-label="Dashboard sections">
-            <a href="./" aria-current="page">Leads</a>
-            <a href="customers.html">Current customers</a>
-          </nav>
+          <a class="brand" href="./"><img src="../images/logo-horizontal.png" alt="Solarfi" /><span class="brand-tag">Dashboard</span></a>
           <button type="button" id="forgetKey" class="link-btn">Forget key on this device</button>
         </div>
+        <p class="summary">Every website lead and every current customer in one place: move leads through to delivery, and see who still owes Solarfi money.</p>
+        <nav class="sections" aria-label="Dashboard sections">
+          <a class="section-panel" href="./" aria-current="page">
+            <span class="section-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5h16v11H8l-4 4z"/><path d="M8 9h8M8 12h5"/></svg></span>
+            <span class="section-text"><span class="section-title">Leads</span><span class="section-desc">Website enquiries. Update each lead&rsquo;s stage.</span></span>
+          </a>
+          <a class="section-panel" href="customers.html">
+            <span class="section-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 5.5a3.5 3.5 0 0 1 0 6.5M18 14.5a6.5 6.5 0 0 1 3.5 5.5"/></svg></span>
+            <span class="section-text"><span class="section-title">Current customers</span><span class="section-desc">Balances. See who needs a chase.</span></span>
+          </a>
+        </nav>
         <div id="kpis" class="kpis" aria-live="polite"></div>
       </div>
     </header>
