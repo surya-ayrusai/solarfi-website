@@ -498,6 +498,89 @@
   transform: translateY(-2px);
 }
 
+.contact-submit-btn:disabled {
+  opacity: 0.7;
+  cursor: wait;
+  transform: none;
+}
+
+/* Inquiry form: helper text, inline errors, consent, status */
+.field-help {
+  margin: 6px 0 0;
+  font-size: 0.78rem;
+  color: var(--gray, #6b7280);
+}
+
+.field-error {
+  margin: 6px 0 0;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #b91c1c;
+}
+
+.field-error:empty {
+  display: none;
+}
+
+.contact-form-group .is-invalid {
+  border-color: #dc2626;
+  background: #fef2f2;
+}
+
+.consent-label {
+  display: flex !important;
+  align-items: flex-start;
+  gap: 10px;
+  font-weight: 500 !important;
+  line-height: 1.45;
+  cursor: pointer;
+}
+
+.contact-form-group .consent-label input {
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  padding: 0;
+  flex-shrink: 0;
+  accent-color: var(--green, #1a8c3e);
+}
+
+/* Honeypot: off-screen rather than display:none so bots still fill it */
+.hp-field {
+  position: absolute !important;
+  left: -10000px !important;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.form-status {
+  margin-top: 14px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.form-status.is-success {
+  background: #ecfdf3;
+  color: #145f2a;
+  border: 1px solid #86efac;
+}
+
+.form-status.is-error {
+  background: #fef2f2;
+  color: #991b1b;
+  border: 1px solid #fca5a5;
+}
+
+.form-status a {
+  color: inherit;
+  text-decoration: underline;
+}
+
 /* ── 7. Responsive Breakpoints ─────────────────────────────────────────── */
 @media (max-width: 1024px) {
   .info-grid {

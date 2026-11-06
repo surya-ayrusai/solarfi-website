@@ -186,52 +186,90 @@
           <h3 style="font-size: 1.6rem; font-weight: 800; color: var(--dark); margin-bottom: 8px;">Request A Free Quote</h3>
           <p style="color: var(--gray); font-size: 0.92rem; margin-bottom: 24px;">Fill in your details and our technical survey team will contact you within 24 hours.</p>
 
-          <form id="contactForm">
+          <form id="contactForm" novalidate>
             <div class="contact-form-group">
               <label for="leadName">Your Full Name *</label>
-              <input type="text" id="leadName" name="name" required placeholder="e.g. Ramesh Reddy" autocomplete="name" />
+              <input type="text" id="leadName" name="name" required minlength="2" maxlength="80" placeholder="e.g. Ramesh Reddy" autocomplete="name" aria-describedby="err-name" />
+              <p class="field-error" id="err-name" role="alert"></p>
             </div>
 
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
               <div class="contact-form-group">
-                <label for="leadPhone">Phone Number *</label>
-                <input type="tel" id="leadPhone" name="phone" required placeholder="10-digit mobile" pattern="[0-9]{10}" autocomplete="tel" />
+                <label for="leadPhone">Mobile Number *</label>
+                <input type="tel" id="leadPhone" name="mobile" required inputmode="tel" placeholder="10-digit mobile" autocomplete="tel" aria-describedby="err-mobile" />
+                <p class="field-error" id="err-mobile" role="alert"></p>
               </div>
               <div class="contact-form-group">
                 <label for="leadEmail">Email Address</label>
-                <input type="email" id="leadEmail" name="email" placeholder="name@example.com" autocomplete="email" />
+                <input type="email" id="leadEmail" name="email" placeholder="name@example.com" autocomplete="email" aria-describedby="err-email" />
+                <p class="field-error" id="err-email" role="alert"></p>
               </div>
             </div>
 
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
               <div class="contact-form-group">
-                <label for="propType">Property Type</label>
-                <select id="propType" name="property_type">
-                  <option value="Residential" selected>Residential Home</option>
-                  <option value="Commercial">Commercial / Office</option>
-                  <option value="Industrial">Industrial Plant</option>
-                  <option value="Agricultural">Farm / Agricultural Pump</option>
+                <label for="propType">Property Type *</label>
+                <select id="propType" name="property_type" required aria-describedby="err-property_type">
+                  <option value="home" selected>Home</option>
+                  <option value="shop">Shop</option>
+                  <option value="commercial">Commercial / Office</option>
+                  <option value="industrial">Industrial</option>
+                  <option value="government">Government / Institution</option>
+                  <option value="other">Other</option>
                 </select>
+                <p class="field-error" id="err-property_type" role="alert"></p>
               </div>
               <div class="contact-form-group">
+                <label for="leadUnits">Monthly Units (kWh) *</label>
+                <input type="number" id="leadUnits" name="monthly_units_kwh" required min="20" max="10000" step="1" inputmode="numeric" placeholder="e.g. 300" aria-describedby="help-units err-monthly_units_kwh" />
+                <p class="field-help" id="help-units">Found on your electricity bill.</p>
+                <p class="field-error" id="err-monthly_units_kwh" role="alert"></p>
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+              <div class="contact-form-group">
                 <label for="leadBill">Monthly Bill (₹)</label>
-                <input type="number" id="leadBill" name="monthly_bill" placeholder="e.g. 3500" min="500" step="100" />
+                <input type="number" id="leadBill" name="monthly_bill_inr" min="0" step="any" inputmode="decimal" placeholder="e.g. 3500" aria-describedby="err-monthly_bill_inr" />
+                <p class="field-error" id="err-monthly_bill_inr" role="alert"></p>
+              </div>
+              <div class="contact-form-group">
+                <label for="leadRoof">Roof Area (sq ft)</label>
+                <input type="number" id="leadRoof" name="roof_area_sqft" min="50" max="500000" step="1" inputmode="numeric" placeholder="e.g. 600" aria-describedby="err-roof_area_sqft" />
+                <p class="field-error" id="err-roof_area_sqft" role="alert"></p>
               </div>
             </div>
 
             <div class="contact-form-group">
-              <label for="leadCity">City / District in Andhra Pradesh *</label>
-              <input type="text" id="leadCity" name="city" required placeholder="e.g. Pulivendula / Kadapa / Tirupati" />
+              <label for="leadCity">City / Area *</label>
+              <input type="text" id="leadCity" name="city_area" required minlength="2" maxlength="80" placeholder="e.g. Pulivendula / Kadapa / Tirupati" autocomplete="address-level2" aria-describedby="err-city_area" />
+              <p class="field-error" id="err-city_area" role="alert"></p>
             </div>
 
             <div class="contact-form-group">
               <label for="leadMessage">Specific Requirements (Optional)</label>
-              <textarea id="leadMessage" name="message" rows="3" placeholder="Tell us about your rooftop area, power cuts, or battery preferences..."></textarea>
+              <textarea id="leadMessage" name="message" rows="3" maxlength="1000" placeholder="Tell us about your rooftop, power cuts, or battery preferences..." aria-describedby="err-message"></textarea>
+              <p class="field-error" id="err-message" role="alert"></p>
+            </div>
+
+            <!-- Spam trap: positioned off-screen, ignored by people and autofill -->
+            <div class="hp-field" aria-hidden="true">
+              <label for="hpCompanySite">Leave this empty</label>
+              <input type="text" id="hpCompanySite" name="company_website_hp" tabindex="-1" autocomplete="off" data-lpignore="true" data-1p-ignore />
+            </div>
+
+            <div class="contact-form-group consent-group">
+              <label class="consent-label" for="leadConsent">
+                <input type="checkbox" id="leadConsent" name="consent" required aria-describedby="err-consent" />
+                <span>I agree to Solarfi contacting me by phone, WhatsApp or email about my solar enquiry. *</span>
+              </label>
+              <p class="field-error" id="err-consent" role="alert"></p>
             </div>
 
             <button type="submit" id="submitBtn" class="contact-submit-btn">
               Submit Request ➔
             </button>
+            <div id="formStatus" class="form-status" role="status" aria-live="polite" hidden></div>
             <div style="font-size: 0.72rem; color: var(--gray); text-align: center; margin-top: 10px;">
               Your information is secure · Zero spam guarantee · APSPDCL compliant
             </div>
@@ -328,80 +366,10 @@
       document.getElementById('hamburger').classList.toggle('open');
     }
 
-    const form = document.getElementById('contactForm');
-    const submitBtn = document.getElementById('submitBtn');
-    const toast = document.getElementById('formToast');
-    let toastTimer;
-
-    function showToast(msg, isSuccess) {
-      clearTimeout(toastTimer);
-      toast.textContent = msg;
-      toast.style.background = isSuccess ? '#145f2a' : '#dc2626';
-      toast.style.color = '#ffffff';
-      toast.style.border = isSuccess ? '1.5px solid #22c55e' : '1.5px solid #fca5a5';
-      toast.style.display = 'block';
-      setTimeout(() => { toast.style.opacity = '1'; }, 10);
-      toastTimer = setTimeout(() => {
-        toast.style.opacity = '0';
-        setTimeout(() => { toast.style.display = 'none'; }, 300);
-      }, 5500);
-    }
-
-    if (form) {
-      form.addEventListener('submit', async function (e) {
-        e.preventDefault();
-
-        submitBtn.textContent = '⏳ Sending Inquiry...';
-        submitBtn.style.opacity = '0.7';
-        submitBtn.style.pointerEvents = 'none';
-
-        const formData = new FormData(form);
-        const data = Object.fromEntries(formData.entries());
-
-        const waText = encodeURIComponent(
-          '*New Solar Inquiry — Solarfi (Website)*\n'
-          + '• *Name:* ' + (data.name || '') + '\n'
-          + '• *Phone:* ' + (data.phone || '') + '\n'
-          + '• *Email:* ' + (data.email || 'N/A') + '\n'
-          + '• *Property:* ' + (data.property_type || 'Residential') + '\n'
-          + '• *Monthly Bill:* ₹' + (data.monthly_bill || 'N/A') + '\n'
-          + '• *City / District:* ' + (data.city || '') + '\n'
-          + '• *Message:* ' + (data.message || 'Interested in PM Surya Ghar proposal')
-        );
-        const waUrl = 'https://wa.me/917358258385?text=' + waText;
-
-        try {
-          // Attempt POST to backend endpoint
-          const res = await fetch('send_mail.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-            body: JSON.stringify(data)
-          });
-
-          if (res.ok) {
-            const result = await res.json().catch(() => ({ success: true, message: 'Inquiry sent successfully!' }));
-            if (result.success) {
-              showToast('✅ ' + (result.message || 'Inquiry sent! We will call you within 24 hours.'), true);
-              form.reset();
-              return;
-            }
-          }
-          throw new Error('Fallback to direct WhatsApp transmission');
-        } catch (err) {
-          // Resilient fallback: open prefilled WhatsApp so no lead is ever lost
-          showToast('📱 Connecting via WhatsApp to ensure your quote is answered immediately!', true);
-          form.reset();
-          setTimeout(() => {
-            window.open(waUrl, '_blank');
-          }, 1000);
-        } finally {
-          submitBtn.textContent = 'Submit Request ➔';
-          submitBtn.style.opacity = '1';
-          submitBtn.style.pointerEvents = 'auto';
-        }
-      });
-    }
   </script>
+  <script src="lead-form-config.js"></script>
+  <script src="lead-validation.js"></script>
+  <script src="contact-form.js"></script>
 </body>
 
 </html>
