@@ -57,7 +57,7 @@ There is no status history yet: the table keeps only the current status. Days "w
 
 ## Table `public.customer_data` (existing customers)
 
-Imported once from the Google Sheet "solarfi_customer_data" (92 rows). The dashboard only reads it. New rows in the sheet do not sync.
+Imported from the Google Sheet "solarfi_customer_data" (92 rows on 2026-11-06). New rows added to the sheet are copied in by the n8n workflow "Solarfi Customer Sheet Sync" (below). The dashboard only reads this table.
 
 | Column | Type | Meaning |
 |---|---|---|
@@ -69,7 +69,8 @@ Imported once from the Google Sheet "solarfi_customer_data" (92 rows). The dashb
 | closing_balance_inr | numeric | From "Closing Balance". **Positive = customer owes Solarfi. Negative = advance paid** |
 | net_balance_inr | numeric | From "Net Balance as of today" (identical to closing balance at import) |
 | enquiry_date, installed_date, kw_system, tags, customer_group | | Empty in the sheet today; kept for later |
-| source_row | int | Row number in the sheet (header = 1) |
+| source | text | `sheet-import` (first copy) or `sheet-sync` (added later by the sync) |
+| source_row | int | Row number in the sheet when it was copied (header = 1) |
 
 ## Dashboard numbers
 
@@ -93,6 +94,28 @@ Imported once from the Google Sheet "solarfi_customer_data" (92 rows). The dashb
 
 "Opening balance" means the sheet's closing balance at import. The sheet has no separate opening-balance column.
 
+### Leads to customers page
+
+A website lead and a customer match when their mobile numbers are the same (both stored as `+91XXXXXXXXXX`). One row per matching mobile number, showing every lead and customer record that share it. Customers with no mobile on file (10 at import) can never match.
+
+| Number | Rule |
+|---|---|
+| Leads converted | Mobile numbers that appear in both leads and customer_data |
+| Conversion rate | Leads converted ÷ distinct lead mobile numbers |
+| Converted capacity | Customer `kw_system` where filled in, else the latest lead's `estimated_kw` |
+| To collect from them | Sum of positive balances of the matched customers |
+| Stage to update (flag) | Matched, but the latest lead is not at installation, delivery or delivered |
+
+## Customer sheet sync (n8n "Solarfi Customer Sheet Sync")
+
+- **When it runs:** n8n's Google Sheets Trigger checks the sheet every minute and starts a run only when rows have been added. Checks that find nothing do not start a run.
+- **What it copies:** each run reads the whole sheet and inserts customers not yet in the table. A customer is "already there" when the same name (ignoring case and spacing) and the same mobile exist. It never updates or deletes existing rows. Editing a balance in the sheet does not change the table.
+- **Clean-up:** the same rules as the first import. Mobiles become `+91XXXXXXXXXX`, "-2,00,000.00" becomes -200000, and dates are read day first (15/08/2026).
+- **Bad rows:** a row with no name, a malformed GSTIN or PAN, or an unreadable amount or date is skipped. It is emailed once to info@solarfi.in and copied once fixed.
+- **Failures:** the insert is all-or-nothing. A failure is emailed, and the next added row retries everything.
+
+Built from `n8n/build-customer-sync-workflow.mjs` (logic in `n8n/code/customer-sync.js`, tests in `tests/customer-sync.test.mjs`).
+
 ## Dashboard API
 
 `POST https://ayrusai.app.n8n.cloud/webhook/solarfi-dashboard` with headers `content-type: application/json` and `x-solarfi-dash-key: <key>`, from an allowed origin (solarfi.in, www.solarfi.in, solarfi-website.vercel.app).
@@ -112,5 +135,5 @@ Built from `n8n/build-dashboard-workflow.mjs`, which writes `n8n/solarfi-dashboa
 - Per-person logins, roles and an audit trail of who changed what
 - Status history or timestamps per stage
 - Editing customer balances or logging payments
-- Syncing new rows from the customer sheet
+- Copying edits to existing rows from the customer sheet (only new rows are copied)
 - Reminders by email or WhatsApp

@@ -100,7 +100,7 @@ set -a; . ./.env.local; set +a; tests/e2e/api-tests.sh
 
 ## Dashboard (Phase 2)
 
-Staff dashboard at `/dashboard/` (leads) and `/dashboard/customers.html` (current customers). There is no login: staff type the shared access key once per browser. "Forget key on this device" removes it.
+Staff dashboard at `/dashboard/` (leads), `/dashboard/customers.html` (current customers) and `/dashboard/conversions.html` (leads that became customers, matched on mobile number). There is no login: staff type the shared access key once per browser. "Forget key on this device" removes it.
 
 - **Access key:** `SOLARFI_DASH_KEY` in `.env.local`. Share it only with staff, never in the repo or chat.
 - **n8n workflow:** "Solarfi Dashboard API", built with `node n8n/build-dashboard-workflow.mjs`. After import, set `DASH_KEY_SHA256` in its **Dashboard Config** node to the SHA-256 of the key (`SOLARFI_DASH_KEY_SHA256` in `.env.local`) and select the "Supabase account" credential on the three Supabase nodes.
@@ -108,3 +108,16 @@ Staff dashboard at `/dashboard/` (leads) and `/dashboard/customers.html` (curren
 - **Allowed sites:** solarfi.in, www.solarfi.in, solarfi-website.vercel.app (the webhook's allowed origins and `ALLOWED_ORIGINS` in Dashboard Config).
 
 Tables, status values and how every number is worked out: see `PHASE2-DATA.md`.
+
+## Customer sheet sync
+
+Workflow "Solarfi Customer Sheet Sync" copies new rows from the Google Sheet `solarfi_customer_data` into `public.customer_data`. Build it with `node n8n/build-customer-sync-workflow.mjs`.
+
+It needs two Google connections in n8n. Both must be signed in with a Google account that can open the sheet (Viewer is enough).
+
+| Node | Credential type | Name |
+|---|---|---|
+| New Row in Customer Sheet | Google Sheets Trigger OAuth2 API | `Google Sheets Trigger account` |
+| Read Customer Sheet | Google Sheets OAuth2 API | `Google Sheets account` |
+
+To try it safely, set `DRY_RUN` to true in **Sync Config**. The workflow then works out what it would insert, but inserts nothing and sends no email. Set it back to false to go live.
