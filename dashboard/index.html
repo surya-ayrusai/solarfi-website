@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow, noarchive" />
+  <meta name="referrer" content="no-referrer" />
+  <title>Leads · Solarfi Dashboard</title>
+  <link rel="icon" type="image/png" href="../images/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="dashboard.css" />
+  <script src="config.js"></script>
+  <script src="dashboard.js"></script>
+  <script src="leads.js" defer></script>
+</head>
+<body>
+  <noscript><p class="empty">The dashboard needs JavaScript.</p></noscript>
+
+  <section id="gate" class="gate" hidden>
+    <form id="gateForm" class="gate-card" autocomplete="off">
+      <h1>Solarfi dashboard</h1>
+      <p>Enter the staff access key. It stays in this browser so you only type it once.</p>
+      <label for="gateKey">Access key</label>
+      <input id="gateKey" type="password" autocomplete="current-password" spellcheck="false" />
+      <p id="gateError" class="gate-error" role="alert"></p>
+      <button type="submit" class="btn btn-amber">Open dashboard</button>
+    </form>
+  </section>
+
+  <div id="app" hidden>
+    <header class="band">
+      <svg class="band-art" viewBox="0 0 420 300" aria-hidden="true">
+        <circle cx="290" cy="40" r="62" fill="#ffa62b" opacity=".35"/>
+        <circle cx="290" cy="40" r="130" fill="none" stroke="#ffa62b" stroke-opacity=".18"/>
+        <circle cx="290" cy="40" r="190" fill="none" stroke="#ffa62b" stroke-opacity=".1"/>
+        <path d="M120 300V190l100-80 100 80v110" fill="none" stroke="#ffa62b" stroke-opacity=".22" stroke-width="1.5"/>
+        <path d="M160 300V214l60-48 60 48v86" fill="none" stroke="#ffa62b" stroke-opacity=".14" stroke-width="1.5"/>
+      </svg>
+      <div class="wrap">
+        <div class="topbar">
+          <a class="brand" href="./"><img src="../images/logo-horizontal.png" alt="Solarfi" /><span>Dashboard</span></a>
+          <nav class="tabs" aria-label="Dashboard sections">
+            <a href="./" aria-current="page">Leads</a>
+            <a href="customers.html">Current customers</a>
+          </nav>
+          <button type="button" id="forgetKey" class="link-btn">Forget key on this device</button>
+        </div>
+        <div id="kpis" class="kpis" aria-live="polite"></div>
+      </div>
+    </header>
+
+    <main class="wrap">
+      <section class="card" aria-labelledby="listTitle">
+        <div class="card-head">
+          <div>
+            <p class="eyebrow">The worklist</p>
+            <h1 id="listTitle"></h1>
+            <p id="listSub" class="card-sub"></p>
+          </div>
+          <div class="head-actions">
+            <span id="chasePill" class="chase-pill" hidden></span>
+            <button type="button" id="refresh" class="btn btn-sand">Refresh</button>
+          </div>
+        </div>
+        <div class="toolbar">
+          <label class="sr-only" for="filter">Show</label>
+          <select id="filter" class="filter"></select>
+          <label class="sr-only" for="search">Search</label>
+          <input id="search" class="filter" type="search" placeholder="Search name, mobile or place" />
+        </div>
+        <div id="list"><p class="loading">Loading…</p></div>
+        <p id="note" class="note"></p>
+      </section>
+    </main>
+  </div>
+  <div id="toast" class="toast" role="status" hidden></div>
+</body>
+</html>

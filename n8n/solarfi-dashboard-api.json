@@ -1,0 +1,584 @@
+{
+  "name": "Solarfi Dashboard API",
+  "nodes": [
+    {
+      "id": "d1",
+      "name": "Dashboard Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        400
+      ],
+      "webhookId": "9b3e7c21-4d5a-4f6b-8c7d-2e1f0a9b8c7d",
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "solarfi-dashboard",
+        "responseMode": "responseNode",
+        "options": {
+          "allowedOrigins": "https://solarfi.in,https://www.solarfi.in,https://solarfi-website.vercel.app"
+        }
+      }
+    },
+    {
+      "id": "d2",
+      "name": "Dashboard Config",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        240,
+        400
+      ],
+      "parameters": {
+        "mode": "manual",
+        "includeOtherFields": true,
+        "assignments": {
+          "assignments": [
+            {
+              "id": "k1",
+              "name": "DASH_KEY_SHA256",
+              "value": "SET_SHA256_OF_DASHBOARD_KEY",
+              "type": "string"
+            },
+            {
+              "id": "k2",
+              "name": "ALLOWED_ORIGINS",
+              "value": "https://solarfi.in,https://www.solarfi.in,https://solarfi-website.vercel.app",
+              "type": "string"
+            },
+            {
+              "id": "k3",
+              "name": "LEAD_STATUSES",
+              "value": "new,call,site_visit,quotation_sent,installation,delivery,delivered,lost",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "d3",
+      "name": "Dashboard Gate",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        480,
+        400
+      ],
+      "parameters": {
+        "jsCode": "// Dashboard Gate: key -> origin -> action check.\n// Output: { _respond: true, status, body } to answer now, or\n//         { _respond: false, action, lead_id?, status? } to continue.\nconst item = $input.first();\nconst cfg = $('Dashboard Config').first().json;\nconst headers = item.json.headers || {};\nconst respond = (status, body) => [{ json: { _respond: true, status, body } }];\n\nfunction safeEqual(a, b) {\n  a = String(a); b = String(b);\n  let diff = a.length ^ b.length;\n  for (let i = 0; i < Math.max(a.length, b.length); i++) diff |= (a.charCodeAt(i) || 0) ^ (b.charCodeAt(i) || 0);\n  return diff === 0;\n}\n// Pure-JS SHA-256 (hex): the workflow stores only the hash of the form key.\nfunction sha256(ascii) {\n  const rr = (v, a) => (v >>> a) | (v << (32 - a));\n  const K = [], H = [];\n  let n = 2, c = 0;\n  const isPrime = (x) => { for (let f = 2; f * f <= x; f++) if (x % f === 0) return false; return true; };\n  while (c < 64) { if (isPrime(n)) { if (c < 8) H[c] = (Math.pow(n, 1 / 2) * 4294967296) | 0; K[c++] = (Math.pow(n, 1 / 3) * 4294967296) | 0; } n++; }\n  const bytes = [];\n  const str = unescape(encodeURIComponent(ascii));\n  for (let i = 0; i < str.length; i++) bytes.push(str.charCodeAt(i));\n  const bitLen = bytes.length * 8;\n  bytes.push(0x80);\n  while (bytes.length % 64 !== 56) bytes.push(0);\n  for (let i = 7; i >= 0; i--) bytes.push(i >= 4 ? 0 : (bitLen >>> (i * 8)) & 0xff);\n  for (let j = 0; j < bytes.length; j += 64) {\n    const w = [];\n    for (let i = 0; i < 16; i++) w[i] = (bytes[j + i * 4] << 24) | (bytes[j + i * 4 + 1] << 16) | (bytes[j + i * 4 + 2] << 8) | bytes[j + i * 4 + 3];\n    let [a, b, cc, d, e, f, g, h] = H;\n    for (let i = 0; i < 64; i++) {\n      if (i >= 16) {\n        const s0 = rr(w[i - 15], 7) ^ rr(w[i - 15], 18) ^ (w[i - 15] >>> 3);\n        const s1 = rr(w[i - 2], 17) ^ rr(w[i - 2], 19) ^ (w[i - 2] >>> 10);\n        w[i] = (w[i - 16] + s0 + w[i - 7] + s1) | 0;\n      }\n      const t1 = (h + (rr(e, 6) ^ rr(e, 11) ^ rr(e, 25)) + ((e & f) ^ (~e & g)) + K[i] + w[i]) | 0;\n      const t2 = ((rr(a, 2) ^ rr(a, 13) ^ rr(a, 22)) + ((a & b) ^ (a & cc) ^ (b & cc))) | 0;\n      h = g; g = f; f = e; e = (d + t1) | 0; d = cc; cc = b; b = a; a = (t1 + t2) | 0;\n    }\n    H[0] = (H[0] + a) | 0; H[1] = (H[1] + b) | 0; H[2] = (H[2] + cc) | 0; H[3] = (H[3] + d) | 0;\n    H[4] = (H[4] + e) | 0; H[5] = (H[5] + f) | 0; H[6] = (H[6] + g) | 0; H[7] = (H[7] + h) | 0;\n  }\n  return H.map((x) => ('00000000' + (x >>> 0).toString(16)).slice(-8)).join('');\n}\n\n// 1. Dashboard key header, compared by SHA-256 (the key itself is not stored in n8n)\nconst expectedHash = String(cfg.DASH_KEY_SHA256 || '').toLowerCase();\nif (!/^[0-9a-f]{64}$/.test(expectedHash)) throw new Error('Dashboard Config DASH_KEY_SHA256 is not set');\nconst given = headers['x-solarfi-dash-key'];\nif (!given || String(given).length > 200 || !safeEqual(sha256(String(given)), expectedHash)) return respond(401, { ok: false, error: 'unauthorized' });\n\n// 2. Origin allowlist\nconst allowed = String(cfg.ALLOWED_ORIGINS || '').split(',').map((s) => s.trim()).filter(Boolean);\nif (!allowed.includes(headers.origin || '')) return respond(403, { ok: false, error: 'origin_not_allowed' });\n\n// 3. Body + action\nlet body = item.json.body;\nif (typeof body === 'string') { try { body = JSON.parse(body); } catch (e) { body = null; } }\nif (!body || typeof body !== 'object' || Array.isArray(body)) return respond(400, { ok: false, error: 'malformed_json' });\n\nconst action = String(body.action || '');\nif (action === 'leads' || action === 'customers') return [{ json: { _respond: false, action } }];\n\nif (action === 'set_status') {\n  const STATUSES = String(cfg.LEAD_STATUSES || '').split(',').map((s) => s.trim()).filter(Boolean);\n  const leadId = String(body.lead_id || '').toLowerCase();\n  const status = String(body.status || '');\n  const errors = {};\n  if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(leadId)) errors.lead_id = 'Missing or invalid lead_id.';\n  if (!STATUSES.includes(status)) errors.status = 'Status must be one of: ' + STATUSES.join(', ') + '.';\n  if (Object.keys(errors).length) return respond(422, { ok: false, error: 'validation', errors });\n  return [{ json: { _respond: false, action, lead_id: leadId, status } }];\n}\n\nreturn respond(400, { ok: false, error: 'unknown_action' });\n"
+      }
+    },
+    {
+      "id": "d4",
+      "name": "Answer Now?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        720,
+        400
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "c3",
+              "leftValue": "={{ $json._respond }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "d5",
+      "name": "Wants Leads?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        960,
+        400
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "c4",
+              "leftValue": "={{ $json.action }}",
+              "rightValue": "leads",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "d6",
+      "name": "Wants Customers?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1200,
+        600
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "c5",
+              "leftValue": "={{ $json.action }}",
+              "rightValue": "customers",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "d7",
+      "name": "Get Leads",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1200,
+        200
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "",
+          "name": "Supabase account"
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 1000,
+      "alwaysOutputData": true,
+      "onError": "continueErrorOutput",
+      "parameters": {
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "supabaseApi",
+        "options": {
+          "timeout": 10000
+        },
+        "method": "GET",
+        "url": "https://csikpgbacngeivttoejo.supabase.co/rest/v1/leads",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "select",
+              "value": "lead_id,created_at,name,mobile,email,city_area,property_type,monthly_units_kwh,monthly_bill_inr,roof_area_sqft,estimated_kw,routing_queue,message,status,is_duplicate"
+            },
+            {
+              "name": "order",
+              "value": "created_at.desc"
+            },
+            {
+              "name": "limit",
+              "value": "1000"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "d8",
+      "name": "Get Customers",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1440,
+        400
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "",
+          "name": "Supabase account"
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 1000,
+      "alwaysOutputData": true,
+      "onError": "continueErrorOutput",
+      "parameters": {
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "supabaseApi",
+        "options": {
+          "timeout": 10000
+        },
+        "method": "GET",
+        "url": "https://csikpgbacngeivttoejo.supabase.co/rest/v1/customer_data",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "select",
+              "value": "customer_id,name,billing_address,mobile,company_name,gstin,closing_balance_inr,net_balance_inr,enquiry_date,installed_date,kw_system,tags,customer_group,source_row"
+            },
+            {
+              "name": "order",
+              "value": "closing_balance_inr.desc"
+            },
+            {
+              "name": "limit",
+              "value": "2000"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "d9",
+      "name": "Update Lead Status",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1440,
+        800
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "",
+          "name": "Supabase account"
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 1000,
+      "alwaysOutputData": true,
+      "onError": "continueErrorOutput",
+      "parameters": {
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "supabaseApi",
+        "options": {
+          "timeout": 10000
+        },
+        "method": "PATCH",
+        "url": "=https://csikpgbacngeivttoejo.supabase.co/rest/v1/leads?lead_id=eq.{{ $json.lead_id }}&select=lead_id,status",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Prefer",
+              "value": "return=representation"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ status: $json.status }) }}"
+      }
+    },
+    {
+      "id": "d10",
+      "name": "Shape Leads",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1680,
+        200
+      ],
+      "parameters": {
+        "jsCode": "const leads = $input.all().map((i) => i.json).filter((r) => r && r.lead_id);\nreturn [{ json: { status: 200, body: { ok: true, leads } } }];\n"
+      }
+    },
+    {
+      "id": "d11",
+      "name": "Shape Customers",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1680,
+        400
+      ],
+      "parameters": {
+        "jsCode": "const customers = $input.all().map((i) => i.json).filter((r) => r && r.customer_id);\nreturn [{ json: { status: 200, body: { ok: true, customers } } }];\n"
+      }
+    },
+    {
+      "id": "d12",
+      "name": "Shape Status Update",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1680,
+        800
+      ],
+      "parameters": {
+        "jsCode": "const row = $input.all().map((i) => i.json).find((r) => r && r.lead_id);\nif (!row) return [{ json: { status: 404, body: { ok: false, error: 'lead_not_found' } } }];\nreturn [{ json: { status: 200, body: { ok: true, lead: row } } }];\n"
+      }
+    },
+    {
+      "id": "d13",
+      "name": "Database Error",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1680,
+        1000
+      ],
+      "parameters": {
+        "jsCode": "// Supabase failed after one retry. Keep details in the execution log, not the response.\nreturn [{ json: { status: 502, body: { ok: false, error: 'database_error' } } }];\n"
+      }
+    },
+    {
+      "id": "d14",
+      "name": "Respond",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        2160,
+        400
+      ],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify($json.body) }}",
+        "options": {
+          "responseCode": "={{ $json.status }}",
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Dashboard Webhook": {
+      "main": [
+        [
+          {
+            "node": "Dashboard Config",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Dashboard Config": {
+      "main": [
+        [
+          {
+            "node": "Dashboard Gate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Dashboard Gate": {
+      "main": [
+        [
+          {
+            "node": "Answer Now?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Answer Now?": {
+      "main": [
+        [
+          {
+            "node": "Respond",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wants Leads?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wants Leads?": {
+      "main": [
+        [
+          {
+            "node": "Get Leads",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wants Customers?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wants Customers?": {
+      "main": [
+        [
+          {
+            "node": "Get Customers",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Update Lead Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Leads": {
+      "main": [
+        [
+          {
+            "node": "Shape Leads",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Database Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Customers": {
+      "main": [
+        [
+          {
+            "node": "Shape Customers",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Database Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Lead Status": {
+      "main": [
+        [
+          {
+            "node": "Shape Status Update",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Database Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Shape Leads": {
+      "main": [
+        [
+          {
+            "node": "Respond",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Shape Customers": {
+      "main": [
+        [
+          {
+            "node": "Respond",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Shape Status Update": {
+      "main": [
+        [
+          {
+            "node": "Respond",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Database Error": {
+      "main": [
+        [
+          {
+            "node": "Respond",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "none",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": false
+  }
+}
