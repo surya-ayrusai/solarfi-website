@@ -13,6 +13,7 @@ n8n "Solarfi Inquiry Intake" (webhook /webhook/solarfi-inquiry)
   → Same Mobile in 24h? (sets is_duplicate) → Derive Lead Fields (kW estimate, ids)
   → Call Queue Property? → Mark Call Queue / Mark Site Visit Queue → Merge Enquiry Queues
   → Insert Lead (Supabase, 1 retry) → Append Enquiry to Sheet → 200 { ok, lead_id }
+  → Build Lead Notification → Email Team: New Lead (after the response; failures here never affect the visitor)
   Supabase fails → re-check → email alert → 500.  Sheet fails → email alert → still 200.
 ```
 
@@ -29,7 +30,7 @@ n8n "Solarfi Inquiry Intake" (webhook /webhook/solarfi-inquiry)
 | Migration | `supabase/migrations/20261106_create_leads.sql` |
 | Existing-schema report | `supabase/EXISTING-SCHEMA-REPORT.md` |
 | Google Sheet | **Solarfi Leads**, tab **Leads**, ID **`125ZB4f2EQjjQ6USLUKRT9VNuK4AIOfXzQtU0rSYzK-s`** |
-| Alerts | Email to `ALERT_EMAIL` (`info@solarfi.in`) via the **Gmail account 2** credential |
+| Alerts | Failures: email to `ALERT_EMAIL` (`info@solarfi.in`). New leads: email to `NOTIFY_EMAILS`. Both via the **Gmail account 2** credential |
 
 ### Settings: the "Intake Config" node
 
@@ -42,6 +43,7 @@ n8n Starter has no Variables, so settings live in the first node of the workflow
 | `RATE_LIMIT_PER_HOUR` | `5` | Per client IP (Cloudflare `cf-connecting-ip`), rolling hour. Only a hash of the IP is kept, in workflow static data. |
 | `RATE_LIMIT_EPOCH` | `2` | Part of the rate-limit key. **Change it (e.g. to `3`) to reset every IP's count at once**, for example after testing from the office network. |
 | `ALERT_EMAIL` | `info@solarfi.in` | |
+| `NOTIFY_EMAILS` | `uday@solarfi.in,surya@ayrusai.com` | Comma-separated. Each new lead is emailed here with full contact details, after the visitor has been answered. |
 | `LEADS_SHEET_ID` | `125ZB4f2…zK-s` | |
 | `FORM_KEY_SHA256` | SHA-256 (hex) of the form key | The key itself is not stored in n8n |
 
@@ -51,7 +53,7 @@ n8n Starter has no Variables, so settings live in the first node of the workflow
 |---|---|---|---|
 | **Supabase account** | Supabase API | Request Already Seen?, Same Mobile in 24h?, Insert Lead, Recheck Request ID | Host `https://csikpgbacngeivttoejo.supabase.co` + the **service_role** key. It exists only here. |
 | **Google Sheets account** | Google Sheets OAuth2 | Append Enquiry to Sheet | The Google account that owns "Solarfi Leads" |
-| **Gmail account 2** | Gmail OAuth2 | Alert Team: Sheet Failed / Supabase Failed | ("Gmail account" returned *Forbidden* when sending) |
+| **Gmail account 2** | Gmail OAuth2 | Alert Team: Sheet Failed / Supabase Failed, Email Team: New Lead | ("Gmail account" returned *Forbidden* when sending) |
 
 After importing the export into another n8n instance, select these credentials on the listed nodes. The export carries only their names.
 

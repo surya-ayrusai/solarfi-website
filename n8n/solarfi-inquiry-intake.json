@@ -67,6 +67,12 @@
               "type": "string"
             },
             {
+              "id": "n",
+              "name": "NOTIFY_EMAILS",
+              "value": "uday@solarfi.in,surya@ayrusai.com",
+              "type": "string"
+            },
+            {
               "id": "s",
               "name": "LEADS_SHEET_ID",
               "value": "125ZB4f2EQjjQ6USLUKRT9VNuK4AIOfXzQtU0rSYzK-s",
@@ -772,6 +778,46 @@
     },
     {
       "id": "n20",
+      "name": "Build Lead Notification",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3840,
+        1000
+      ],
+      "onError": "continueRegularOutput",
+      "parameters": {
+        "jsCode": "// Build the \"new lead\" notification for the team. Runs AFTER the visitor has\n// been answered, so a slow or failing email never delays or breaks the form.\n// Internal recipients only: full mobile/email are included so staff can call.\nconst lead = $('Insert Lead (Supabase)').first().json;\nconst cfg = $('Intake Config').first().json;\nconst val = (v, suffix = '') => (v === null || v === undefined || v === '' ? '-' : String(v) + suffix);\nconst ist = new Date(lead.created_at).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata', dateStyle: 'medium', timeStyle: 'short' });\nconst queue = lead.routing_queue === 'site_visit' ? 'SITE VISIT' : 'CALL';\nconst ref = String(lead.lead_id).slice(0, 8).toUpperCase();\nconst dup = lead.is_duplicate ? ' (REPEAT - same mobile in last 24h)' : '';\nconst digits = String(lead.mobile).replace(/^\\+/, '');\n\nconst lines = [\n  `New website lead${dup}`,\n  '',\n  `Name:        ${val(lead.name)}`,\n  `Mobile:      ${val(lead.mobile)}`,\n  `WhatsApp:    https://wa.me/${digits}`,\n  `Email:       ${val(lead.email)}`,\n  `City/Area:   ${val(lead.city_area)}`,\n  `Property:    ${val(lead.property_type)}`,\n  `Units/month: ${val(lead.monthly_units_kwh, ' kWh')}`,\n  `Bill/month:  ${lead.monthly_bill_inr === null ? '-' : 'Rs ' + lead.monthly_bill_inr}`,\n  `Roof area:   ${val(lead.roof_area_sqft, ' sq ft')}`,\n  `Est. system: ${val(lead.estimated_kw, ' kW')} (units / ${cfg.UNITS_PER_KW_PER_MONTH})`,\n  `Next step:   ${queue}`,\n  `Message:     ${val(lead.message)}`,\n  '',\n  `Received:    ${ist} IST`,\n  `Reference:   ${ref}  (lead_id ${lead.lead_id})`,\n];\n\nreturn [{ json: {\n  to: String(cfg.NOTIFY_EMAILS || '').split(',').map((s) => s.trim()).filter(Boolean).join(','),\n  subject: `New solar lead: ${lead.name} - ${lead.property_type} - ${lead.city_area} [${queue}]${lead.is_duplicate ? ' [REPEAT]' : ''}`,\n  text: lines.join('\\n'),\n  // Short form for WhatsApp (used once a WhatsApp sender is connected).\n  whatsapp_text: [\n    `*New Solarfi lead*${lead.is_duplicate ? ' (repeat)' : ''}`,\n    `${lead.name} - ${lead.mobile}`,\n    `${lead.property_type}, ${lead.city_area}`,\n    `${val(lead.monthly_units_kwh, ' kWh/month')} -> ~${val(lead.estimated_kw, ' kW')}`,\n    `Next: ${queue} | Ref ${ref}`,\n  ].join('\\n'),\n} }];\n"
+      }
+    },
+    {
+      "id": "n21",
+      "name": "Email Team: New Lead",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        4080,
+        1000
+      ],
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "",
+          "name": "Gmail account 2"
+        }
+      },
+      "onError": "continueRegularOutput",
+      "parameters": {
+        "sendTo": "={{ $json.to }}",
+        "subject": "={{ $json.subject }}",
+        "emailType": "text",
+        "message": "={{ $json.text }}",
+        "options": {
+          "appendAttribution": false
+        }
+      }
+    },
+    {
+      "id": "n22",
       "name": "Build Sheet Alert",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -784,7 +830,7 @@
       }
     },
     {
-      "id": "n21",
+      "id": "n23",
       "name": "Alert Team: Sheet Failed",
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.1,
@@ -810,7 +856,7 @@
       }
     },
     {
-      "id": "n22",
+      "id": "n24",
       "name": "Recheck Request ID",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
@@ -857,7 +903,7 @@
       }
     },
     {
-      "id": "n23",
+      "id": "n25",
       "name": "Already Saved?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
@@ -875,7 +921,7 @@
           },
           "conditions": [
             {
-              "id": "c22",
+              "id": "c24",
               "leftValue": "={{ $json.lead_id }}",
               "rightValue": "",
               "operator": {
@@ -891,7 +937,7 @@
       }
     },
     {
-      "id": "n24",
+      "id": "n26",
       "name": "Build Supabase Alert",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -904,7 +950,7 @@
       }
     },
     {
-      "id": "n25",
+      "id": "n27",
       "name": "Alert Team: Supabase Failed",
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.1,
@@ -930,7 +976,7 @@
       }
     },
     {
-      "id": "n26",
+      "id": "n28",
       "name": "Respond 500",
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.1,
@@ -1207,6 +1253,28 @@
         [
           {
             "node": "Respond Success",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Respond Success": {
+      "main": [
+        [
+          {
+            "node": "Build Lead Notification",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Lead Notification": {
+      "main": [
+        [
+          {
+            "node": "Email Team: New Lead",
             "type": "main",
             "index": 0
           }

@@ -82,6 +82,7 @@ add({
       { id: 'r', name: 'RATE_LIMIT_PER_HOUR', value: 5, type: 'number' },
       { id: 'e', name: 'RATE_LIMIT_EPOCH', value: '2', type: 'string' },
       { id: 'a', name: 'ALERT_EMAIL', value: 'info@solarfi.in', type: 'string' },
+      { id: 'n', name: 'NOTIFY_EMAILS', value: 'uday@solarfi.in,surya@ayrusai.com', type: 'string' },
       { id: 's', name: 'LEADS_SHEET_ID', value: '125ZB4f2EQjjQ6USLUKRT9VNuK4AIOfXzQtU0rSYzK-s', type: 'string' },
       { id: 'k', name: 'FORM_KEY_SHA256', value: env.SOLARFI_FORM_KEY_SHA256 || 'SET_SHA256_OF_FORM_KEY', type: 'string' },
     ] },
@@ -198,6 +199,16 @@ add({
   },
 });
 
+// New-lead notification: runs after Respond Success, so the visitor is never kept waiting.
+add({ name: 'Build Lead Notification', type: 'n8n-nodes-base.code', typeVersion: 2, position: pos(16, 5),
+  onError: 'continueRegularOutput',
+  parameters: { jsCode: code('lead-notification.js') } });
+add({
+  name: 'Email Team: New Lead', type: 'n8n-nodes-base.gmail', typeVersion: 2.1, position: pos(17, 5), credentials: gmailCred,
+  onError: 'continueRegularOutput',
+  parameters: { sendTo: '={{ $json.to }}', subject: '={{ $json.subject }}', emailType: 'text', message: '={{ $json.text }}', options: { appendAttribution: false } },
+});
+
 // Sheet failure: lead stays in Supabase, alert the team, still answer 200.
 add({ name: 'Build Sheet Alert', type: 'n8n-nodes-base.code', typeVersion: 2, position: pos(14, 6),
   parameters: { jsCode: code('alert-text.js').replace('__STAGE__', 'Google Sheet append') } });
@@ -271,6 +282,8 @@ link('Append Enquiry to Sheet', 'Respond Success', 0);
 link('Append Enquiry to Sheet', 'Build Sheet Alert', 1);
 link('Build Sheet Alert', 'Alert Team: Sheet Failed');
 link('Alert Team: Sheet Failed', 'Respond Success');
+link('Respond Success', 'Build Lead Notification');
+link('Build Lead Notification', 'Email Team: New Lead');
 link('Recheck Request ID', 'Already Saved?');
 link('Already Saved?', 'Original Lead Response', 0);
 link('Already Saved?', 'Build Supabase Alert', 1);
