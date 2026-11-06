@@ -1,0 +1,1205 @@
+{
+  "name": "Solarfi Inquiry Intake",
+  "nodes": [
+    {
+      "id": "n1",
+      "name": "Inquiry Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        400
+      ],
+      "webhookId": "solarfi-inquiry",
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "solarfi-inquiry",
+        "responseMode": "responseNode",
+        "options": {
+          "rawBody": true,
+          "allowedOrigins": "https://solarfi.in,https://www.solarfi.in,https://solarfi-website.vercel.app"
+        }
+      }
+    },
+    {
+      "id": "n2",
+      "name": "Security Gate",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        240,
+        400
+      ],
+      "parameters": {
+        "jsCode": "// Security Gate: secret -> origin -> rate limit -> JSON parse -> honeypot.\n// Output: { _respond: true, status, body } to answer early, or\n//         { _respond: false, body: <parsed>, client: { ipHash } } to continue.\nconst item = $input.first();\nconst headers = item.json.headers || {};\nconst respond = (status, body) => [{ json: { _respond: true, status, body } }];\n\nfunction safeEqual(a, b) {\n  a = String(a); b = String(b);\n  let diff = a.length ^ b.length;\n  for (let i = 0; i < Math.max(a.length, b.length); i++) diff |= (a.charCodeAt(i) || 0) ^ (b.charCodeAt(i) || 0);\n  return diff === 0;\n}\nfunction fnv1a(s) { // non-reversible key so raw IPs are never stored\n  let h = 0x811c9dc5;\n  for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 0x01000193) >>> 0; }\n  return h.toString(16);\n}\nfunction uuid() {\n  if (globalThis.crypto && globalThis.crypto.randomUUID) return globalThis.crypto.randomUUID();\n  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {\n    const r = Math.random() * 16 | 0; return (c === 'x' ? r : (r & 0x3) | 0x8).toString(16);\n  });\n}\n\n// 1. Shared secret header\nconst expected = $vars.SOLARFI_FORM_KEY;\nif (!expected) throw new Error('n8n variable SOLARFI_FORM_KEY is not set');\nconst given = headers['x-solarfi-key'];\nif (!given || !safeEqual(given, expected)) return respond(401, { ok: false, error: 'unauthorized' });\n\n// 2. Origin allowlist (browser requests always send Origin)\nconst allowed = String($vars.SOLARFI_ALLOWED_ORIGINS || '').split(',').map(s => s.trim()).filter(Boolean);\nconst origin = headers.origin || '';\nif (!allowed.includes(origin)) return respond(403, { ok: false, error: 'origin_not_allowed' });\n\n// 3. Rate limit per IP per rolling hour (workflow static data; production runs only)\nconst ip = String(headers['cf-connecting-ip'] || headers['x-real-ip'] || String(headers['x-forwarded-for'] || '').split(',')[0] || 'unknown').trim();\nconst limit = Number($vars.SOLARFI_RATE_LIMIT_PER_HOUR || 5);\nconst HOUR = 3600 * 1000;\nconst now = Date.now();\nconst store = $getWorkflowStaticData('global');\nstore.rl = store.rl || {};\nfor (const k of Object.keys(store.rl)) {\n  store.rl[k] = store.rl[k].filter(t => now - t < HOUR);\n  if (!store.rl[k].length) delete store.rl[k];\n}\nconst ipHash = fnv1a(ip);\nconst hits = store.rl[ipHash] || [];\nif (hits.length >= limit) {\n  return respond(429, { ok: false, error: 'rate_limited', message: 'You’ve sent several requests in the last hour. Please wait a little and try again, or call us on +91 73582 58385.' });\n}\nhits.push(now);\nstore.rl[ipHash] = hits;\n\n// 4. Parse JSON (webhook is set to keep the raw body)\nlet body = item.json.body;\nif (!body || typeof body !== 'object' || Array.isArray(body) || !Object.keys(body).length) {\n  let raw = '';\n  try {\n    if (item.binary && item.binary.data) raw = (await this.helpers.getBinaryDataBuffer(0, 'data')).toString('utf8');\n    else if (typeof item.json.body === 'string') raw = item.json.body;\n  } catch (e) { raw = ''; }\n  try { body = JSON.parse(raw); } catch (e) { return respond(400, { ok: false, error: 'malformed_json' }); }\n}\nif (!body || typeof body !== 'object' || Array.isArray(body)) return respond(400, { ok: false, error: 'malformed_json' });\n\n// 5. Honeypot: pretend success, write nothing\nif (body.honeypot !== undefined && body.honeypot !== null && String(body.honeypot).trim() !== '') {\n  return respond(200, { ok: true, lead_id: uuid() });\n}\n\nreturn [{ json: { _respond: false, body, client: { ipHash } } }];\n"
+      }
+    },
+    {
+      "id": "n3",
+      "name": "Gate Says Respond?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        480,
+        400
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "c2",
+              "leftValue": "={{ $json._respond }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "n4",
+      "name": "Validate & Normalise",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        720,
+        600
+      ],
+      "parameters": {
+        "jsCode": "// Validate & Normalise. Rules come from lead-validation.js (inlined at build time).\nconst V = (function () { var module = { exports: {} }; /*\n * Solarfi inquiry validation — single source of truth.\n *\n * Used in two places with identical rules:\n *   1. The Contact Us page (window.SolarfiLeadValidation) for instant feedback.\n *   2. The n8n \"Validate & Normalise\" Code node. scripts/build-n8n-workflow.mjs\n *      copies this file into the workflow JSON, so edit it here, not in n8n.\n *\n * No dependencies, no network, no secrets.\n */\n(function (root) {\n  'use strict';\n\n  var PROPERTY_TYPES = ['home', 'shop', 'commercial', 'industrial', 'government', 'other'];\n  var CALL_QUEUE = ['home', 'shop', 'other'];\n  var NAME_RE = /^[\\p{L}\\p{M} .]+$/u;\n  var EMAIL_RE = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]{2,}$/;\n  var UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;\n\n  function str(v) {\n    return v === undefined || v === null ? '' : String(v).trim();\n  }\n\n  function isBlank(v) {\n    return str(v) === '';\n  }\n\n  // \"12\" -> 12, \"12.0\" -> 12, \"12.5\" -> NaN-ish (not an integer), \"\" -> null\n  function toNumber(v) {\n    if (typeof v === 'number') return v;\n    var s = str(v).replace(/,/g, '');\n    if (s === '' || !/^-?\\d+(\\.\\d+)?$/.test(s)) return NaN;\n    return Number(s);\n  }\n\n  function normaliseMobile(v) {\n    var s = str(v).replace(/[\\s\\-().]/g, '');\n    if (s.indexOf('+91') === 0) s = s.slice(3);\n    else if (/^91\\d{10}$/.test(s)) s = s.slice(2);\n    else if (/^0\\d{10}$/.test(s)) s = s.slice(1);\n    return /^[6-9]\\d{9}$/.test(s) ? '+91' + s : null;\n  }\n\n  /**\n   * validate(input) -> { ok: true, data } | { ok: false, errors: { field: message } }\n   * `data` holds the cleaned values, ready to store.\n   */\n  function validate(input) {\n    var b = input && typeof input === 'object' ? input : {};\n    var errors = {};\n    var d = {};\n\n    // name\n    var name = str(b.name).replace(/\\s+/g, ' ');\n    if (!name) errors.name = 'Please enter your name.';\n    else if (name.length < 2 || name.length > 80) errors.name = 'Name must be 2 to 80 characters.';\n    else if (!NAME_RE.test(name)) errors.name = 'Name can contain only letters, spaces and dots.';\n    else d.name = name;\n\n    // mobile\n    if (isBlank(b.mobile)) errors.mobile = 'Please enter your mobile number.';\n    else {\n      var m = normaliseMobile(b.mobile);\n      if (!m) errors.mobile = 'Enter a valid 10-digit Indian mobile number (starts with 6, 7, 8 or 9).';\n      else d.mobile = m;\n    }\n\n    // email (optional)\n    if (isBlank(b.email)) d.email = null;\n    else {\n      var email = str(b.email).toLowerCase();\n      if (email.length > 254 || !EMAIL_RE.test(email)) errors.email = 'Please enter a valid email address, or leave it blank.';\n      else d.email = email;\n    }\n\n    // city_area\n    var city = str(b.city_area).replace(/\\s+/g, ' ');\n    if (!city) errors.city_area = 'Please enter your city or area.';\n    else if (city.length < 2 || city.length > 80) errors.city_area = 'City / area must be 2 to 80 characters.';\n    else d.city_area = city;\n\n    // property_type\n    var pt = str(b.property_type).toLowerCase();\n    if (!pt) errors.property_type = 'Please choose a property type.';\n    else if (PROPERTY_TYPES.indexOf(pt) === -1) errors.property_type = 'Please choose a property type from the list.';\n    else d.property_type = pt;\n\n    // monthly_units_kwh (required, never clamped)\n    if (isBlank(b.monthly_units_kwh)) errors.monthly_units_kwh = 'Please enter your monthly units (kWh). You can find it on your electricity bill.';\n    else {\n      var u = toNumber(b.monthly_units_kwh);\n      if (!Number.isInteger(u)) errors.monthly_units_kwh = 'Monthly units must be a whole number.';\n      else if (u < 20 || u > 10000) errors.monthly_units_kwh = 'Monthly units must be between 20 and 10,000 kWh.';\n      else d.monthly_units_kwh = u;\n    }\n\n    // monthly_bill_inr (optional)\n    if (isBlank(b.monthly_bill_inr)) d.monthly_bill_inr = null;\n    else {\n      var bill = toNumber(b.monthly_bill_inr);\n      if (!Number.isFinite(bill) || bill < 0) errors.monthly_bill_inr = 'Monthly bill must be a number of 0 or more.';\n      else if (bill > 100000000) errors.monthly_bill_inr = 'Monthly bill looks too large. Please check it.';\n      else d.monthly_bill_inr = bill;\n    }\n\n    // roof_area_sqft (optional)\n    if (isBlank(b.roof_area_sqft)) d.roof_area_sqft = null;\n    else {\n      var r = toNumber(b.roof_area_sqft);\n      if (!Number.isInteger(r)) errors.roof_area_sqft = 'Roof area must be a whole number of square feet.';\n      else if (r < 50 || r > 500000) errors.roof_area_sqft = 'Roof area must be between 50 and 5,00,000 sq ft.';\n      else d.roof_area_sqft = r;\n    }\n\n    // message (optional, never truncated)\n    var msg = b.message === undefined || b.message === null ? '' : String(b.message).trim();\n    if (msg.length > 1000) errors.message = 'Message must be 1000 characters or fewer (currently ' + msg.length + ').';\n    else d.message = msg || null;\n\n    // consent\n    if (b.consent !== true && b.consent !== 'true' && b.consent !== 'on') errors.consent = 'Please tick the box so we can contact you.';\n    else d.consent = true;\n\n    // client_request_id\n    var rid = str(b.client_request_id).toLowerCase();\n    if (!UUID_RE.test(rid)) errors.client_request_id = 'Missing request ID. Please reload the page and try again.';\n    else d.client_request_id = rid;\n\n    return Object.keys(errors).length ? { ok: false, errors: errors } : { ok: true, data: d };\n  }\n\n  function isHoneypotFilled(input) {\n    return !!(input && !isBlank(input.honeypot));\n  }\n\n  /** Round to nearest 0.5 kW. unitsPerKw comes from the n8n variable. */\n  function estimateKw(units, unitsPerKw) {\n    var per = Number(unitsPerKw);\n    if (!Number.isFinite(per) || per <= 0) throw new Error('UNITS_PER_KW_PER_MONTH is not set to a positive number');\n    return Math.round((units / per) * 2) / 2;\n  }\n\n  function routingQueue(propertyType) {\n    return CALL_QUEUE.indexOf(propertyType) !== -1 ? 'call' : 'site_visit';\n  }\n\n  var api = {\n    PROPERTY_TYPES: PROPERTY_TYPES,\n    validate: validate,\n    normaliseMobile: normaliseMobile,\n    isHoneypotFilled: isHoneypotFilled,\n    estimateKw: estimateKw,\n    routingQueue: routingQueue\n  };\n\n  if (typeof module !== 'undefined' && module.exports) module.exports = api;\n  if (root) root.SolarfiLeadValidation = api;\n})(typeof window !== 'undefined' ? window : typeof globalThis !== 'undefined' ? globalThis : this);\n return module.exports; })();\n\nconst { body } = $input.first().json;\nconst result = V.validate(body);\nif (!result.ok) return [{ json: { _respond: true, status: 422, body: { ok: false, errors: result.errors } } }];\n\n// raw_payload keeps what the visitor sent (minus the honeypot) for audit.\nconst raw = Object.assign({}, body);\ndelete raw.honeypot;\nreturn [{ json: { _respond: false, data: result.data, raw_payload: raw } }];\n"
+      }
+    },
+    {
+      "id": "n5",
+      "name": "Invalid?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        960,
+        600
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "c4",
+              "leftValue": "={{ $json._respond }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "n6",
+      "name": "Request Already Seen?",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1200,
+        800
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "",
+          "name": "Solarfi Supabase (service role)"
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 1000,
+      "onError": "continueErrorOutput",
+      "alwaysOutputData": true,
+      "parameters": {
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "supabaseApi",
+        "options": {
+          "timeout": 10000
+        },
+        "method": "GET",
+        "url": "https://csikpgbacngeivttoejo.supabase.co/rest/v1/quote-chase-board",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "select",
+              "value": "lead_id"
+            },
+            {
+              "name": "client_request_id",
+              "value": "=eq.{{ $json.data.client_request_id }}"
+            },
+            {
+              "name": "limit",
+              "value": "1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "n7",
+      "name": "Seen Before?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1440,
+        800
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "c6",
+              "leftValue": "={{ $json.lead_id }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "n8",
+      "name": "Original Lead Response",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1680,
+        600
+      ],
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={{ { _respond: true, status: 200, body: { ok: true, lead_id: $json.lead_id } } }}",
+        "options": {}
+      }
+    },
+    {
+      "id": "n9",
+      "name": "Same Mobile in 24h?",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1680,
+        1000
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "",
+          "name": "Solarfi Supabase (service role)"
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 1000,
+      "onError": "continueErrorOutput",
+      "alwaysOutputData": true,
+      "parameters": {
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "supabaseApi",
+        "options": {
+          "timeout": 10000
+        },
+        "method": "GET",
+        "url": "https://csikpgbacngeivttoejo.supabase.co/rest/v1/quote-chase-board",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "select",
+              "value": "lead_id"
+            },
+            {
+              "name": "mobile",
+              "value": "=eq.{{ $('Validate & Normalise').first().json.data.mobile }}"
+            },
+            {
+              "name": "created_at",
+              "value": "=gte.{{ $now.minus({ hours: 24 }).toUTC().toISO() }}"
+            },
+            {
+              "name": "limit",
+              "value": "1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "n10",
+      "name": "Derive Lead Fields",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1920,
+        1000
+      ],
+      "parameters": {
+        "jsCode": "// Derive Lead Fields: estimated_kw, lead_id, timestamps, duplicate flag.\nconst V = (function () { var module = { exports: {} }; /*\n * Solarfi inquiry validation — single source of truth.\n *\n * Used in two places with identical rules:\n *   1. The Contact Us page (window.SolarfiLeadValidation) for instant feedback.\n *   2. The n8n \"Validate & Normalise\" Code node. scripts/build-n8n-workflow.mjs\n *      copies this file into the workflow JSON, so edit it here, not in n8n.\n *\n * No dependencies, no network, no secrets.\n */\n(function (root) {\n  'use strict';\n\n  var PROPERTY_TYPES = ['home', 'shop', 'commercial', 'industrial', 'government', 'other'];\n  var CALL_QUEUE = ['home', 'shop', 'other'];\n  var NAME_RE = /^[\\p{L}\\p{M} .]+$/u;\n  var EMAIL_RE = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]{2,}$/;\n  var UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;\n\n  function str(v) {\n    return v === undefined || v === null ? '' : String(v).trim();\n  }\n\n  function isBlank(v) {\n    return str(v) === '';\n  }\n\n  // \"12\" -> 12, \"12.0\" -> 12, \"12.5\" -> NaN-ish (not an integer), \"\" -> null\n  function toNumber(v) {\n    if (typeof v === 'number') return v;\n    var s = str(v).replace(/,/g, '');\n    if (s === '' || !/^-?\\d+(\\.\\d+)?$/.test(s)) return NaN;\n    return Number(s);\n  }\n\n  function normaliseMobile(v) {\n    var s = str(v).replace(/[\\s\\-().]/g, '');\n    if (s.indexOf('+91') === 0) s = s.slice(3);\n    else if (/^91\\d{10}$/.test(s)) s = s.slice(2);\n    else if (/^0\\d{10}$/.test(s)) s = s.slice(1);\n    return /^[6-9]\\d{9}$/.test(s) ? '+91' + s : null;\n  }\n\n  /**\n   * validate(input) -> { ok: true, data } | { ok: false, errors: { field: message } }\n   * `data` holds the cleaned values, ready to store.\n   */\n  function validate(input) {\n    var b = input && typeof input === 'object' ? input : {};\n    var errors = {};\n    var d = {};\n\n    // name\n    var name = str(b.name).replace(/\\s+/g, ' ');\n    if (!name) errors.name = 'Please enter your name.';\n    else if (name.length < 2 || name.length > 80) errors.name = 'Name must be 2 to 80 characters.';\n    else if (!NAME_RE.test(name)) errors.name = 'Name can contain only letters, spaces and dots.';\n    else d.name = name;\n\n    // mobile\n    if (isBlank(b.mobile)) errors.mobile = 'Please enter your mobile number.';\n    else {\n      var m = normaliseMobile(b.mobile);\n      if (!m) errors.mobile = 'Enter a valid 10-digit Indian mobile number (starts with 6, 7, 8 or 9).';\n      else d.mobile = m;\n    }\n\n    // email (optional)\n    if (isBlank(b.email)) d.email = null;\n    else {\n      var email = str(b.email).toLowerCase();\n      if (email.length > 254 || !EMAIL_RE.test(email)) errors.email = 'Please enter a valid email address, or leave it blank.';\n      else d.email = email;\n    }\n\n    // city_area\n    var city = str(b.city_area).replace(/\\s+/g, ' ');\n    if (!city) errors.city_area = 'Please enter your city or area.';\n    else if (city.length < 2 || city.length > 80) errors.city_area = 'City / area must be 2 to 80 characters.';\n    else d.city_area = city;\n\n    // property_type\n    var pt = str(b.property_type).toLowerCase();\n    if (!pt) errors.property_type = 'Please choose a property type.';\n    else if (PROPERTY_TYPES.indexOf(pt) === -1) errors.property_type = 'Please choose a property type from the list.';\n    else d.property_type = pt;\n\n    // monthly_units_kwh (required, never clamped)\n    if (isBlank(b.monthly_units_kwh)) errors.monthly_units_kwh = 'Please enter your monthly units (kWh). You can find it on your electricity bill.';\n    else {\n      var u = toNumber(b.monthly_units_kwh);\n      if (!Number.isInteger(u)) errors.monthly_units_kwh = 'Monthly units must be a whole number.';\n      else if (u < 20 || u > 10000) errors.monthly_units_kwh = 'Monthly units must be between 20 and 10,000 kWh.';\n      else d.monthly_units_kwh = u;\n    }\n\n    // monthly_bill_inr (optional)\n    if (isBlank(b.monthly_bill_inr)) d.monthly_bill_inr = null;\n    else {\n      var bill = toNumber(b.monthly_bill_inr);\n      if (!Number.isFinite(bill) || bill < 0) errors.monthly_bill_inr = 'Monthly bill must be a number of 0 or more.';\n      else if (bill > 100000000) errors.monthly_bill_inr = 'Monthly bill looks too large. Please check it.';\n      else d.monthly_bill_inr = bill;\n    }\n\n    // roof_area_sqft (optional)\n    if (isBlank(b.roof_area_sqft)) d.roof_area_sqft = null;\n    else {\n      var r = toNumber(b.roof_area_sqft);\n      if (!Number.isInteger(r)) errors.roof_area_sqft = 'Roof area must be a whole number of square feet.';\n      else if (r < 50 || r > 500000) errors.roof_area_sqft = 'Roof area must be between 50 and 5,00,000 sq ft.';\n      else d.roof_area_sqft = r;\n    }\n\n    // message (optional, never truncated)\n    var msg = b.message === undefined || b.message === null ? '' : String(b.message).trim();\n    if (msg.length > 1000) errors.message = 'Message must be 1000 characters or fewer (currently ' + msg.length + ').';\n    else d.message = msg || null;\n\n    // consent\n    if (b.consent !== true && b.consent !== 'true' && b.consent !== 'on') errors.consent = 'Please tick the box so we can contact you.';\n    else d.consent = true;\n\n    // client_request_id\n    var rid = str(b.client_request_id).toLowerCase();\n    if (!UUID_RE.test(rid)) errors.client_request_id = 'Missing request ID. Please reload the page and try again.';\n    else d.client_request_id = rid;\n\n    return Object.keys(errors).length ? { ok: false, errors: errors } : { ok: true, data: d };\n  }\n\n  function isHoneypotFilled(input) {\n    return !!(input && !isBlank(input.honeypot));\n  }\n\n  /** Round to nearest 0.5 kW. unitsPerKw comes from the n8n variable. */\n  function estimateKw(units, unitsPerKw) {\n    var per = Number(unitsPerKw);\n    if (!Number.isFinite(per) || per <= 0) throw new Error('UNITS_PER_KW_PER_MONTH is not set to a positive number');\n    return Math.round((units / per) * 2) / 2;\n  }\n\n  function routingQueue(propertyType) {\n    return CALL_QUEUE.indexOf(propertyType) !== -1 ? 'call' : 'site_visit';\n  }\n\n  var api = {\n    PROPERTY_TYPES: PROPERTY_TYPES,\n    validate: validate,\n    normaliseMobile: normaliseMobile,\n    isHoneypotFilled: isHoneypotFilled,\n    estimateKw: estimateKw,\n    routingQueue: routingQueue\n  };\n\n  if (typeof module !== 'undefined' && module.exports) module.exports = api;\n  if (root) root.SolarfiLeadValidation = api;\n})(typeof window !== 'undefined' ? window : typeof globalThis !== 'undefined' ? globalThis : this);\n return module.exports; })();\nconst { data, raw_payload } = $('Validate & Normalise').first().json;\nconst recent = $input.first().json;           // row from \"Same Mobile in 24h?\" or {}\nconst now = new Date().toISOString();\nconst leadId = (globalThis.crypto && globalThis.crypto.randomUUID) ? globalThis.crypto.randomUUID()\n  : 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => { const r = Math.random() * 16 | 0; return (c === 'x' ? r : (r & 0x3) | 0x8).toString(16); });\n\nreturn [{ json: {\n  lead_id: leadId,\n  created_at: now,\n  name: data.name,\n  mobile: data.mobile,\n  email: data.email,\n  city_area: data.city_area,\n  property_type: data.property_type,\n  monthly_units_kwh: data.monthly_units_kwh,\n  monthly_bill_inr: data.monthly_bill_inr,\n  roof_area_sqft: data.roof_area_sqft,\n  estimated_kw: V.estimateKw(data.monthly_units_kwh, $vars.UNITS_PER_KW_PER_MONTH),\n  estimate_method: 'units_div_120',\n  message: data.message,\n  source: 'website-contact',\n  status: 'new',\n  is_duplicate: Boolean(recent && recent.lead_id),\n  assigned_to: null,\n  consent_at: now,\n  client_request_id: data.client_request_id,\n  raw_payload\n} }];\n"
+      }
+    },
+    {
+      "id": "n11",
+      "name": "Call Queue Property?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2160,
+        1000
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "cq",
+              "leftValue": "={{ ['home', 'shop', 'other'].includes($json.property_type) }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "n12",
+      "name": "Mark Call Queue",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2400,
+        800
+      ],
+      "parameters": {
+        "mode": "manual",
+        "includeOtherFields": true,
+        "include": "all",
+        "assignments": {
+          "assignments": [
+            {
+              "id": "Mark Call Queue",
+              "name": "routing_queue",
+              "value": "call",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "n13",
+      "name": "Mark Site Visit Queue",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2400,
+        1200
+      ],
+      "parameters": {
+        "mode": "manual",
+        "includeOtherFields": true,
+        "include": "all",
+        "assignments": {
+          "assignments": [
+            {
+              "id": "Mark Site Visit Queue",
+              "name": "routing_queue",
+              "value": "site_visit",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "n14",
+      "name": "Merge Enquiry Queues",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.1,
+      "position": [
+        2640,
+        1000
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "n15",
+      "name": "Insert Lead (Supabase)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2880,
+        1000
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "",
+          "name": "Solarfi Supabase (service role)"
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 1000,
+      "onError": "continueErrorOutput",
+      "parameters": {
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "supabaseApi",
+        "options": {
+          "timeout": 10000
+        },
+        "method": "POST",
+        "url": "https://csikpgbacngeivttoejo.supabase.co/rest/v1/quote-chase-board",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Prefer",
+              "value": "return=representation"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ lead_id: $json.lead_id, created_at: $json.created_at, name: $json.name, mobile: $json.mobile, email: $json.email, city_area: $json.city_area, property_type: $json.property_type, monthly_units_kwh: $json.monthly_units_kwh, monthly_bill_inr: $json.monthly_bill_inr, roof_area_sqft: $json.roof_area_sqft, estimated_kw: $json.estimated_kw, estimate_method: $json.estimate_method, routing_queue: $json.routing_queue, message: $json.message, source: $json.source, status: $json.status, is_duplicate: $json.is_duplicate, assigned_to: $json.assigned_to, consent_at: $json.consent_at, client_request_id: $json.client_request_id, raw_payload: $json.raw_payload }) }}"
+      }
+    },
+    {
+      "id": "n16",
+      "name": "Append Enquiry to Sheet",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        3120,
+        1000
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "",
+          "name": "Solarfi Google Sheets"
+        }
+      },
+      "onError": "continueErrorOutput",
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "={{ $vars.SOLARFI_LEADS_SHEET_ID }}"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "Leads"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $json.id === null || $json.id === undefined ? '' : $json.id }}",
+            "lead_id": "={{ $json.lead_id === null || $json.lead_id === undefined ? '' : $json.lead_id }}",
+            "created_at": "={{ $json.created_at === null || $json.created_at === undefined ? '' : $json.created_at }}",
+            "name": "={{ $json.name === null || $json.name === undefined ? '' : $json.name }}",
+            "mobile": "={{ $json.mobile === null || $json.mobile === undefined ? '' : $json.mobile }}",
+            "email": "={{ $json.email === null || $json.email === undefined ? '' : $json.email }}",
+            "city_area": "={{ $json.city_area === null || $json.city_area === undefined ? '' : $json.city_area }}",
+            "property_type": "={{ $json.property_type === null || $json.property_type === undefined ? '' : $json.property_type }}",
+            "monthly_units_kwh": "={{ $json.monthly_units_kwh === null || $json.monthly_units_kwh === undefined ? '' : $json.monthly_units_kwh }}",
+            "monthly_bill_inr": "={{ $json.monthly_bill_inr === null || $json.monthly_bill_inr === undefined ? '' : $json.monthly_bill_inr }}",
+            "roof_area_sqft": "={{ $json.roof_area_sqft === null || $json.roof_area_sqft === undefined ? '' : $json.roof_area_sqft }}",
+            "estimated_kw": "={{ $json.estimated_kw === null || $json.estimated_kw === undefined ? '' : $json.estimated_kw }}",
+            "estimate_method": "={{ $json.estimate_method === null || $json.estimate_method === undefined ? '' : $json.estimate_method }}",
+            "routing_queue": "={{ $json.routing_queue === null || $json.routing_queue === undefined ? '' : $json.routing_queue }}",
+            "message": "={{ $json.message === null || $json.message === undefined ? '' : $json.message }}",
+            "source": "={{ $json.source === null || $json.source === undefined ? '' : $json.source }}",
+            "status": "={{ $json.status === null || $json.status === undefined ? '' : $json.status }}",
+            "is_duplicate": "={{ $json.is_duplicate === null || $json.is_duplicate === undefined ? '' : $json.is_duplicate }}",
+            "assigned_to": "={{ $json.assigned_to === null || $json.assigned_to === undefined ? '' : $json.assigned_to }}",
+            "consent_at": "={{ $json.consent_at === null || $json.consent_at === undefined ? '' : $json.consent_at }}",
+            "client_request_id": "={{ $json.client_request_id === null || $json.client_request_id === undefined ? '' : $json.client_request_id }}",
+            "raw_payload": "={{ JSON.stringify($json.raw_payload) }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "lead_id",
+              "displayName": "lead_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "name",
+              "displayName": "name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "mobile",
+              "displayName": "mobile",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "city_area",
+              "displayName": "city_area",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "property_type",
+              "displayName": "property_type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "monthly_units_kwh",
+              "displayName": "monthly_units_kwh",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "monthly_bill_inr",
+              "displayName": "monthly_bill_inr",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "roof_area_sqft",
+              "displayName": "roof_area_sqft",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "estimated_kw",
+              "displayName": "estimated_kw",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "estimate_method",
+              "displayName": "estimate_method",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "routing_queue",
+              "displayName": "routing_queue",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "message",
+              "displayName": "message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "source",
+              "displayName": "source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "is_duplicate",
+              "displayName": "is_duplicate",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "assigned_to",
+              "displayName": "assigned_to",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "consent_at",
+              "displayName": "consent_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "client_request_id",
+              "displayName": "client_request_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "raw_payload",
+              "displayName": "raw_payload",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ]
+        },
+        "options": {
+          "cellFormat": "RAW"
+        }
+      }
+    },
+    {
+      "id": "n17",
+      "name": "Respond Success",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        3600,
+        1000
+      ],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ ok: true, lead_id: $('Insert Lead (Supabase)').first().json.lead_id }) }}",
+        "options": {
+          "responseCode": 200
+        }
+      }
+    },
+    {
+      "id": "n18",
+      "name": "Respond Early",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        2160,
+        200
+      ],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify($json.body) }}",
+        "options": {
+          "responseCode": "={{ $json.status }}"
+        }
+      }
+    },
+    {
+      "id": "n19",
+      "name": "Build Sheet Alert",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3360,
+        1200
+      ],
+      "parameters": {
+        "jsCode": "// Build a team alert without full mobile numbers or emails.\nconst mask = m => (m ? String(m).replace(/^(\\+91)?(\\d{2})\\d{4}(\\d{4})$/, (x, p, a, b) => (p || '') + a + 'XXXX' + b) : '-');\nlet lead = {};\ntry { lead = $('Derive Lead Fields').first().json; } catch (e) { lead = {}; }\nconst err = $input.first().json.error || $input.first().json;\nconst stage = $node.name.includes('Sheet') ? 'Google Sheet append' : 'Supabase';\nreturn [{ json: {\n  subject: `[Solarfi] Lead intake failure: ${stage}`,\n  text: [\n    `Stage: ${stage}`,\n    `When (UTC): ${new Date().toISOString()}`,\n    `Execution: ${$execution.id}`,\n    `Lead ID: ${lead.lead_id || '-'}`,\n    `Name: ${lead.name || '-'}`,\n    `Mobile: ${mask(lead.mobile)}`,\n    `Property: ${lead.property_type || '-'} / Queue: ${lead.routing_queue || '-'}`,\n    stage === 'Supabase'\n      ? 'The visitor was shown an error and asked to retry. The lead was NOT saved.'\n      : 'The lead IS saved in Supabase. Only the Sheet row is missing; add it from Supabase.',\n    '',\n    `Error: ${String((err && (err.message || err.description)) || JSON.stringify(err)).slice(0, 500)}`\n  ].join('\\n')\n} }];\n"
+      }
+    },
+    {
+      "id": "n20",
+      "name": "Alert Team: Sheet Failed",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        3600,
+        1200
+      ],
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "",
+          "name": "Solarfi Gmail alerts"
+        }
+      },
+      "onError": "continueRegularOutput",
+      "parameters": {
+        "sendTo": "={{ $vars.SOLARFI_ALERT_EMAIL }}",
+        "subject": "={{ $json.subject }}",
+        "emailType": "text",
+        "message": "={{ $json.text }}",
+        "options": {
+          "appendAttribution": false
+        }
+      }
+    },
+    {
+      "id": "n21",
+      "name": "Recheck Request ID",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3120,
+        1400
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "",
+          "name": "Solarfi Supabase (service role)"
+        }
+      },
+      "retryOnFail": false,
+      "maxTries": 2,
+      "waitBetweenTries": 1000,
+      "onError": "continueRegularOutput",
+      "alwaysOutputData": true,
+      "parameters": {
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "supabaseApi",
+        "options": {
+          "timeout": 10000
+        },
+        "method": "GET",
+        "url": "https://csikpgbacngeivttoejo.supabase.co/rest/v1/quote-chase-board",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "select",
+              "value": "lead_id"
+            },
+            {
+              "name": "client_request_id",
+              "value": "=eq.{{ $('Validate & Normalise').first().json.data.client_request_id }}"
+            },
+            {
+              "name": "limit",
+              "value": "1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "n22",
+      "name": "Already Saved?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        3360,
+        1400
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "c21",
+              "leftValue": "={{ $json.lead_id }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "n23",
+      "name": "Build Supabase Alert",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3600,
+        1600
+      ],
+      "parameters": {
+        "jsCode": "// Build a team alert without full mobile numbers or emails.\nconst mask = m => (m ? String(m).replace(/^(\\+91)?(\\d{2})\\d{4}(\\d{4})$/, (x, p, a, b) => (p || '') + a + 'XXXX' + b) : '-');\nlet lead = {};\ntry { lead = $('Derive Lead Fields').first().json; } catch (e) { lead = {}; }\nconst err = $input.first().json.error || $input.first().json;\nconst stage = $node.name.includes('Sheet') ? 'Google Sheet append' : 'Supabase';\nreturn [{ json: {\n  subject: `[Solarfi] Lead intake failure: ${stage}`,\n  text: [\n    `Stage: ${stage}`,\n    `When (UTC): ${new Date().toISOString()}`,\n    `Execution: ${$execution.id}`,\n    `Lead ID: ${lead.lead_id || '-'}`,\n    `Name: ${lead.name || '-'}`,\n    `Mobile: ${mask(lead.mobile)}`,\n    `Property: ${lead.property_type || '-'} / Queue: ${lead.routing_queue || '-'}`,\n    stage === 'Supabase'\n      ? 'The visitor was shown an error and asked to retry. The lead was NOT saved.'\n      : 'The lead IS saved in Supabase. Only the Sheet row is missing; add it from Supabase.',\n    '',\n    `Error: ${String((err && (err.message || err.description)) || JSON.stringify(err)).slice(0, 500)}`\n  ].join('\\n')\n} }];\n"
+      }
+    },
+    {
+      "id": "n24",
+      "name": "Alert Team: Supabase Failed",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        3840,
+        1600
+      ],
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "",
+          "name": "Solarfi Gmail alerts"
+        }
+      },
+      "onError": "continueRegularOutput",
+      "parameters": {
+        "sendTo": "={{ $vars.SOLARFI_ALERT_EMAIL }}",
+        "subject": "={{ $json.subject }}",
+        "emailType": "text",
+        "message": "={{ $json.text }}",
+        "options": {
+          "appendAttribution": false
+        }
+      }
+    },
+    {
+      "id": "n25",
+      "name": "Respond 500",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        4080,
+        1600
+      ],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ ok: false, error: \"server_error\", message: \"We could not save your request. Please try again.\" }) }}",
+        "options": {
+          "responseCode": 500
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Inquiry Webhook": {
+      "main": [
+        [
+          {
+            "node": "Security Gate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Security Gate": {
+      "main": [
+        [
+          {
+            "node": "Gate Says Respond?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gate Says Respond?": {
+      "main": [
+        [
+          {
+            "node": "Respond Early",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Validate & Normalise",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate & Normalise": {
+      "main": [
+        [
+          {
+            "node": "Invalid?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Invalid?": {
+      "main": [
+        [
+          {
+            "node": "Respond Early",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Request Already Seen?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Request Already Seen?": {
+      "main": [
+        [
+          {
+            "node": "Seen Before?",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Recheck Request ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Seen Before?": {
+      "main": [
+        [
+          {
+            "node": "Original Lead Response",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Same Mobile in 24h?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Original Lead Response": {
+      "main": [
+        [
+          {
+            "node": "Respond Early",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Same Mobile in 24h?": {
+      "main": [
+        [
+          {
+            "node": "Derive Lead Fields",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Recheck Request ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Derive Lead Fields": {
+      "main": [
+        [
+          {
+            "node": "Call Queue Property?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call Queue Property?": {
+      "main": [
+        [
+          {
+            "node": "Mark Call Queue",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Mark Site Visit Queue",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mark Call Queue": {
+      "main": [
+        [
+          {
+            "node": "Merge Enquiry Queues",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mark Site Visit Queue": {
+      "main": [
+        [
+          {
+            "node": "Merge Enquiry Queues",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge Enquiry Queues": {
+      "main": [
+        [
+          {
+            "node": "Insert Lead (Supabase)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert Lead (Supabase)": {
+      "main": [
+        [
+          {
+            "node": "Append Enquiry to Sheet",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Recheck Request ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append Enquiry to Sheet": {
+      "main": [
+        [
+          {
+            "node": "Respond Success",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Build Sheet Alert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Sheet Alert": {
+      "main": [
+        [
+          {
+            "node": "Alert Team: Sheet Failed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Alert Team: Sheet Failed": {
+      "main": [
+        [
+          {
+            "node": "Respond Success",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Recheck Request ID": {
+      "main": [
+        [
+          {
+            "node": "Already Saved?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Already Saved?": {
+      "main": [
+        [
+          {
+            "node": "Original Lead Response",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Build Supabase Alert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Supabase Alert": {
+      "main": [
+        [
+          {
+            "node": "Alert Team: Supabase Failed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Alert Team: Supabase Failed": {
+      "main": [
+        [
+          {
+            "node": "Respond 500",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": false
+  }
+}
